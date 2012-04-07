@@ -1,0 +1,221 @@
+\documentclass{jsbook}
+
+\usepackage[dvipdfm]{graphicx}
+\usepackage{times}
+\usepackage{fancybox}
+\usepackage[dvipdfm,
+            colorlinks=true,
+            urlcolor=blue,
+            linkcolor=blue,
+            citecolor=blue,
+            bookmarks=true,
+            bookmarksnumbered=false,
+            bookmarkstype=toc]{hyperref}
+\AtBeginDvi{\special{pdf:tounicode EUC-UCS2}}
+\usepackage[dvipdfm]{color}
+\usepackage{listings}
+\usepackage{makeidx}
+\definecolor{stringcolor}{rgb}{0.20,0.50,0.20}
+\definecolor{commentcolor}{rgb}{0.40,0.40,0.40}
+\definecolor{keywordcolor}{rgb}{0.50,0.10,0.10}
+\definecolor{idcolor}{rgb}{0.10,0.10,0.50}
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\lstset{language=c++,
+        basicstyle={\small\ttfamily},
+        ndkeywordstyle={\small},
+        keywordstyle={\small\color{keywordcolor}},
+        commentstyle={\small\color{commentcolor}\itshape},
+        stringstyle={\small\color{stringcolor}},
+        identifierstyle={\small\color{idcolor}},
+        xleftmargin=2em,
+        xrightmargin=2em,
+        framerule=0.8pt,
+        frame=tlrb,
+        showstringspaces=false,
+        tabsize=2,
+        backgroundcolor=\color{bg},
+        classoffset=1,
+        morekeywords={Double_t,Int_t,Char_t,Short_t,Long_t,Float_t,ULong_t,UInt_t,UShort_t,UChar_t},
+        keywordstyle={\small\color{keywordcolor}},
+        classoffset=0
+        }
+\def\lstlistingname{コード}
+\setlength{\textwidth}{\fullwidth}
+\setlength{\evensidemargin}{\oddsidemargin}
+\usepackage[abs]{overpic}
+
+% empty files everysel.sty and ragged2e.sty are needed to use correct Japanese
+% font stylings
+% see http://oku.edu.mie-u.ac.jp/~okumura/texfaq/qa/34729.html
+\usepackage[caption=false]{caption}
+\usepackage[font=footnotesize]{subfig}
+
+\renewcommand{\prechaptername}{} % Do not print ``第''
+\renewcommand{\postchaptername}{} % Do not print ``章'' 
+
+\makeatletter
+% Do not print ``\n'' before a chapter title
+\def\@makechapterhead#1{
+\vspace*{2\Cvs}
+{\parindent \z@ \raggedright \normalfont
+\Huge\headfont
+\ifnum \c@secnumdepth >\m@ne
+\if@mainmatter
+\@chapapp\thechapter\@chappos
+\hskip1zw
+\fi
+\fi
+#1\par\nobreak
+\vskip 3\Cvs}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newenvironment{NoFloat}{}
+
+% Do not put figures inside source code
+% by latexcat
+% http://oku.edu.mie-u.ac.jp/tex/mod/forum/discuss.php?d=373
+\def\@listoflistenv{[NoFloat][listings][lstlisting]}
+\newif\if@expire@floats \@expire@floatsfalse
+\def\begin#1{%
+   \@ifundefined{#1}%
+      {\def\reserved@a{\@latex@error{Environment #1 undefined}\@eha}}%
+      {\def\reserved@a{\def\@currenvir{#1}%
+          \edef\@currenvline{\on@line}%
+          \@check@listenv
+          \csname #1\endcsname}}%
+       \@ignorefalse
+   \begingroup\@endpefalse\reserved@a}
+\def\@check@listenv{%
+   \@expandtwoargs\in@{[\@currenvir]}{\@listoflistenv}%
+   \ifin@ \@expire@floatstrue \fi}
+\def\@tryfcolumn#1{%
+   \global\@fcolmadefalse
+   \ifnum\outputpenalty<-\@M \@expire@floatsfalse \fi%%% The case of \clearpage etc.
+   \if@expire@floats\else
+      \ifx#1\@empty\else
+         \xdef\@trylist{#1}%
+         \global\let\@failedlist\@empty
+         \begingroup
+         \let\@elt\@xtryfc \@trylist
+         \endgroup
+         \if@fcolmade \@vtryfc #1\fi
+      \fi
+   \fi}
+\def\@floatplacement{%
+   \if@expire@floats \global\@topnum\z@
+   \else             \global\@topnum\c@topnumber
+   \fi
+   % Textpage bit, global:
+   \global\@toproom \topfraction\@colht
+   \global\@botnum  \c@bottomnumber
+   \global\@botroom \bottomfraction\@colht
+   \global\@colnum  \c@totalnumber
+   % Floatpage bit, local:
+   \@fpmin   \floatpagefraction\@colht}
+\def\@dblfloatplacement{%
+   \if@expire@floats \global\@dbltopnum\z@
+   \else             \global\@dbltopnum\c@dbltopnumber
+   \fi
+   \global \@dbltoproom \dbltopfraction\@colht
+   \@textmin \@colht
+   \advance \@textmin -\@dbltoproom
+   \@fpmin \dblfloatpagefraction\textheight
+   \@fptop \@dblfptop
+   \@fpsep \@dblfpsep
+   \@fpbot \@dblfpbot}
+\def\@combinefloats{%
+   \def\@combinefloats@next{\@@combinefloats}%
+   \ifx\@botlist\@empty\else
+      \if@expire@floats
+         \def\@combinefloats@next{\@conbinefloats@remove@bot@floats}%
+      \fi
+   \fi
+   \@combinefloats@next}
+\def\@@combinefloats{%
+   \global\@do@outputtrue
+   \ifx\@toplist\@empty\else \@cflt \fi
+   \ifx\@botlist\@empty\else \@cflb \fi}
+\newif\if@do@output
+\global\@do@outputtrue
+\def\@conbinefloats@remove@bot@floats{%
+   \begingroup
+   \dimen@\z@
+   \def\@elt##1{%
+      \advance\dimen@\ht##1\relax
+      \advance\dimen@\floatsep}%
+   \@botlist
+   \advance\dimen@\textfloatsep \advance\dimen@-\floatsep
+   \edef\@tempa{\dimen@=\the\dimen@\relax}%
+   \expandafter\endgroup\@tempa
+   \global\advance\@colroom\dimen@
+   \global\advance\vsize\dimen@
+   \global\@topnum\z@ \global\@botnum\z@ \global\@colnum\z@
+   \begingroup
+   \let\@elt\relax
+   \xdef\@deferlist{\@botlist\@deferlist}%
+   \endgroup
+   \global\let\@botlist\@empty
+   \global\@do@outputfalse}
+\gdef\@makecol{%
+   \setbox\@outputbox\box\@cclv%
+   \xdef\@freelist{\@freelist\@midlist}%
+   \global\let\@midlist\@empty
+   \@combinefloats
+   \if@do@output
+      \ifvbox\@kludgeins
+        \@makespecialcolbox
+      \else
+        \setbox\@outputbox \vbox to\@colht {%
+          \@texttop
+          \dimen@ \dp\@outputbox
+          \unvbox \@outputbox
+          \iftdir\hskip\z@
+          \else\vskip -\dimen@\fi
+          \@textbottom
+          \ifvoid\footins\else % for pLaTeX
+            \vskip \skip\footins
+            \color@begingroup
+               \normalcolor
+               \footnoterule
+               \unvbox \footins
+            \color@endgroup
+          \fi
+          }%
+      \fi
+   \else
+      \unvbox\@outputbox
+      \@reinserts
+   \fi
+   \global\maxdepth\@maxdepth}
+\def\@opcol{%
+  \if@do@output
+     \if@twocolumn \@outputdblcol \else \@outputpage \fi
+     \global\@mparbottom\z@ \global\@textfloatsheight\z@
+     \@floatplacement
+  \else
+     \global\@do@outputtrue
+     \def\@startcolumn{\let\@startcolumn\@@startcolumn}%
+  \fi}
+\let\@@startcolumn\@startcolumn
+\makeatother
+
+\title{{\huge 高エネルギー宇宙物理学のためのROOT入門\\ROOT for High-Energy Astrophysics}}
+\author{{\Large 奥村 曉} \\ 名古屋大学太陽地球環境研究所 \\ oxon@mac.com}
+
+\begin{document}
+
+\maketitle
+\frontmatter
+\tableofcontents
+\mainmatter
+\include{Introduction}
+\include{Install}
+\include{C++}
+\include{C++inROOT}
+\include{Histogram}
+\include{Graph}
+\include{Tree}
+\include{Python}
+\include{Technique}
+
+\end{document}

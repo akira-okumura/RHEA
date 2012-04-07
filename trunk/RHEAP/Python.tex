@@ -1,0 +1,55 @@
+\chapter{Python}
+
+\section{なぜPythonを使うのか}
+
+Pythonとは、プログラミング言語の1つです。第\ref{chapter_C++}章で説明した概念は、ほぼそのままPythonでも通用します。C++と異なる点は、例えば以下のようなものが挙げられます。
+\begin{itemize}
+  \item コンパイルしなくてもコードを実行可能な、スクリプト言語と呼ばれるものです。これはROOTのCINTに似ています。
+  \item 様々なモジュールが標準で用意されており、C++に比べると、手軽に様々な機能を使うことができます。例えば、オプション解析の機能が標準で利用可能です。
+  \item 物理、天文業界でPythonを利用する研究者が近年増えており、データ解析に必要な外部モジュールが多く用意されています。
+  \item Linux/Mac/WindowsといったOS環境を気にせずに使うことができます。
+\end{itemize}
+特に3つ目は重要で、ROOT、IRAF、DS9、Geant4、FITSといったものを、Pythonという1つの言語の中で同時に扱えるようになります。もちろん、これらの機能をC++から呼び出してコンパイルすることも可能です。しかし、リンクすべきライブラリやヘッダーファイルを把握し、どのような環境でも確実に動作するプログラムを組むのは大変なことです。Pythonであれば、OSを意識せずに様々な機能を簡単に使うことができます。
+
+例えば、エネルギー、座標、時間などで構成される光子イベントがFITSのバイナリテーブルで用意されているとしましょう。このイベントのエネルギー分布をROOTのヒストグラムに詰めたいと思った場合、以下のような簡単なコードで作業が終了します。もしあなたがこのコードを見て、短くて簡単だと感じるならば、ぜひPythonに挑戦してみましょう。
+
+\begin{lstlisting}[language=python]
+>>> import ROOT
+>>> import pyfits
+>>> hist = ROOT.TH1D("hist", "Energy distribution;Energy (MeV)", 100, 0, 1e3) 
+>>> energies = pyfits.open("event_list.fits")[0].data.field("ENERGY")
+>>> for i in range(energies.size):
+...     hist.Fill(energies[i])
+>>> hist.Draw()
+\end{lstlisting}
+
+\section{Pythonのインストール}
+
+\section{追加しておきたいモジュール}
+
+Pythonのモジュールの追加方法は簡単です。なぜなら、追加方法が標準的なものに統一されているからです。もしfooというモジュールがあったとします。次のように、ダウンロードしてきたファイルのディレクトリに移動して、含まれる\texttt{setup.py}を引数つきで実行するだけです。
+\begin{lstlisting}[language=bash]
+$ tar zxvf foo-1.2.3.tar.gz
+$ cd foo-1.2.3
+$ sudo python setup.py install
+\end{lstlisting}
+この\texttt{setup.py}は\texttt{configure}スクリプトや\texttt{Makefile}のようなものです。普通のモジュールには、必ず含まれています。
+
+\begin{itemize}
+  \item PyROOT
+  \item NumPy\\\url{http://numpy.scipy.org/}
+  \item PyFITS\\\url{http://www.stsci.edu/resources/software_hardware/pyfits}
+  \item python-sao\\\url{http://code.google.com/p/python-sao/}
+  \item coords\\\url{https://www.stsci.edu/trac/ssb/astrolib/}
+  \item pywcs\\\url{https://www.stsci.edu/trac/ssb/astrolib/}
+\end{itemize}
+
+\section{Pythonの基本}
+
+\section{PyROOT}
+
+\subsection{C++からPythonへ}
+
+\subsection{メモリ管理}
+
+\section{PyFITS}
