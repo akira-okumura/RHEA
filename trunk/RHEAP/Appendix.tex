@@ -56,22 +56,26 @@ Macの初期設定では、ファイルの拡張子（extension）が表示さ�
 \begin{figure}
   \begin{center}
     \includegraphics[scale=0.4,bb= 0 0 355 267]{fig/Extension.png}
-    \caption{「単語区切り（Word Break）」を「Japanese」にする（この画面は既に英語環境になっている場合のもの）}
+    \caption{``Show all filename extensions''にチェックを入れると、全てのファイルで拡張子が表示されるようになる}
     \label{fig_Extension_png}
   \end{center}
 \end{figure}
 
 \section{キーボードの設定}
 
-もしあなたのMacがUS配列のキーボードならば、Caps LockキーはControlキーとして機能するように設定を変更しましょう。図\ref{fig_Keyboard1_png}のように、System Preferencesから「Keyboard」を開き、Caps LockをControlにします。また、「Keyboard Shortcuts」のタブに移動し、ボタンなどの選択を全てtabキーで行えるようにします。このようにすることで、様々な画面操作をするときに、いちいちキーボードからトラックパッドやマウスへ手の移動をしなくて済むようになります。
+\subsection{Caps LockキーをControlキーに変更する}
+もしあなたのMacがUS配列のキーボードならば、Caps LockキーはControlキーとして機能するように設定を変更しましょう。図\ref{fig_Keyboard1_png}のように、System Preferencesから「Keyboard」を開いて「Keyboard」タブの「Modifier keys\ldots」を押し、Caps LockをControlにします。後述するように、OS~X環境ではEmacsの操作体系に倣ったキーボードショートカットが使われています。そのため、Controlキーの使用率が他のOSに比べて非常に高くなるのが特徴です。US配列のキーボードを使用している場合にはControlキーが押しにくい位置にあるため、滅多に使わない、かつ最も押しやすい位置にあるCaps LockをControlキーにしてしまうことがよく行われています。
 
 \begin{figure}
   \begin{center}
     \includegraphics[scale=0.4,bb= 0 0 668 636]{fig/Keyboard1.png}
-    \caption{Caps LockをCntrolキーに変更する}
+    \caption{Caps LockをControlキーに変更する}
     \label{fig_Keyboard1_png}
   \end{center}
 \end{figure}
+
+\subsection{Tabキーの動作の変更}
+次に、図\ref{fig_Keyboard2_png}のように「Keyboard Shortcuts」のタブに移動し、ボタンなどの選択を全てTabキーで行えるようにします。このようにすることで、様々な画面操作をするときに、いちいちキーボードからトラックパッドやマウスへ手の移動をしなくて済むようになります。
 
 \begin{figure}
   \begin{center}
@@ -81,8 +85,29 @@ Macの初期設定では、ファイルの拡張子（extension）が表示さ�
   \end{center}
 \end{figure}
 
-\section{Xcode}
+例えば、Mac の電源ボタンを軽く一度だけ押すと、図\ref{fig_reboot_png}のような確認ダイアログが出てくるはずです。ここで数回Tabキーを押すと、「Cancel」ボタンが強調表示されるようになります。また「Shut Down」ボタンが明滅しているでしょう。この状態でSpaceキーを押すと、マウスやトラックパッドの操作をしなくても強調表示された「Cancel」ボタンが押されます。またReturnキーを押すと明滅している「Shut Down」ボタンがおされてMacが再起動します。このように、Macではダイアログのボタンをクリックする代わりにSpaceキーとReturnキーで操作することができます。
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.4,bb= 0 0 453 158]{fig/reboot.png}
+    \caption{再起動の確認ダイアログ。Tabを数回押すと、「Cancel」が強調表示される。「Shut Down」は明滅している。}
+    \label{fig_reboot_png}
+  \end{center}
+\end{figure}
+
+\subsection{Spotlightのショートカットの変更}
+最後に、Spotlightのショートカットを図\ref{fig_Keyboard3_png}のようにControl-Space（画面上の表示は「\verb|^|Space」）の組み合わせからCommand-Space（画面上の表示は「\UTF{2318}Space」）などの組み合わせに変更しましょう。Control-Spaceは後述するようにEmacsで頻繁に使用するショートカットであるため、Spotlightのショートカットとして使用されてしまうと不便だからです。
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.4,bb= 0 0 668 636]{fig/Keyboard3.png}
+    \caption{Spotlightのショートカットを「Control-Space」から「Command-Space」に変更した状態}
+    \label{fig_Keyboard3_png}
+  \end{center}
+\end{figure}
+
 \section{KeyRemap4MacBook}
+\section{Xcode}
 \section{zsh}
 \section{MacPorts}
 \subsection{Emacs}
