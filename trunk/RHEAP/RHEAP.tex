@@ -1,5 +1,6 @@
 \documentclass{jsbook}
 
+\usepackage[deluxe]{otf} % Avoid using Hira-Kaku W6
 \usepackage[dvipdfm]{graphicx}
 \usepackage{times}
 \usepackage{fancybox}
@@ -43,6 +44,8 @@
 \setlength{\textwidth}{\fullwidth}
 \setlength{\evensidemargin}{\oddsidemargin}
 \usepackage[abs]{overpic}
+
+\newcounter{appendix}
 
 % empty files everysel.sty and ragged2e.sty are needed to use correct Japanese
 % font stylings
@@ -217,5 +220,6 @@
 \include{Tree}
 \include{Python}
 \include{Technique}
+\include{Appendix}
 
 \end{document}
