@@ -291,6 +291,23 @@ Emacs with D-Bus support, please install with the +dbus variant.
 --->  Cleaning emacs
 \end{lstlisting}
 
+LionでXcode 4.3を使っている場合に次のようなエラーが表示されるかもしれません。
+
+\begin{lstlisting}
+Error: 
+Error: No valid Xcode installation is properly selected.
+Error: Please use xcode-select to select an Xcode installation:
+Error:     sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer # version 4.3.2
+Error: 
+Warning: xcodebuild exists but failed to execute
+Warning: Xcode does not appear to be installed; most ports will likely fail to build.
+\end{lstlisting}
+
+そのときは、エラーの指示通りに従い、次のコマンドを実行しましょう。これでMacPortsが動作するようになるはずです。
+\begin{lstlisting}[language=bash]
+$ sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
+\end{lstlisting}
+
 \subsection{\LaTeX}
 
 研究で誰しも必要になるのが\LaTeX{}の環境です。様々なインストール方法があり、インターネット上にも色々な情報が散らばっています。MacPortsから\LaTeX{}を入れる場合でも、ptex、tetex、texliveという三つのportが存在します。
