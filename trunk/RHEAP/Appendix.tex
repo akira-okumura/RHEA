@@ -170,7 +170,7 @@ export ROOTSYS=/usr/local/root
 zshの設定や\texttt{\$HOME/.zshrc}の書きかたについては、「漢のzsh\footnote{\url{http://news.mynavi.jp/column/zsh/index.html}}」というコラムの解説が非常に詳しく分かりやすいので、参考にして下さい。
 
 \section{MacPorts}
-
+\label{sec_MacPorts}
 MacPorts\footnote{\url{http://www.macports.org/}}とは、UNIXやLinuxで広く使われ、また開発の行われてきたソフトウェア資産を、Macでも使えるようにするためのプロジェクトのひとつです。GUIソフトウェアでもそうですが、他の環境で動作するソフトウェアだからと言って、Macでも簡単に動くわけではありません。Mac以外のUNIXに書かれたソフトウェアであっても、Mac用にコンパイルしたり、各種設定を変更してやる必要があります。しかしMacPortsのようにMacに移植するプロジェクトの成果を利用することで、難しい作業を一般ユーザが行う必要がなくなります。
 
 同様のプロジェクトに、Fink\footnote{\url{http://www.finkproject.org/}}やHomebrew\footnote{\url{http://mxcl.github.com/homebrew/}}があります。OS Xのリリース初期ではFinkが最も活発でしたが、ROOTと組み合わせた場合に問題が何度か発生したため、筆者はMacPortsに移行しました。最近ではHomebrewが流行っていますが、MacPortsに比べるとまだユーザ数は多くありません。新しもの好きの人はHomebrewを検討してみて下さい。
@@ -436,6 +436,96 @@ Emacsの操作に慣れるには、まずこのControlキーを多用した操�
 \lstinputlisting[float=tb,caption=\texttt{DefaultKeyBinding.dict},label=code_DefaultKeyBinding,numbers=left]{src/DefaultKeyBinding.dict}
 %\end{NoFloat}
 
-
-
 \section{Xcode}
+
+\section{知っていると便利な OS X 特有のコマンド}
+
+\chapter{configure と Make}
+
+OS XやLinux環境でソフトウェアを導入する時、インストールの方法は主に3つあります。1つ目は、\ref{sec_MacPorts}で説明したようなパッケージ管理ソフト\footnote{OS XではMacPorts、Fink、Homebrewなど、LinuxではYumやAPTなど。}を使う方法す。2つ目は、既にコンパイル済みでバイナリ配布されているソフトを導入する方法です。例えば、KeyRemap4MacBookをインストーラを使ってインストールしたのがこれに当たります。また、ROOTを入れる場合でもバイナリ配布されているものを使うことが可能です。3つ目は、ソースコードの配布されているソフトウェアを自分でコンパイル（compile）する\footnote{ビルド（build）するとも言います。}方法です。これは\ref{sec_ROOT_install}でROOTの導入として説明しました。
+
+自分でソフトウェアをソースコードからコンパイルする場合、標準的なやり方が存在します。また、研究で通常使うソフトウェアの多くがこの標準的な方法に則して作成されています。そのためここで説明する方法を覚えておけば、多くのソフトウェアを自分で簡単にインストールできるようになります。
+
+このやり方を覚えるために、「GNU Hello\footnote{\url{http://www.gnu.org/software/hello/}}」と呼ばれるソフトウェアを試しにインストールしてみましょう。この「GNU Hello」は標準的な方法を学ぶ上で最適なもので、インストールしても実用性はありません。
+
+まず、次のコマンドで\url{http://ftp.gnu.org/gnu/hello/}から最新版の\texttt{hello-2.8.tar.gz}を落としてきて展開します。展開されたディレクトリに移動して\textt{ls}で中身を見てみましょう。
+
+\begin{lstlisting}[language=bash]
+$ curl -O http://ftp.gnu.org/gnu/hello/hello-2.8.tar.gz
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  681k  100  681k    0     0   150k      0  0:00:04  0:00:04 --:--:--  166k
+$ tar zxf hello-2.8.tar.gz
+$ cd hello-2.8 
+$ ls
+ABOUT-NLS      INSTALL        THANKS         configure.ac   man
+AUTHORS        Makefile.am    TODO           contrib        po
+COPYING        Makefile.in    aclocal.m4     doc            src
+ChangeLog      NEWS           build-aux      lib            tests
+ChangeLog.O    README         config.in      m4
+GNUmakefile    README-release configure      maint.mk
+\end{lstlisting}
+
+ここで重要なのは、\texttt{README}、\texttt{INSTALL}、\texttt{configure}の3つです。\texttt{README}は、そのソフトウェアに関する全般的な説明が書かれています。\texttt{INSTALL}には、そのソフトウェアのインストール方法が書かれています。\texttt{less}コマンドなどで、試しに中身を読んでみて下さい。
+
+\begin{lstlisting}[language=bash]
+$ less README
+$ less INSTALL
+\end{lstlisting}
+
+\texttt{configure}はシェルスクリプトで、そのソフトウェアをコンパイルするときに必要なライブラリやコマンドが存在するかどうか、存在するパスはどこか、OSの環境は何かを自動的に調べて必要な設定をしてくれます。また、必要に応じてユーザが様々なオプションを指定することができます。どのようなオプションがあるかは、次のようにヘルプを表示することで読むことができます。
+
+\begin{lstlisting}[language=bash]
+$ ./configure --help
+\end{lstlisting}
+
+様々なオプションが表示されますが、このうち最も頻繁に使われるのがインストール先の指定のオプション\texttt{--prefix}です。次のように\texttt{configure}を実行することで、\texttt{hello}コマンドを\texttt{/usr/local/bin}にインストールし、またマニュアルを\texttt{/usr/local/share/man/man1}にインストールします。もし\texttt{/usr/local}の代わりに他の場所をしていすれば、これらのファイルは指定した場所の下にインストールされます。
+\begin{lstlisting}[language=bash]
+$ ./configure --prefix=/usr/local
+\end{lstlisting} 
+
+\texttt{configure}が問題なく実行されれば、\texttt{Makefile}というファイルが新たに生成されているはずです。このファイルの中には、そのソフトウェアをどのような手順でコンパイルすれば良いかが全て書かれています。ユーザはどのようなソースコードがあるのかなどを気にする必要はありません。この\texttt{Makefile}の手順の通りに自動的にソフトウェアをコンパイルするには、以下の
+コマンドを打つだけです。
+
+\begin{lstlisting}[language=bash]
+$ make -j 4
+\end{lstlisting} 
+
+\texttt{make}コマンドが\texttt{Makefile}の中身を自動的に調べ、そこに書かれている手順を追ってコンパイルを行います。\texttt{-j 4}のオプションは、使っているCPU能力を最大限に引き出すためのものです。この場合、4コアのCPUを全て使ってくれます。
+
+これで必要なファイルが全て生成されたので、最後にインストール作業を行います。通常は\texttt{/usr/local}にインストールする場合に管理者権限が必要なので、次のコマンドを実行します。
+
+\begin{lstlisting}[language=bash]
+$ sudo make install
+Password:
+\end{lstlisting}
+
+これで、\texttt{/usr/local/bin/hello}などが配置されたはずです。では、確認のため\texttt{hello}を実行しましょう。 
+\begin{lstlisting}[language=bash]
+$ hello
+Hello, world!
+\end{lstlisting}
+
+どのようなオプションを渡せるかは、\texttt{--help}や\texttt{-h}をつけて確認します。
+\begin{lstlisting}[language=bash]
+$ hello -h
+Usage: hello [OPTION]...
+Print a friendly, customizable greeting.
+
+  -h, --help          display this help and exit
+  -v, --version       display version information and exit
+
+  -t, --traditional       use traditional greeting format
+  -n, --next-generation   use next-generation greeting format
+  -g, --greeting=TEXT     use TEXT as the greeting message
+
+Report bugs to: bug-hello@gnu.org
+GNU Hello home page: <http://www.gnu.org/software/hello/>
+General help using GNU software: <http://www.gnu.org/gethelp/>
+\end{lstlisting}
+
+また\texttt{hello}コマンドのマニュアルを見るには\texttt{man}コマンドを使います。
+
+\begin{lstlisting}[language=bash]
+$ man hello
+\end{lstlisting}
