@@ -14,7 +14,7 @@ root [0] gStyle->SetPalette(1)
 コード\ref{code_color_def}では、自分好みのカラーパレットを作る方法を示しています。原理は単純で、作りたいパレットに応じて、\texttt{TColor::CreateGradientColorTable}を呼び出すための関数を用意するだけです。いくつか例を書きましたが、原理は一緒なので関数BPalette()の解説のみをします。
 
 \begin{NoFloat}
-\lstinputlisting[language=c++,caption=\texttt{color\_def}.C,label=code_color_def,numbers=left]{src/color_def.C}
+\lstinputlisting[language=c++,caption=\texttt{color\_def.C},label=code_color_def,numbers=left]{src/color_def.C}
 \end{NoFloat}
 
 次の4行が、実際に色の設定をする部分です。
