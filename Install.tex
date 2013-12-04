@@ -3,7 +3,7 @@
 \section{ROOTのインストールと初期設定}
 \label{sec_ROOT_install}
 \subsection{必要な環境}
-本書を読み進めるためには、当然ながらROOTを実行するためのコンピュータ環境が必要です。ROOTがサポートするOSは多岐にわたりますが、2011年現在、Mac OS XかLinuxを使用するのが、この業界では標準です。そのため本書ではOS XかLinuxの使用を前提とします\footnote{WindowsやSolarisでもROOTは動作します。}。どちらかのOSを使う限り、作業内容はほぼ同じはずです。本書に書かれているROOTでの作業を全て行うためには、自分のコンピュータにGCCがインストールされている必要があります\footnote{GCCについての説明や、そのインストール方法は本書の範囲内ではありません。GCCのインストール方法が分からなければ、「GCC インストール OS X」などで検索して下さい。}
+本書を読み進めるためには、当然ながらROOTを実行するためのコンピュータ環境が必要です。ROOTがサポートするOSは多岐にわたりますが、2013年現在、Mac OS XかLinuxを使用するのが、この業界では標準です。そのため本書ではOS XかLinuxの使用を前提とします\footnote{WindowsやSolarisでもROOTは動作します。}。どちらかのOSを使う限り、作業内容はほぼ同じはずです。本書に書かれているROOTでの作業を全て行うためには、自分のコンピュータにGCCがインストールされている必要があります\footnote{GCCについての説明や、そのインストール方法は本書の範囲内ではありません。GCCのインストール方法が分からなければ、「GCC インストール OS X」などで検索して下さい。}
 
 ある程度のコマンドラインの使用経験を前提としていますので、\texttt{ls}や\texttt{cd}のような単純なコマンド、「スーパーユーザー」、「管理者」、「ディレクトリ」といった用語の説明は省略します。この章の記述は、コマンドライン操作の初心者には不親切かもしれません。しかし、この章を読み進めることができなければ、恐らくROOTを使いこなせるようにもなりません。コンパイルができなかった、ROOTがうまく起動しなかった、この章に書いてあることが分からなかったという場合は、自力でインターネットや書籍、研究室の同僚を頼りに解決して下さい。
 
@@ -11,28 +11,28 @@
 \label{subsec_download}
 ROOTは\url{http://root.cern.ch/}からダウンロードすることができます。既にコンパイルされているバイナリ版と、コンパイルされていないソースコードがあります。前者はコンパイルする必要がないので簡単ですが、本書では教育目的のため、ソースコードをダウンロードして、自分でコンパイルすることにします。
 
-2009年10月時点で、ROOTの最新バージョン5.25/02です。5.24や5.22のような偶数番号のものはproバージョンと呼ばれ、安定版の扱いです。5.25のような奇数番号のものはdevバージョンと呼ばれ、新機能の取り込み等が行われているため、不安定な可能性があります。経験的には、proでもdevでも、色々とバグが潜んでいるので大差ありません。ここでは、5.24/00をダウンロードすることにします。
+2013年11月時点で、ROOTの最新バージョン5.34/11です。5.24や5.22のような偶数番号のものはproバージョンと呼ばれ、安定版の扱いです。5.25のような奇数番号のものはdevバージョンと呼ばれ、新機能の取り込み等が行われているため、不安定な可能性があります。経験的には、proでもdevでも、色々とバグが潜んでいるので大差ありません。ここでは、5.34/11をダウンロードすることにします。
 
 上記URLを辿ると、ダウンロードのページがあります。リンクをクリックしてダウンロードすることも可能ですが、ここでは直接ターミナルからダウンロードします。
 \begin{lstlisting}[language=bash]
 $ cd ~
-$ curl -O ftp://root.cern.ch/root/root_v5.24.00.source.tar.gz
+$ curl -O ftp://root.cern.ch/root/root_v5.34.11.source.tar.gz
 \end{lstlisting}
-などとして、好きなディレクトリにダウンロードして下さい。今の例では、root\_v5.24.00.source.tar.gzがホームディレクトリに保存されます。
+などとして、好きなディレクトリにダウンロードして下さい。今の例では、\texttt{root\_v5.34.11.source.tar.gz}がホームディレクトリ（\texttt{\~}）に保存されます。
 
 \subsection{コンパイル}
 \label{subsec_compile}
 ROOTのコンパイル作業やインストール先は、好きな場所でやって構いません。もしあなたがコンピュータの管理者権限を持っているならば、\texttt{/usr/local}の下にインストールするのが標準的です。次のように、ターミナルから好きなディレクトリに移動し、ソースコードを展開して下さい。\footnote{この例のように、先頭に\texttt{\$}がついている行は、ターミナルで入力していることを表します。実際にターミナルから入力する内容は、\texttt{\$}とその直後の半角スペースを取り除いた内容ですので、注意して下さい。}
 \begin{lstlisting}[language=bash]
 $ cd /usr/local
-$ sudo tar zxvf ~/root_v5.24.00.source.tar.gz
+$ sudo tar zxvf ~/root_v5.34.10.source.tar.gz
 $ cd root
 $ sudo ./configure
 $ sudo make
 \end{lstlisting}
 \texttt{root}という名前のディレクトリが作成されるので、そこに移動してコンパイルを行います。一般的なソフトウェアのコンパイルと同様に、\texttt{configure}スクリプトを実行します\footnote{OS X 10.5以前を使用していて、PythonからROOTを使いたい人は、\texttt{./configure}のあとに\texttt{macosx}という引数をつけて下さい。32 bit用のバイナリが作成されます。OS X標準で付属のPythonは32 bitのバイナリなので、ROOTも32 bitにしておく必要があります。OS X 10.6では64 bitのPythonが標準で付属しているため、\texttt{macosx}を付ける必要はありません。}。\texttt{make}を実行した後に\texttt{make install}を実行したくなりますが、本書の説明通りに作業を進める場合は、別にやる必要はありません。複数コアのCPUを使える場合には、コアの数に応じて最後の行に\texttt{-j 4}のような引数をつけると、コンパイルが早くなります\footnote{Mac OS Xで\texttt{-j 4}をつけると、コンパイルに失敗する場合があります。その場合は、引数なしで\texttt{make}を実行して下さい。}。
 
-ここまででエラーが出なければ成功です。もし不運にもエラーが出てしまった人は、コンパイル済みのバイナリをダウンロードしましょう。以下は、OS X版をダウンロードした場合の例です。
+ここまででエラーが出なければ成功です。もし不運にもエラーが出てしまった人は、コンパイル済みのバイナリをダウンロードしましょう。以下は、OS X版をダウンロードした場合の例です。コンパイル済みのものは最新版に更新されていない可能性もあるため、やはり自分でコンパイルするのが確実です。
 \begin{lstlisting}[language=bash]
 $ cd ~
 $ curl -O ftp://root.cern.ch/root/root_v5.24.00.macosx105-i386-gcc-4.0.tar.gz
@@ -72,16 +72,16 @@ $ root
   *                                         *
   *        W E L C O M E  to  R O O T       *
   *                                         *
-  *   Version   5.24/00      29 June 2009   *
+  *   Version   5.34/11   31 October 2013   *
   *                                         *
   *  You are welcome to visit our Web site  *
   *          http://root.cern.ch            *
   *                                         *
   *******************************************
 
-ROOT 5.24/00 (trunk@29257, Jun 30 2009, 09:23:51 on macosx)
+ROOT 5.34/11 (heads/v5-34-00-patches@v5-34-11-29-gd3458e9, Nov 15 2013, 15:57:05 on macosx64)
 
-CINT/ROOT C/C++ Interpreter version 5.17.00, Dec 21, 2008
+CINT/ROOT C/C++ Interpreter version 5.18.00, July 2, 2010
 Type ? for help. Commands must be C++ statements.
 Enclose multiple statements between { }.
 root [0]
@@ -153,7 +153,7 @@ root [0] .x demos.C
 
 \section{ROOTの操作に慣れる}
 
-まずは、簡単な例を走らせることでROOTの操作方法に慣れましょう。ここでは、標準偏差$\sigma=1$の正規分布に従った、標本数$N=10000$のヒストグラム（histogram）を作ってみます。
+まずは、簡単な例を走らせることでROOTの操作方法に慣れましょう。ここでは、標準偏差（standard deviation）$\sigma=1$の正規分布（normal distribution、Gaussian distribution）に従った、標本の大きさ（sample size）$n=10000$のヒストグラム（histogram）を作ってみます。
 
 \subsection{コマンドラインからの操作}
 まずはROOTを起動し、
@@ -167,7 +167,7 @@ root [2] hist->Draw()
 \begin{figure}
   \begin{center}
     \includegraphics[width=12cm,bb= 0 0 700 522]{fig/first_script.png}
-    \caption{標準偏差$\sigma=1$、標本数$N=10000$のヒストグラム}
+    \caption{標準偏差$\sigma=1$、標本の大きさ$n=10000$のヒストグラム}
     \label{fig_first_script}
   \end{center}
 \end{figure}
@@ -243,7 +243,7 @@ root [1] foo(500, 100000)
 
 \subsection{タブ補完を使う}
 
-ROOTのプロンプトでコマンドを打つ場合、キーボードのタブキーを押すことで、補完することができます。携帯電話の予測変換のようなものです。例えば、
+ROOTのプロンプトでコマンドを打つ場合、キーボードのタブキーを押すことで、補完することができます。携帯電話の文字入力の予測変換機能のようなものです。例えば、
 \begin{lstlisting}[language=c++]
 root [0] TH1D* hist = new TH1D("myhist", "Gaussian Histogram (#sigma=1)", 50, -5, 5)
 root [1] hist->FillRandom("gaus", 10000)
@@ -266,7 +266,7 @@ GetAt
 GetSum
 GetSize
 \end{lstlisting}
-これは、インスタンス\texttt{hist}に操作可能な機能のうち、\texttt{Get}で始まるものの一覧です。C++の言葉で言い換えると、クラス\texttt{TH1D}のメンバ関数（member function）のうちゲッター（getter）の一覧です。候補を眺めてみると、\texttt{GetMean}や\texttt{GetRMS}\footnote{ROOTやPAWで「RMS」と言った場合、これは二乗平均ではなく標準偏差を指します。統計学の用語としては不適切なのですが、歴史的理由でRMSという言葉を使い続けているそうです。そのためこの業界ではRMSという用語を間違って覚えている人が沢山いますが、優しく注意してあげて下さい。}というメンバ関数が見つかるはずです。何をする関数か、一目瞭然でしょう。それでは
+これは、インスタンス\texttt{hist}に操作可能な機能のうち、\texttt{Get}で始まるものの一覧です。C++の言葉で言い換えると、クラス\texttt{TH1D}のメンバ関数（member function）のうちゲッター（getter）の一覧です。候補を眺めてみると、\texttt{GetMean}や\texttt{GetRMS}\footnote{ROOTやPAWで「RMS」と言った場合、これは二乗平均ではなく標準偏差を指します。統計学の用語としては不適切なのですが、歴史的理由でRMSという言葉を使い続けているそうです。そのためこの業界ではRMSという用語を間違って覚えている人が沢山いますが、優しく注意してあげて下さい。最近のROOTでは、\texttt{GetRMS}と全く同じ働きをする関数として\texttt{GetStdDev}が用意されています。}というメンバ関数が見つかるはずです。何をする関数か、一目瞭然でしょう。それでは
 \begin{lstlisting}[language=c++]
 root [3] hist->GetMe
 \end{lstlisting}
@@ -306,7 +306,7 @@ root [7] hist->Draw("e")
 \begin{lstlisting}[language=c++]
 root [8] hist->Draw(
 \end{lstlisting}
-でタブキーを押して、意味を理解して下さい。\texttt{first\_example.C}では、引数のデフォルト値を設定していません。そのため、引数を必ず両方とも指定しないと正しく動作しません。
+でタブキーを押して、意味を理解して下さい。\texttt{first\_example.C}の中の関数\texttt{first\_example}では、引数のデフォルト値を設定していません。そのため引数を必ず両方とも指定しないと正しく動作しません。
 
 \section{やっておきたい初期設定}
 

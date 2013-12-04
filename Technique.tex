@@ -24,7 +24,7 @@ root [0] gStyle->SetPalette(1)
   Double_t b[] = {0., 1.0, 0.0, 0.0, 1.0}; 
   Double_t stop[] = {0., .25, .50, .75, 1.0}; 
 \end{lstlisting}
-最初の3行でRGB各色の輝度情報を設定します。例えば$\mathrm{R}=\mathrm{G}=\mathrm{B}=1$であれば白、$\mathrm{R}=\mathrm{G}=\mathrm{B}=0$であれば黒、$\mathrm{R}=\mathrm{G}=1$、$\mathrm{B}=0$であれば黄色といった具合です。次の行は、それらの色がヒストグラムの最小値（$\equiv0$）から最大値（$\equiv=1$）のどこに相当するかを決めています。
+最初の3行でRGB各色の輝度情報を設定します。例えば$\mathrm{R}=\mathrm{G}=\mathrm{B}=1$であれば白、$\mathrm{R}=\mathrm{G}=\mathrm{B}=0$であれば黒、$\mathrm{R}=\mathrm{G}=1$、$\mathrm{B}=0$であれば黄色といった具合です。次の行は、それらの色がヒストグラムの最小値（$\equiv0$）から最大値（$\equiv1$）のどこに相当するかを決めています。
 
 グラデーションをROOTに登録する作業は、
 \begin{lstlisting}[language=c++]
@@ -39,7 +39,7 @@ root [0] gStyle->SetPalette(1)
 root [0] .L color_def.C
 root [1] BPalette()
 \end{lstlisting}
-などとすれば良いでしょう。~/.rootlogon.Cに
+などとすれば良いでしょう。\texttt{\~{}/.rootlogon.C}に
 \begin{lstlisting}[language=C++]
 gROOT->LoadMacro("color_def.C");
 \end{lstlisting}
