@@ -111,11 +111,10 @@ alias root "root -l"
 を\texttt{\~{}/.cshrc}に書き足すとよいでしょう。
 
 \begin{figure}
-  \begin{center}
-    \includegraphics[width=12cm,bb= 0 0 500 319]{fig/splash.png}
-    \caption{ROOTの起動画面}
-    \label{fig_splash}
-  \end{center}
+  \centering
+  \includegraphics[width=12cm,bb= 0 0 500 319]{fig/splash.png}
+  \caption{ROOTの起動画面}
+  \label{fig_splash}
 \end{figure}
 
 \subsection{チュートリアルで遊ぶ}
@@ -142,11 +141,10 @@ root [0] .x demos.C
 このコマンドを実行すると、いくつかボタンが表示されるはずです。このうち、``hsimple''と書かれたボタンをクリックしてみましょう。図\ref{fig_hsimple}のようなウインドウが表示されるはずです。他にも沢山の例が実行可能ですので、全てのボタンをクリックして遊んでみて下さい。終了のときは、やはり\texttt{.q}と打ちます。
 
 \begin{figure}
-  \begin{center}
-    \includegraphics[width=12cm,bb= 0 0 700 522]{fig/hsimple.png}
-    \caption{hsimpleの実行結果}
-    \label{fig_hsimple}
-  \end{center}
+  \centering
+  \includegraphics[width=12cm,bb= 0 0 700 522]{fig/hsimple.png}
+  \caption{hsimpleの実行結果}
+  \label{fig_hsimple}
 \end{figure}
 
 もし、あなたのアカウントが\texttt{\$ROOTSYS/tutorials}に書き込み権限を持たない場合、\texttt{hsimple.root}を開けないというエラーが出るでしょう。そのような場合は、書き込み権限を持つユーザで作業をするか、\texttt{\$ROOTSYS/tutorials}をディレクトリごと自分のホームディレクトリの下にコピーして、そこで作業をしましょう。
@@ -165,11 +163,10 @@ root [2] hist->Draw()
 \end{lstlisting}
 という3行を打ってみて下さい。最後の行はROOTが自動的に出力しますが、エラーではないので今は気にしないで下さい。図\ref{fig_first_script}のような実行結果が画面に現れます。
 \begin{figure}
-  \begin{center}
-    \includegraphics[width=12cm,bb= 0 0 700 522]{fig/first_script.png}
-    \caption{標準偏差$\sigma=1$、標本の大きさ$n=10000$のヒストグラム}
-    \label{fig_first_script}
-  \end{center}
+  \centering
+  \includegraphics[width=12cm,bb= 0 0 700 522]{fig/first_script.png}
+  \caption{標準偏差$\sigma=1$、標本の大きさ$n=10000$のヒストグラム}
+  \label{fig_first_script}
 \end{figure}
 
 このままでは何が起きたか分からないので、簡単に説明します。C++やプログラミングの用語が混ざりますが、各自で調べつつ読んで下さい。これらの3行は、実はC++の言葉で書かれています。まず
@@ -234,11 +231,10 @@ root [1] foo(500, 100000)
 図\ref{fig_hsimple}や\ref{fig_first_script}の例は、筆者の使用しているOS~X上でスクリーンショットを撮ったものです。論文用の図を作成する場合は、ウインドウ上のリサイズボックスやタイトルバーは必要ありません。\LaTeX\ 文書で一般的に使われる、EPS形式で出力結果を保存してみましょう。\texttt{first\_script.C}の実行結果が表示されたら、ウインドウ左上にある``File''メニューから``Save As\ldots''を選択し、好きな場所に好きな名前で出力結果を保存しましょう。図\ref{fig_first_script_eps}は、この手順で図\ref{fig_first_script}をEPS形式で保存し直したものです。このPDF文書を拡大しても、図が綺麗なことが分かります。学会発表の資料等で使う場合には、PNGやGIF形式のほうが便利かもしれません。いくつか保存形式が選べますので、試してみましょう。JPEG形式は図の細部が潰れますので、お勧めしません。GIF形式は最大で256色までしか使用できないので、そのうち凝った図を作る場合にはPNGのほうが良いでしょう。
 
 \begin{figure}
-  \begin{center}
-    \includegraphics[width=12cm,clip]{fig/first_script.eps}
-    \caption{図\ref{fig_first_script}を、EPS形式で保存し直したもの}
-    \label{fig_first_script_eps}
-  \end{center}
+  \centering
+  \includegraphics[width=12cm,clip]{fig/first_script.eps}
+  \caption{図\ref{fig_first_script}を、EPS形式で保存し直したもの}
+  \label{fig_first_script_eps}
 \end{figure}
 
 \subsection{タブ補完を使う}
@@ -319,9 +315,8 @@ root [8] hist->Draw(
 %\end{NoFloat}
 
 \begin{figure}
-  \begin{center}
-    \includegraphics[width=12cm,clip]{fig/first_script_mod.eps}
-    \caption{\texttt{\~{}/.rootlogon.C}を使って図\ref{fig_first_script_eps}の見栄えを変更したもの}
-    \label{fig_first_script_mod_eps}
-  \end{center}
+  \centering
+  \includegraphics[width=12cm,clip]{fig/first_script_mod.eps}
+  \caption{\texttt{\~{}/.rootlogon.C}を使って図\ref{fig_first_script_eps}の見栄えを変更したもの}
+  \label{fig_first_script_mod_eps}
 \end{figure}
