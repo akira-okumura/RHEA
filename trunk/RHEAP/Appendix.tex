@@ -141,7 +141,7 @@ OS Xの標準のshell環境は、Snow LeopardやLionではbashになっていま
 
 一方で、bashよりも更に高機能なshellとして最近ではzshの人気が高まっています。zshはbashの文法に非常に似ているものの、独自の拡張機能をたくさん持っているため、bashに慣れている人には「便利なbash」として使うことが可能です。また、初学者の場合はbashとzshの違いは全く気にする必要はないでしょうから、bashではなくzshを使い始めるのが良いでしょう。
 
-図\ref{fig_zsh1_png}と図\ref{fig_zsh2_png}に、shellをzshに変更する方法を説明します。まず図\ref{fig_zsh1_png}のように、「System Preferences」の「Users & Groups」を表示し、自分のアカウントを右クリック（トラックパッドの場合は二本指クリック）します。「Advanced Options\ldots」が現われるので、これを選択します。ウィンドウ左下の鍵マークがロックされている状態の場合は右クリックが効きませんので、パスワードを入力してこれを解除して下さい。
+図\ref{fig_zsh1_png}と図\ref{fig_zsh2_png}に、shellをzshに変更する方法を説明します。まず図\ref{fig_zsh1_png}のように、「System Preferences」の「Users \& Groups」を表示し、自分のアカウントを右クリック（トラックパッドの場合は二本指クリック）します。「Advanced Options\ldots」が現われるので、これを選択します。ウィンドウ左下の鍵マークがロックされている状態の場合は右クリックが効きませんので、パスワードを入力してこれを解除して下さい。
 
 \begin{figure}
   \begin{center}
@@ -374,7 +374,7 @@ C-x C-w & 不明 & ファイルを別名で保存する \\
 C-x C-2 & 不明 & ウインドウを二分割にする \\
 C-x C-1 & 不明 & ウインドウを一分割にする \\
 C-s & {\bf S}earch & 検索する \\
-C-r & {\bf R}verse earch & 後方に検索する \\
+C-r & {\bf R}verse search & 後方に検索する \\
 M gg & 不明 & 特定の行に移動する\\\hline
 \end{tabular}
 \end{center}
@@ -430,7 +430,7 @@ Emacsの操作に慣れるには、まずこのControlキーを多用した操�
 
 しかし、デフォルトの状態ではC-Space C-wはOS Xのアプリケーションでは使うことができません。Emacsに慣れてくると、C-Space C-wがEmacs以外で使えないのが不便に感じるでしょう。OS Xにはこの操作を実現するための機能が隠されています。
 
-コード\ref{code_DefaultKeyBinding}を、\textt{~/Library/KeyBindings/DefaultKeyBinding.dict}として保存して下さい\footnote{\url{http://akenox.dip.jp/index.php?Translations\%2FMac\%20OS\%20X\%20Key\%20Bindings}に詳しい解説がある。}。「Mail」などを起動して文字入力する際に、C-Space C-wやC-x C-sが有効になっているはずです\footnote{Lionからは「Save As\ldots」が「Duplicate」などに置き換わってしまったため、コード\ref{code_DefaultKeyBinding}の設定をしてもC-x C-wは動作しません。}。
+コード\ref{code_DefaultKeyBinding}を、\texttt{\~{}/Library/KeyBindings/DefaultKeyBinding.dict}として保存して下さい\footnote{\url{http://akenox.dip.jp/index.php?Translations\%2FMac\%20OS\%20X\%20Key\%20Bindings}に詳しい解説がある。}。「Mail」などを起動して文字入力する際に、C-Space C-wやC-x C-sが有効になっているはずです\footnote{Lionからは「Save As\ldots」が「Duplicate」などに置き換わってしまったため、コード\ref{code_DefaultKeyBinding}の設定をしてもC-x C-wは動作しません。}。
 
 %\begin{NoFloat}
 \lstinputlisting[float=tb,caption=\texttt{DefaultKeyBinding.dict},label=code_DefaultKeyBinding,numbers=left]{src/DefaultKeyBinding.dict}
@@ -448,7 +448,7 @@ OS XやLinux環境でソフトウェアを導入する時、インストール�
 
 このやり方を覚えるために、「GNU Hello\footnote{\url{http://www.gnu.org/software/hello/}}」と呼ばれるソフトウェアを試しにインストールしてみましょう。この「GNU Hello」は標準的な方法を学ぶ上で最適なもので、インストールしても実用性はありません。
 
-まず、次のコマンドで\url{http://ftp.gnu.org/gnu/hello/}から最新版の\texttt{hello-2.8.tar.gz}を落としてきて展開します。展開されたディレクトリに移動して\textt{ls}で中身を見てみましょう。
+まず、次のコマンドで\url{http://ftp.gnu.org/gnu/hello/}から最新版の\texttt{hello-2.8.tar.gz}を落としてきて展開します。展開されたディレクトリに移動して\texttt{ls}で中身を見てみましょう。
 
 \begin{lstlisting}[language=bash]
 $ curl -O http://ftp.gnu.org/gnu/hello/hello-2.8.tar.gz

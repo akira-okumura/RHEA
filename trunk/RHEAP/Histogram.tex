@@ -57,7 +57,7 @@
 
 \section{1次元ヒストグラム}
 
-それでは、ROOTでどのようにヒストグラムを扱うのか順番に説明します。まずは1次元のヒストグラムからです。 ROOTには1次元のヒストグラムを扱うためのクラスが複数存在します。純粋仮想クラスである\texttt{TH1}、それを継承した\texttt{TH1C}、\texttt{TH1S}、\texttt{TH1I}、\texttt{TH1F}、\texttt{TH1D}です。最初は\texttt{TH1D}だけ覚えておけば十分です。
+それでは、ROOTでどのようにヒストグラムを扱うのか順番に説明します。まずは1次元のヒストグラムからです。 ROOTには1次元のヒストグラムを扱うためのクラスが複数存在します。純粋仮想クラスである\texttt{TH1}、それを継承した\texttt{TH1C}、\texttt{TH1S}、\texttt{TH1I}、\texttt{TH1F}、\texttt{TH1D}です。最初は\texttt{TH1D}だけ覚えておけば十分です\footnote{\texttt{TH1D}は、それぞれのbinに詰まった値が\texttt{Double\_t}型で保存されます。\texttt{TH1C}、\texttt{TH1S}、\texttt{TH1I}、\texttt{TH1F}はbinの値が\texttt{Char\_t}、\texttt{Short\_t}、\texttt{Int\_t}、\texttt{Float\_t}型で保存されます。消費されるメモリの量、整数で値を保持したいかそれとも浮動小数でも良いか、などを考慮して使うヒストグラムのクラスを選択します。}。
 
 それでは\texttt{TH1D}の簡単な使い方の説明です。まずROOTを起動し、次の操作を行って下さい。図\ref{fig_TH1D_eps}のような図が表示されるはずです。
 
@@ -92,5 +92,26 @@ root [10] hist->GetRMSError()
 \end{figure}
 
 \section{2次元ヒストグラム}
+
+\begin{lstlisting}[language=c++]
+root [0] TH1D* h1 = new TH1D("h1", "1D Gaussian Distribution;#it{r};Entries", 50, 0, 10)
+root [1] TH2D* h2 = new TH2D("h2", "2D Gaussian Distribution;#it{x};#it{y};Entries", 100, -10, 10, 100, -10, 10)
+root [2] const Double_t kSigma = 2.
+root [3] for(Int_t i = 0; i < 100000; i++){
+end with ’}’, ’@’:abort > Double_t x = gRandom->Gaus(0, kSigma);
+end with ’}’, ’@’:abort > Double_t y = gRandom->Gaus(0, kSigma);
+end with ’}’, ’@’:abort > h2->Fill(x, y);
+end with ’}’, ’@’:abort > }
+root [4] TCanvas* can = new TCanvas("can", "can", 600, 600)
+root [5] h2->Draw("colz")
+\end{lstlisting}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=12cm,clip]{fig/TH2D.eps}
+    \caption{物理量$x$、$y$（平均$\mu_x = \mu_y = 0$、標準偏差$\sigma = 2$）の 2 次元ガウス分布の例}
+    \label{fig_TH1D_eps}
+  \end{center}
+\end{figure}
 
 \section{3次元ヒストグラム}
