@@ -6,11 +6,10 @@
 ヒストグラム（histogram、度数分布図）は、ある物理量を複数回測定したとき、測定値の分布がどのようになってい るかを表すときに頻繁に使われます。物理学実験で目にする例では、不安定粒子の崩壊時間の分布（指数分布）、結晶シンチレータの発光量の分布（ガウス分布）、光検出器に微弱光を入射したときの検出光電子数の分布（ポアソン分布）などがあります。身近な日常生活の例では、図\ref{fig_population_eps}に示すような人口の年齢分布などに使われます。
 
 \begin{figure}
-  \begin{center}
-    \includegraphics[width=12cm,clip]{fig/population.eps}
-    \caption{2005年国勢調査を元にした、全国合計、東京都、島根県の年齢別人口分布。コード\ref{code_frame_fill_color}で同じ結果を得られる。データは\url{http://www.e-stat.go.jp/SG1/estat/List.do?bid=000001007609&cycode=0}から入手可能。}
-    \label{fig_population_eps}
-  \end{center}
+  \centering
+  \includegraphics[width=12cm,clip]{fig/population.eps}
+  \caption{2005年国勢調査を元にした、全国合計、東京都、島根県の年齢別人口分布。コード\ref{code_frame_fill_color}で同じ結果を得られる。データは\url{http://www.e-stat.go.jp/SG1/estat/List.do?bid=000001007609&cycode=0}から入手可能。}
+  \label{fig_population_eps}
 \end{figure}
 
 ヒストグラムを使うと、その測定対象がどのような値を取りやすいのかが、一目瞭然になります。図\ref{fig_population_eps}の元データは、総務省統計局のまとめた国勢調査の結果です。コード\ref{code_population_dat}のような、単なる数字の羅列を見ただけでは、このデータがどのような特性を持っているのかを視覚的に認識することは大変困難です。どのような年齢層に人口が偏っているのか、東京のような都市部と鳥取のような地方では、人口分布の特徴がどうなっているのか、こういう情報はヒストグラムにして比較するのが一番です。図\ref{fig_population_eps}と図\ref{fig_population2_eps}は、コード\ref{code_population_C}で作成しました。
@@ -36,21 +35,19 @@
 従って、図\ref{fig_population_eps}を図\ref{fig_population2_eps}のように折れ線グラフにして表示するのは誤りです。折れ線グラフにする場合は、1つ1つの点の座標がともに（誤差の範囲内で）意味のある1つの数値でなくてはいけません。折れ線グラフを使用するのは、原則として線分の傾きに意味がある場合に限ります。
 
 \begin{figure}
-  \begin{center}
-    \includegraphics[width=12cm,clip]{fig/population2.eps}
-    \caption{図\ref{fig_population_eps}の間違った表示方法の例}
-    \label{fig_population2_eps}
-  \end{center}
+  \centering
+  \includegraphics[width=12cm,clip]{fig/population2.eps}
+  \caption{図\ref{fig_population_eps}の間違った表示方法の例}
+  \label{fig_population2_eps}
 \end{figure}
 
 図\ref{fig_population2_eps}では意図的に不適切な表示をしましたが、実際に、研究者といえどもヒストグラムの間違った使い方をしている場合があります。例えば福島第一原発の事故後、東京大学柏キャンパスの柏地区環境安全管理室ではキャンパス内の 空間線量率の測定を行いました\footnote{\url{http://www.kashiwa.u-tokyo.ac.jp/kankyo/ks2011 11/}}。多数の測定点での空間線量率の分布として、図\ref{fig_Kashiwa_png}を掲載しています。
 
 \begin{figure}
-  \begin{center}
-    \includegraphics[scale=0.8,bb= 0 0 485 297]{fig/Kashiwa.png}
-    \caption{東京大学柏キャンパス内の空間線量率の分布(柏地区環境安全管理室より引用)}
-    \label{fig_Kashiwa_png}
-  \end{center}
+  \centering
+  \includegraphics[scale=0.8,bb= 0 0 485 297]{fig/Kashiwa.png}
+  \caption{東京大学柏キャンパス内の空間線量率の分布(柏地区環境安全管理室より引用)}
+  \label{fig_Kashiwa_png}
 \end{figure}
 
 既に説明した通り、図\ref{fig_Kashiwa_png}の表示方法は不適切です。ヒストグラムは棒グラフで描くべきであり、折れ線グラフにし てはいけません。点と点を線で結んで良いのは、その傾きに意味があるときです。図\ref{fig_Kashiwa_png}の縦軸の単位は、正確に書く と「ポイント数/($0.02\ \mu\mathrm{Sv/h}$)」になります\footnote{「ポイント数」は本当は「単位」ではありません。}。しかしヒストグラムが折れ線で結ばれてしまっているため、このグラフ を積分しても、実際の測定点数と同じにはならないでしょう。繰り返しますが、ヒストグラムはどのようなビン幅で作図しても面積は一定です。
@@ -84,11 +81,10 @@ root [10] hist->GetRMSError()
 \end{lstlisting}
 
 \begin{figure}
-  \begin{center}
-    \includegraphics[width=12cm,clip]{fig/TH1D.eps}
-    \caption{物理量$X$（平均$\mu = 3$、標準偏差$\sigma = 2$）のガウス分布の例}
-    \label{fig_TH1D_eps}
-  \end{center}
+  \centering
+  \includegraphics[width=12cm,clip]{fig/TH1D.eps}
+  \caption{物理量$X$（平均$\mu = 3$、標準偏差$\sigma = 2$）のガウス分布の例}
+  \label{fig_TH1D_eps}
 \end{figure}
 
 \section{2次元ヒストグラム}
@@ -107,11 +103,10 @@ root [5] h2->Draw("colz")
 \end{lstlisting}
 
 \begin{figure}
-  \begin{center}
-    \includegraphics[width=12cm,clip]{fig/TH2D.eps}
-    \caption{物理量$x$、$y$（平均$\mu_x = \mu_y = 0$、標準偏差$\sigma = 2$）の 2 次元ガウス分布の例}
-    \label{fig_TH1D_eps}
-  \end{center}
+  \centering
+  \includegraphics[width=12cm,clip]{fig/TH2D.eps}
+  \caption{物理量$x$、$y$（平均$\mu_x = \mu_y = 0$、標準偏差$\sigma = 2$）の 2 次元ガウス分布の例}
+  \label{fig_TH1D_eps}
 \end{figure}
 
 \section{3次元ヒストグラム}

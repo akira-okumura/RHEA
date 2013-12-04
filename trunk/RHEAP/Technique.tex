@@ -65,11 +65,10 @@ root [7] h2->Draw("colz")
 \end{NoFloat}
 
 \begin{figure}
-  \begin{center}
-    \includegraphics[width=12cm,clip]{fig/multi_palette.eps}
-    \caption{コード\ref{code_multi_palette}の出力結果}
-    \label{fig_multi_palette_eps}
-  \end{center}
+  \centering
+  \includegraphics[width=12cm,clip]{fig/multi_palette.eps}
+  \caption{コード\ref{code_multi_palette}の出力結果}
+  \label{fig_multi_palette_eps}
 \end{figure}
 
 \subsection{塗りつぶしの色を変更する}
@@ -93,11 +92,10 @@ root [7] h2->Draw("colz")
 で、\texttt{gPad}の塗りつぶしの色を決定しています。この例では、最小値の色は黒になっています。
 
 \begin{figure}
-  \begin{center}
-    \includegraphics[width=8cm,clip]{fig/frame_fill_color.eps}
-    \caption{コード\ref{code_frame_fill_color}の出力結果}
-    \label{fig_frame_fill_color_eps}
-  \end{center}
+  \centering
+  \includegraphics[width=8cm,clip]{fig/frame_fill_color.eps}
+  \caption{コード\ref{code_frame_fill_color}の出力結果}
+  \label{fig_frame_fill_color_eps}
 \end{figure}
 
 
@@ -110,18 +108,17 @@ root [0] TCanvas* can = new TCanvas("can", "can", 100, 100)
 のように第3、第4引数に横幅と高さを指定します。しかし予想外にも、図\ref{fig_100x100_png}に示すように、実はこの大きさは描画領域の大きさではありません。メニューバーは描画領域外周部まで含めた大きさなのです。したがって、実際に描画できる部分の大きさは、筆者の環境では$96\times72$ピクセルになってしまいます。図\ref{fig_100x100_v2_png}のように、描画領域を正確に$100\times100$ピクセルにしたい場合は、コード\ref{code_PreciseSizeCanvas}のような関数を用意しましょう。
 
 \begin{figure}
-  \begin{center}
-    \subfloat[$96\times72$ピクセル]{
-      \includegraphics[width=3cm,bb= 0 0 100 122]{fig/100x100.png}
-      \label{fig_100x100_png}
-    }
-    \hfil
-    \subfloat[$100\times100$ピクセル]{
-      \includegraphics[width=3cm,bb= 0 0 104 150]{fig/100x100_v2.png}
-      \label{fig_100x100_v2_png}
-    }
-    \caption{\texttt{TCanvas}の描画領域の違い}
-  \end{center}
+  \centering
+  \subfloat[$96\times72$ピクセル]{
+    \includegraphics[width=3cm,bb= 0 0 100 122]{fig/100x100.png}
+    \label{fig_100x100_png}
+  }
+  \hfil
+  \subfloat[$100\times100$ピクセル]{
+    \includegraphics[width=3cm,bb= 0 0 104 150]{fig/100x100_v2.png}
+    \label{fig_100x100_v2_png}
+  }
+  \caption{\texttt{TCanvas}の描画領域の違い}
 \end{figure}
 
 \begin{NoFloat}
@@ -162,11 +159,10 @@ gSystem->Sleep(100);
 \subsection{残差を表示する}
 
 \begin{figure}
-  \begin{center}
-    \includegraphics[width=12cm,clip]{fig/residual.eps}
-    \caption{コード\ref{code_residual}の出力結果}
-    \label{fig_residual_eps}
-  \end{center}
+  \centering
+  \includegraphics[width=12cm,clip]{fig/residual.eps}
+  \caption{コード\ref{code_residual}の出力結果}
+  \label{fig_residual_eps}
 \end{figure}
 
 \begin{NoFloat}
