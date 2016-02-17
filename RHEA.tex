@@ -1,10 +1,10 @@
 \documentclass{jsbook}
 
 \usepackage[deluxe]{otf} % Avoid using Hira-Kaku W6
-\usepackage[dvipdfm]{graphicx}
+\usepackage[dvipdfmx]{graphicx}
 \usepackage{times}
 \usepackage{fancybox}
-\usepackage[dvipdfm,
+\usepackage[dvipdfmx,
             colorlinks=true,
             urlcolor=blue,
             linkcolor=blue,
@@ -13,7 +13,7 @@
             bookmarksnumbered=false,
             bookmarkstype=toc]{hyperref}
 \AtBeginDvi{\special{pdf:tounicode EUC-UCS2}}
-\usepackage[dvipdfm]{color}
+\usepackage[dvipdfmx]{color}
 \usepackage{listings}
 \usepackage{makeidx}
 \definecolor{stringcolor}{rgb}{0.20,0.50,0.20}
@@ -50,8 +50,8 @@
 % empty files everysel.sty and ragged2e.sty are needed to use correct Japanese
 % font stylings
 % see http://oku.edu.mie-u.ac.jp/~okumura/texfaq/qa/34729.html
-\usepackage[caption=false]{caption}
-\usepackage[font=footnotesize]{subfig}
+%\usepackage[caption=false]{caption}
+\usepackage[font=footnotesize,caption=false]{subfig}
 
 \newcommand{\cmd}{\UTF{2318}}
 \renewcommand{\prechaptername}{} % Do not print ``第''
@@ -204,7 +204,7 @@
 \makeatother
 
 \title{{\huge 高エネルギー宇宙物理学のためのROOT入門\\ROOT for High-Energy Astrophysics}}
-\author{{\Large 奥村 曉} \\ 名古屋大学太陽地球環境研究所 \\ oxon@mac.com}
+\author{{\Large 奥村 曉} \\ 名古屋大学宇宙地球環境研究所 \\ oxon@mac.com}
 
 \begin{document}
 
