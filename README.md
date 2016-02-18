@@ -10,9 +10,7 @@
 ```
 $ git clone https://github.com/akira-okumura/RHEA.git
 $ cd RHEA
-$ platex RHEA
-$ platex RHEA
-$ dvipdfmx RHEA
+$ make
 ```
 
 もし GitHub 上の repository で更新があった場合は、以下のように更新してください。
@@ -20,9 +18,7 @@ $ dvipdfmx RHEA
 ```
 $ cd RHEA
 $ git pull
-$ platex RHEA
-$ platex RHEA
-$ dvipdfmx RHEA
+$ make
 ```
 
 ###生成済みの PDF を落とす
