@@ -25,7 +25,7 @@ $ platex RHEA
 $ dvipdfmx RHEA
 ```
 
-##生成済みの PDF を落とす
+###生成済みの PDF を落とす
 
 もしくは、生成済みの PDF を https://github.com/akira-okumura/RHEA/releases から入手してください。ただし最新版である保証はありません。
 
