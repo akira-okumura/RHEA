@@ -20,3 +20,8 @@ $ dvipdfmx RHEA
 
 ##著者について
 名古屋大学宇宙地球環境研究所の奥村曉が執筆しています。
+
+### 連絡先
+- oxon@mac.com
+- Twitter: [@akiraokumura](https://twitter.com/akiraokumura)
+- GitHub: [akira-okumura](https://github.com/akira-okumura/)
