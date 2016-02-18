@@ -16,7 +16,7 @@ $ dvipdfmx RHEA
 もしくは、生成済みの PDF を https://github.com/akira-okumura/RHEA/releases から入手してください。ただし最新版である保証はありません。
 
 ##改訂の要望
-もし本書の内容に誤りや不足箇所を見つけた場合、もしくは追加してほしい項目がある場合、https://github.com/akira-okumura/RHEA/issues から issue を新規作成してお知らせ下さい。
+もし本書の内容に誤りや不足箇所を見つけた場合、もしくは追加してほしい項目がある場合、https://github.com/akira-okumura/RHEA/issues から issue を新規作成してお知らせ下さい。GitHub のアカウント作成が必要です。
 
 ##著者について
 名古屋大学宇宙地球環境研究所の奥村曉が執筆しています。
