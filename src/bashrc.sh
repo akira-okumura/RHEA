@@ -1,4 +1,3 @@
-export ROOTSYS=/usr/local/root
-export PATH=$ROOTSYS/bin:$PATH
-export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH
-export PYTHONPATH=$ROOTSYS/lib:$PYTHONPATH
+cd /usr/local/root
+source bin/thisroot.sh
+cd - > /dev/null
