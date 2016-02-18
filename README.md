@@ -3,7 +3,9 @@
 『高エネルギー宇宙物理学のための ROOT 入門』は素粒子物理学、宇宙線物理学、X 線・ガンマ線天文学などを研究する学部生や大学院生を対象にした ROOT の入門書です。本書は LaTeX で書かれており、全ての C++、LaTeX、Python のソースコードが GitHub 上で公開されています。
 
 ##PDF の入手方法
-最新版の LaTeX ファイルを GitHub から入手して `platex` と `dvipdfmx` コマンドで PDF を生成してください。
+
+###git を使う
+最新版の LaTeX ファイルを GitHub から入手して `platex` と `dvipdfmx` コマンドで `RHEA.pdf` を生成してください。
 
 ```
 $ git clone https://github.com/akira-okumura/RHEA.git
@@ -12,6 +14,18 @@ $ platex RHEA
 $ platex RHEA
 $ dvipdfmx RHEA
 ```
+
+もし GitHub 上の repository で更新があった場合は、以下のように更新してください。
+
+```
+$ cd RHEA
+$ git pull
+$ platex RHEA
+$ platex RHEA
+$ dvipdfmx RHEA
+```
+
+##生成済みの PDF を落とす
 
 もしくは、生成済みの PDF を https://github.com/akira-okumura/RHEA/releases から入手してください。ただし最新版である保証はありません。
 
