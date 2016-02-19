@@ -29,7 +29,7 @@ $ make
 もし本書の内容に誤りや不足箇所を見つけた場合、もしくは追加してほしい項目がある場合、https://github.com/akira-okumura/RHEA/issues から issue を新規作成してお知らせ下さい。GitHub のアカウント作成が必要です。
 
 ###著者について
-名古屋大学宇宙地球環境研究所の奥村曉が執筆しています。
+名古屋大学宇宙地球環境研究所の[奥村曉](http://www.isee.nagoya-u.ac.jp/~okumura/profile.html)が執筆しています。
 
 #### 連絡先
 - oxon@mac.com
