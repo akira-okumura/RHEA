@@ -35,3 +35,4 @@ $ make
 - oxon@mac.com
 - Twitter: [@akiraokumura](https://twitter.com/akiraokumura)
 - GitHub: [akira-okumura](https://github.com/akira-okumura/)
+- Blog: http://oxon.hatenablog.com
