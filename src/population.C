@@ -1,13 +1,13 @@
 void population()
 {
-  ifstream fin("population.dat");
+  std::ifstream fin("population.dat");
 
   const Int_t kHistN = 3;
   const Int_t kBinsN = 21;
   TH1D* hist[kHistN];
 
   for(Int_t i = 0; i < kHistN; i++){
-    string str;
+    std::string str;
     fin >> str;
     hist[i] = new TH1D(str.c_str(), str.c_str(), kBinsN, 0, 105);
   } // i
