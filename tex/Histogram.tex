@@ -60,24 +60,27 @@
 
 \begin{lstlisting}[language=c++]
 root [0] TH1D* hist = new TH1D("hist", "Gaussian Distribution", 100, -10, 10)
+(TH1D *) 0x7fc56c639860
 root [1] hist->GetXaxis()->SetTitle("Physics Quantity #it{X}")
 root [2] hist->GetYaxis()->SetTitle("Entries")
 root [3] const Double_t kMean = 3.
+(const Double_t) 3.00000
 root [4] const Double_t kSigma = 2.
+(const Double_t) 2.00000
 root [5] for(Int_t i = 0; i < 10000; i++){
-end with ’}’, ’@’:abort > Double_t x = gRandom->Gaus(kMean, kSigma);
-end with ’}’, ’@’:abort > hist->Fill(x);
-end with ’}’, ’@’:abort > }
-root [6] hist->Draw()
+root (cont'ed, cancel with .@) [6] Double_t x = gRandom->Gaus(kMean, kSigma);
+root (cont'ed, cancel with .@) [7] hist->Fill(x);
+root (cont'ed, cancel with .@) [8] }
+root [9] hist->Draw()
 Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
-root [7] hist->GetMean()
-(const Double_t)3.00946139487923459e+00
-root [8] hist->GetMeanError()
-(const Double_t)1.98828055273296521e-02
-root [9] hist->GetRMS()
-(const Double_t)1.98778342044547629e+00
-root [10] hist->GetRMSError()
-(const Double_t)1.40592666173881657e-02
+root [10] hist->GetMean()
+(Double_t) 3.00946
+root [11] hist->GetMeanError()
+(Double_t) 0.0198828
+root [12] hist->GetStdDev()
+(Double_t) 1.98778
+root [13] hist->GetStdDevError()
+(Double_t) 0.0140593
 \end{lstlisting}
 
 \begin{figure}
@@ -90,16 +93,18 @@ root [10] hist->GetRMSError()
 \section{2次元ヒストグラム}
 
 \begin{lstlisting}[language=c++]
-root [0] TH1D* h1 = new TH1D("h1", "1D Gaussian Distribution;#it{r};Entries", 50, 0, 10)
-root [1] TH2D* h2 = new TH2D("h2", "2D Gaussian Distribution;#it{x};#it{y};Entries", 100, -10, 10, 100, -10, 10)
-root [2] const Double_t kSigma = 2.
-root [3] for(Int_t i = 0; i < 100000; i++){
-end with ’}’, ’@’:abort > Double_t x = gRandom->Gaus(0, kSigma);
-end with ’}’, ’@’:abort > Double_t y = gRandom->Gaus(0, kSigma);
-end with ’}’, ’@’:abort > h2->Fill(x, y);
-end with ’}’, ’@’:abort > }
-root [4] TCanvas* can = new TCanvas("can", "can", 600, 600)
-root [5] h2->Draw("colz")
+root [0] TH2D* h2 = new TH2D("h2", "2D Gaussian Distribution;#it{x};#it{y};Entries", 100, -10, 10, 100, -10, 10)
+(TH2D *) 0x7fe8c3615eb0
+root [1] const Double_t kSigma = 2.
+(const Double_t) 2.00000
+root [2] for(Int_t i = 0; i < 100000; i++){
+root (cont'ed, cancel with .@) [3] Double_t x = gRandom->Gaus(0, kSigma);
+root (cont'ed, cancel with .@) [4] Double_t y = gRandom->Gaus(0, kSigma);
+root (cont'ed, cancel with .@) [5] h2->Fill(x, y);
+root (cont'ed, cancel with .@) [6] }
+root [7] TCanvas* can = new TCanvas("can", "can", 600, 600)
+(TCanvas *) 0x7fe8c359a9a0
+root [8] h2->Draw("colz")
 \end{lstlisting}
 
 \begin{figure}
