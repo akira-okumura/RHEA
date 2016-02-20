@@ -3,12 +3,11 @@
 
 #include "Vector3D.h"
 
-class LorentzVector : public Vector3D
-{
-private:
+class LorentzVector : public Vector3D {
+ private:
   double fT;
 
-public:
+ public:
   LorentzVector();
   LorentzVector(double x, double y, double z, double t);
   LorentzVector(const LorentzVector& other);
@@ -23,4 +22,4 @@ public:
   double         operator*(const LorentzVector& other);
 };
 
-#endif // LORENTZ_VECTOR
+#endif  // LORENTZ_VECTOR

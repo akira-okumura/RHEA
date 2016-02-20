@@ -2,8 +2,7 @@
 
 double pi(int n);
 
-int main()
-{
+int main() {
   for(int i = 1; i <= 100; i++){
     printf("n = %d: pi = %f\n", i, pi(i));
   } // i
@@ -11,8 +10,7 @@ int main()
   return 0;
 }
 
-double pi(int n)
-{
+double pi(int n) {
   int total = 0; // number of points inside a unit circle
   double d = 1./n; // grid length of points
 

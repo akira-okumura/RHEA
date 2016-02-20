@@ -1,8 +1,7 @@
-#include "LorentzVector.h"
 #include <cstdio>
+#include "LorentzVector.h"
 
-int main()
-{
+int main() {
   LorentzVector v0; // default constructor
   LorentzVector v1(1.5, 2.3, -0.4, 4.2); // constructor with arguments
   LorentzVector v2 = LorentzVector(-3.1, 5.6, 1.9, -3.8); // operator=, constructor

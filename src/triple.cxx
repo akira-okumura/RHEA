@@ -1,12 +1,10 @@
 #include <cstdio>
 
-int triple(int v)
-{
+int triple(int v) {
   return 3*v;
 }
 
-int main()
-{
+int main() {
   int before = 15;
   int after  = triple(before);
 

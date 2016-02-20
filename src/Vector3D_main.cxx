@@ -1,8 +1,7 @@
 #include <cstdio>
 #include "Vector3D.h"
 
-int main()
-{
+int main() {
   Vector3D v0; // default constructor
   Vector3D v1(1.5, 2.3, -0.4); // constructor with arguments
   Vector3D v2 = Vector3D(-3.1, 5.6, 1.9); // operator=, constructor

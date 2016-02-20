@@ -1,14 +1,13 @@
 #ifndef VECTOR_3D
 #define VECTOR_3D
 
-class Vector3D
-{
-private:
+class Vector3D {
+ private:
   double fX;
   double fY;
   double fZ;
 
-public:
+ public:
   Vector3D();
   Vector3D(double x, double y, double z);
   Vector3D(const Vector3D& other);
@@ -25,9 +24,8 @@ public:
   double    operator*(const Vector3D& other);
 };
 
-double Vector3D::Z() const
-{
+double Vector3D::Z() const {
   return fZ;
 }
 
-#endif // VECTOR_3D
+#endif  // VECTOR_3D

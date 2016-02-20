@@ -3,8 +3,7 @@
 int triple(int v);
 double triple(double v);
 
-int main()
-{
+int main() {
   int before_i = 15;
   int after_i  = triple(before_i);
 
@@ -20,12 +19,10 @@ int main()
   return 0;
 }
 
-int triple(int v)
-{
+int triple(int v) {
   return 3*v;
 }
 
-double triple(double v)
-{
+double triple(double v) {
   return 3*v;
 }
