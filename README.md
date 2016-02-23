@@ -11,11 +11,11 @@
 $ git clone https://github.com/akira-okumura/RHEA.git
 $ cd RHEA
 $ ls
-Makefile  README.md RHEA      RHEA.htm  RHEA.tex  fig       src       tex
+Makefile  README.md RHEA.tex  fig       src       tex
 $ make
 $ ls
-Makefile  RHEA      RHEA.dvi  RHEA.log  RHEA.pdf  RHEA.toc  src
-README.md RHEA.aux  RHEA.htm  RHEA.out  RHEA.tex  fig       tex
+Makefile  RHEA.aux  RHEA.log  RHEA.pdf  RHEA.toc  src
+README.md RHEA.dvi  RHEA.out  RHEA.tex  fig       tex
 ```
 
 OS X 10.9 上の MacPorts で導入した `texlive-lang-japanese @34224_0+doc` で動作確認をしています。
