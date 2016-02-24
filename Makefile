@@ -36,4 +36,4 @@ RHEA.pdf: RHEA.dvi
 	$(DVIPDFMX) $^
 
 clean:
-	rm -f RHEA.pdf RHEA.dvi RHEA.aux RHEA.log RHEA.out RHEA.toc tex/*.aux *~ src/*~ tex/*~
+	rm -f RHEA.pdf RHEA.dvi RHEA.aux RHEA.log RHEA.out RHEA.toc tex/*.aux *~ src/*~ tex/*~ $(XBBS)
