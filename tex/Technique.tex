@@ -5,7 +5,7 @@ ROOTでそこそこ格好良い図を作るには、ある程度の知識と慣�
 \section{色関連}
 \subsection{自前のカラーパレットを定義する}
 
-ROOTでは、2次元ヒストグラムや2次元グラフの「高さ」を表現する手段として、色を用いることができます。これは第\ref{chap_Histogram}章でも説明しました。ROOTはいくつかのカラーパレット（color palette）を用意してくれていますが、それらの実用性は乏しいと言わざるを得ません。例えば図\ref{fig_multi_palette_eps}の左上に示したような、デフォルトのカラーパレットを使っている人はほとんど見かけません。また階調数が小さめに設定されているため、滑らかな色表現には向きません。唯一よく使われているのが、以下の設定です。
+ROOTでは、2次元ヒストグラムや2次元グラフの「高さ」を表現する手段として、色を用いることができます。これは第\ref{chap_Histogram}章でも説明しました。ROOTはいくつかのカラーパレット（color palette）を用意してくれていますが、それらの実用性は乏しいと言わざるを得ません。例えば図\ref{fig_multi_palette_pdf}の左上に示したような、デフォルトのカラーパレットを使っている人はほとんど見かけません。また階調数が小さめに設定されているため、滑らかな色表現には向きません。唯一よく使われているのが、以下の設定です。
 \begin{lstlisting}[language=C++]
 root [0] gStyle->SetPalette(1)
 \end{lstlisting}
@@ -32,7 +32,7 @@ root [0] gStyle->SetPalette(1)
 \end{lstlisting}
 で行います。最後の引数は、階調の数です。これを大きくすればより滑らかなグラデーションになります。これらの関数が複数回呼び出されても速度低下を招かないように、関数内静的変数を用いていることに注意してください。
 
-ガンマ線のカウントマップでは、よくこの\texttt{BPalette()}が使われます\footnote{\texttt{BPalette}という名前は、DS9のパレットの名前に基づいています。}（図\ref{fig_multi_palette_eps}下段）。明るいところを強調し、暗いノイジーな箇所を目立たなくするためでしょう\footnote{カラーパレットの使い方で、（良い意味でも悪い意味でも）図の印象ががらりと変わるということを心に留めておいてください。}。\texttt{GrayPalette()}と\texttt{GrayInvPalette()}は、それぞれ黒から白、白から黒へのグラデーションです（図\ref{fig_multi_palette_eps}中段）。\texttt{RBPalette()}は、青、白、赤と変化するグラデーションです。世の中であまり使われていませんが、2次元ヒストグラムの残差を見せるときなどに筆者は使っています。
+ガンマ線のカウントマップでは、よくこの\texttt{BPalette()}が使われます\footnote{\texttt{BPalette}という名前は、DS9のパレットの名前に基づいています。}（図\ref{fig_multi_palette_pdf}下段）。明るいところを強調し、暗いノイジーな箇所を目立たなくするためでしょう\footnote{カラーパレットの使い方で、（良い意味でも悪い意味でも）図の印象ががらりと変わるということを心に留めておいてください。}。\texttt{GrayPalette()}と\texttt{GrayInvPalette()}は、それぞれ黒から白、白から黒へのグラデーションです（図\ref{fig_multi_palette_pdf}中段）。\texttt{RBPalette()}は、青、白、赤と変化するグラデーションです。世の中であまり使われていませんが、2次元ヒストグラムの残差を見せるときなどに筆者は使っています。
 
 実際に作成するスクリプトでこのようなパレットを設定するためには、どこかでこれらの関数を定義しておいて、ヒストグラムを描く前に呼び出して下さい。例えば
 \begin{lstlisting}[language=C++]
@@ -66,14 +66,14 @@ root [7] h2->Draw("colz")
 
 \begin{figure}
   \centering
-  \includegraphics[width=12cm,clip]{fig/multi_palette.eps}
+  \includegraphics[width=12cm,clip]{fig/multi_palette.pdf}
   \caption{コード\ref{code_multi_palette}の出力結果}
-  \label{fig_multi_palette_eps}
+  \label{fig_multi_palette_pdf}
 \end{figure}
 
 \subsection{塗りつぶしの色を変更する}
 
-図\ref{fig_multi_palette_eps}で様々なパレットを例示しました。既にお気付きの通り、値が0のビンはROOTは塗りつぶしません。そのため、空っぽのビンは全て白くなっています。図\ref{fig_multi_palette_eps}の右上のように、パレットに白が含まれていない場合は、白いままのほうがヒストグラムの状態を把握するのに便利です。しかしパレット中に白が含まれている場合は、値が0なのか、他の値なのか判断できない場合が出てきます。そのような場合は、フレームの色を変更しましょう。
+図\ref{fig_multi_palette_pdf}で様々なパレットを例示しました。既にお気付きの通り、値が0のビンはROOTは塗りつぶしません。そのため、空っぽのビンは全て白くなっています。図\ref{fig_multi_palette_pdf}の右上のように、パレットに白が含まれていない場合は、白いままのほうがヒストグラムの状態を把握するのに便利です。しかしパレット中に白が含まれている場合は、値が0なのか、他の値なのか判断できない場合が出てきます。そのような場合は、フレームの色を変更しましょう。
 
 \begin{NoFloat}
 \lstinputlisting[language=c++,caption=\texttt{frame\_fill\_color.C},label=code_frame_fill_color,numbers=left]{src/frame_fill_color.C}
@@ -110,12 +110,12 @@ root [0] TCanvas* can = new TCanvas("can", "can", 100, 100)
 \begin{figure}
   \centering
   \subfloat[$96\times72$ピクセル]{
-    \includegraphics[width=3cm,bb= 0 0 100 122]{fig/100x100.png}
+    \includegraphics[width=3cm]{fig/100x100.png}
     \label{fig_100x100_png}
   }
   \hfil
   \subfloat[$100\times100$ピクセル]{
-    \includegraphics[width=3cm,bb= 0 0 104 150]{fig/100x100_v2.png}
+    \includegraphics[width=3cm]{fig/100x100_v2.png}
     \label{fig_100x100_v2_png}
   }
   \caption{\texttt{TCanvas}の描画領域の違い}
