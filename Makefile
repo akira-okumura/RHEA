@@ -8,17 +8,14 @@ SRCS := $(wildcard src/*)
 
 PDFS := $(wildcard fig/*pdf)
 PNGS := $(wildcard fig/*png)
-XBBS := $(patsubst %.pdf,%.xbb,$(PDFS)) $(patsubst %.png,%.xbb,$(PNGS))
+XBBS := $(patsubst %.pdf, %.xbb, $(PDFS)) $(patsubst %.png, %.xbb, $(PNGS))
 
-TEXS := $(filter-out *~ tex/*~, $(TEXS))
 FIGS := $(filter-out fig/*~, $(FIGS))
 SRCS := $(filter-out src/*~, $(SRCS))
 
-.PHONY: all clean xbb
+.PHONY: all clean
 
 all: RHEA.pdf
-
-xbb: $(XBBS)
 
 %.xbb: %.pdf
 	$(EXTRACTBB) $<
@@ -26,7 +23,7 @@ xbb: $(XBBS)
 %.xbb: %.png
 	$(EXTRACTBB) $<
 
-RHEA.dvi: $(TEXS) $(FIGS) $(SRCS) xbb
+RHEA.dvi: $(TEXS) $(FIGS) $(SRCS) $(XBBS)
 	$(TEX)	$^
 	(while egrep '^LaTeX Warning: Label' RHEA.log;\
 		do platex $^;\
