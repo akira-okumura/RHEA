@@ -11,44 +11,104 @@
 \label{subsec_download}
 ROOTは\url{http://root.cern.ch/}からダウンロードすることができます。既にコンパイルされているバイナリ版と、コンパイルされていないソースコードがあります。前者はコンパイルする必要がないので簡単ですが、本書では教育目的のため、ソースコードをダウンロードして、自分でコンパイルすることにします。
 
-2016年2月時点で、ROOT 6 の最新バージョン6.06/00です。バージョン5からバージョン6に変わるとき、大きな変更がありました。そのため、研究室によってはバージョン5系列を使っている人もまだまだ多いと思います。ROOT 5 では、バージョン 5.34/34 が最新です。最初の数字はメジャーバージョン、次の数字は大きな機能追加ごとに増えるマイナーバージョン、スラッシュの後ろの数字はバグフィックスを示す番号です。
+2016年4月時点で、ROOT 6 の最新バージョン6.06/02です。バージョン5からバージョン6に変わるとき、大きな変更がありました。そのため、研究室によってはバージョン5系列を使っている人もまだまだ多いと思います。ROOT 5 では、バージョン 5.34/36 が最新です。最初の数字はメジャーバージョン、次の数字は大きな機能追加ごとに増えるマイナーバージョン、スラッシュの後ろの数字はバグフィックスを示す番号です。
 
-どのバージョンを選択するかは研究室の計算機環境や実験グループの解析ソフトなどに依存しますが、本書では6.06/00を前提として話を進めます。
+どのバージョンを選択するかは研究室の計算機環境や実験グループの解析ソフトなどに依存しますが、本書では6.06/02を前提として話を進めます。
 
 上記URLを辿ると、ダウンロードのページがあります。リンクをクリックしてダウンロードすることも可能ですが、ここでは直接ターミナルからダウンロードします。
 \begin{lstlisting}[language=bash]
 $ cd ~
-$ curl -O https://root.cern.ch/download/root_v6.06.00.source.tar.gz
+$ curl -O https://root.cern.ch/download/root_v6.06.02.source.tar.gz
 \end{lstlisting}
-などとして、好きなディレクトリにダウンロードして下さい。今の例では、\texttt{root\_v6.06.00.source.tar.gz}がホームディレクトリ（\texttt{\~}）に保存されます。
+などとして、好きなディレクトリにダウンロードして下さい。今の例では、\texttt{root\_v6.06.02.source.tar.gz}がホームディレクトリ（\texttt{\~}）に保存されます\footnote{ホームディレクトリとは、ユーザごとのファイルを置くためのディレクトリのことです。例えば Linux だと、ユーザ\texttt{oxon}の場合は\texttt{/home/oxon}が一般的にホームディレクトリになります。OS X の場合は\texttt{/Users/oxon}になります。これらは省略して\texttt{{\textasciitilde}oxon}、\texttt{\textasciitilde}、\texttt{\$HOME}と書かれることがあります。}。
 
-\subsection{コンパイル}
-\label{subsec_compile}
+\subsection{\texttt{configure}を使ったコンパイル}
+\label{subsec_compile_configure}
 ROOTのコンパイル作業やインストール先は、好きな場所でやって構いません。もしあなたがコンピュータの管理者権限を持っているならば、\texttt{/usr/local}の下にインストールするのが標準的です。次のように、ターミナルから好きなディレクトリに移動し、ソースコードを展開して下さい\footnote{この例のように、先頭に\texttt{\$}がついている行は、ターミナルで入力していることを表します。実際にターミナルから入力する内容は、\texttt{\$}とその直後の半角スペースを取り除いた内容ですので、注意して下さい。}\footnote{管理者権限を持っていなかったり、\texttt{sudo}コマンドを使用できない場合、一般ユーザでもインストール可能なディレクトリを選択してください。}。
 \begin{lstlisting}[language=bash]
 $ cd /usr/local
-$ sudo tar zxvf ~/root_v6.06.00.source.tar.gz
-$ cd root
-$ sudo ./configure
-$ sudo make
+$ sudo tar zxvf ~/root_v6.06.02.source.tar.gz
 \end{lstlisting}
-\texttt{root}という名前のディレクトリが作成されるので、そこに移動してコンパイルを行います。一般的なソフトウェアのコンパイルと同様に、\texttt{configure}スクリプトを実行します。\texttt{make}を実行した後に\texttt{make install}を実行したくなりますが、本書の説明通りに作業を進める場合は、別にやる必要はありません。複数コアのCPUを使える場合には、コアの数に応じて最後の行に\texttt{-j 4}のような引数をつけると、コンパイルが早くなります。
+
+\texttt{root-6.06.02}という名前のディレクトリが作成されるので、そこに移動してコンパイルを行います。一般的なソフトウェアのコンパイルと同様に、\texttt{configure}スクリプトを実行します。
+
+\begin{lstlisting}[language=bash]
+$ cd root-6.06.02
+$ ./configure
+\end{lstlisting}
+
+ここで色々とターミナルに出力されますが、最後に次のような表示が出れば\texttt{configure}は成功です。もし何かしらのエラーが表示される場合、ROOTのビルドに必要な他のコマンドやライブラリがインストールされていないことが考えられます。表示されたエラーをよく読み、原因が何かを考えて対応しましょう。
+\begin{lstlisting}[language=bash]
+Enabled support for asimage, astiff, bonjour, builtin_afterimage, builtin_ftgl, builtin_freetype, builtin_glew, builtin_llvm, libcxx, cocoa, explicitlink, fink, fftw3, fitsio, gviz, genvector, krb5, ldap, mathmore, memstat, opengl, python, rpath, search_usrlocal, shared, sqlite, ssl, tmva, vdt, xml.
+
+To build ROOT type:
+
+   make 
+\end{lstlisting}
+では、出力の指示に従って\texttt{make}と打ってみましょう。
+\begin{lstlisting}[language=bash]
+$ make
+\end{lstlisting}
+\texttt{make}を実行した後に\texttt{make install}を実行したくなりますが、本書の説明通りに作業を進める場合は、別にやる必要はありません。複数コアのCPUを使える場合には、コアの数に応じて最後の行に\texttt{-j 4}のような引数をつけると、コンパイルが早くなります。うまくコンパイルが全て完了すると、以下のような表示が最後に出るはずです。
+\begin{lstlisting}
+root [0] 
+Processing hsimple.C...
+hsimple   : Real Time =   0.07 seconds Cpu Time =   0.05 seconds
+(TFile *) 0x7fb0fae560c0
+ 
+   ============================================================
+   ===                ROOT BUILD SUCCESSFUL.                ===
+   === Run 'source bin/thisroot.[c]sh' before starting ROOT ===
+   ============================================================
+\end{lstlisting}
 
 ここまででエラーが出なければ成功です。もし不運にもエラーが出てしまった人は、コンパイル済みのバイナリをダウンロードしましょう。以下は、OS X版をダウンロードした場合の例です。コンパイル済みのものは最新版に更新されていない可能性もあるため、やはり自分でコンパイルするのが確実です。
 \begin{lstlisting}[language=bash]
 $ cd ~
-$ curl -O https://root.cern.ch/download/root_v6.06.00.macosx64-10.11-clang70.tar.gz
+$ curl -O https://root.cern.ch/download/root_v6.06.02.macosx64-10.11-clang70.tar.gz
 $ cd /usr/local
-$ sudo tar zxvf ~/root_v6.06.00.macosx64-10.11-clang70.tar.gz
+$ sudo tar zxvf ~/root_v6.06.02.macosx64-10.11-clang70.tar.gz
+\end{lstlisting}
+コンパイル済みのバイナリは、全ての環境用に配布されているわけではありません。ROOTのダウンロードページ\footnote{\url{https://root.cern.ch/content/release-60602}}から、自分の環境に対応したものをダウンロードしましょう\footnote{2016年4月現在、OS X 10.9（Mavericks）、10.10（Yosemite）、10.11（El Capitan）、RHEL6クローン（Scientific Linux 6など）、RHEL7クローン（CentOS 7など）などにバイナリ配布があります。}。
+
+\subsection{\texttt{CMake}を使ったコンパイル}
+\label{subsec_compile_cmake}
+最近の\texttt{ROOT}では、\texttt{configure}コマンドではなく\texttt{cmake}コマンド\footnote{\url{https://cmake.org/}}を使ってビルドすることができます。これは\texttt{Geant4}でも同様で、最近のソフトウェアの流れです。\texttt{CMake}はまだ完全に市民権を得たわけではありませんが、徐々に浸透しつつあるため、興味のある人は\texttt{CMake}でビルドしてみるのも良いでしょう。
+
+\texttt{yum}、\texttt{MacPorts}、\texttt{homebrew}などで、まずは\texttt{CMake}を導入します。その後の流れは以下の通りです\footnote{\texttt{cmake\_build}というディレクトリ名は好きなもので構いません。}。
+
+\begin{lstlisting}[language=bash]
+$ cd /usr/local
+$ sudo tar zxvf ~/root_v6.06.02.source.tar.gz
+$ mkdir root-6.06.02/cmake_build
+$ cd root-6.06.02/cmake_build
+$ cmake ..
+\end{lstlisting}
+
+問題がなければ、色々とターミナルに出力された最後に以下の表示が出るはずです。
+\begin{lstlisting}[language=bash]
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /usr/local/root-6.06.02/cmake_build
+\end{lstlisting}
+
+あとは、\texttt{configure}のときと同様に\texttt{make}を実行します。
+\begin{lstlisting}[language=bash]
+$ make
 \end{lstlisting}
 
 \subsection{最低限の初期設定}
 \label{subsec_settings}
-ソースをコンパイルしたり、バイナリ版をダウンロードしただけではROOTは使えるようになりません。ROOTの実行ファイルやライブラリの場所を設定する必要があります。以下の3行を\texttt{\~{}/.bashrc}に書き足して下さい\footnote{もし\texttt{/usr/local/root}以外の場所にインストールした場合は、\texttt{ROOTSYS}の設定を適宜変更してください。}。
+ソースをコンパイルしたり、バイナリ版をダウンロードしただけではROOTは使えるようになりません。ROOTの実行ファイルやライブラリの場所を設定する必要があります。以下の3行を\texttt{\~{}/.bashrc}に書き足して下さい\footnote{もし\texttt{/usr/local/root}以外の場所にインストールした場合は、ディレクトリを適宜変更してください。}。
 \begin{NoFloat}
 \lstinputlisting[language=bash]{src/bashrc.sh}
 \end{NoFloat}
-これは、ログインシェルに\texttt{bash}を使っている人の場合です。もしzshを使っている場合は、\texttt{\~{}/.zshrc}に書いて下さい。書き終わったら、
+もし\texttt{CMake}を使った場合は次のようになります。
+\begin{NoFloat}
+\lstinputlisting[language=bash]{src/bashrc_cmake.sh}
+\end{NoFloat}
+
+これらは、ログインシェルに\texttt{bash}を使っている人の場合です。もしzshを使っている場合は、\texttt{\~{}/.zshrc}に書いて下さい。書き終わったら、
 \begin{lstlisting}[language=bash]
 $ source ~/.bashrc
 \end{lstlisting}
@@ -72,13 +132,13 @@ $ root
 \end{lstlisting}
 と打ってみて下さい。図\ref{fig_splash}が画面に現れるとともに、ターミナルには以下のように出力されます。
 \begin{lstlisting}
-   ------------------------------------------------------------
-  | Welcome to ROOT 6.06/00                http://root.cern.ch |
-  |                               (c) 1995-2014, The ROOT Team |
-  | Built for macosx64                                         |
-  | From tag v6-06-00, 9 December 2015                         |
-  | Try '.help', '.demo', '.license', '.credits', '.quit'/'.q' |
-   ------------------------------------------------------------
+   ----------------------------------------------------------------
+  | Welcome to ROOT 6.06/02                    http://root.cern.ch |
+  |                                   (c) 1995-2014, The ROOT Team |
+  | Built for macosx64                                             |
+  | From heads/master@v6-07-02-437-gb06340c, Mar 02 2016, 19:01:57 |
+  | Try '.help', '.demo', '.license', '.credits', '.quit'/'.q'     |
+   ----------------------------------------------------------------
 
 root [0] 
 \end{lstlisting}
@@ -257,7 +317,7 @@ GetAsymmetry
 GetAt
 GetAxisColor
 \end{lstlisting}
-これは、インスタンス\texttt{hist}に操作可能な機能のうち、\texttt{Get}で始まるものの一覧です。C++の言葉で言い換えると、クラス\texttt{TH1D}のメンバ関数（member function）のうちゲッター（getter）の一覧です。候補を眺めてみると、\texttt{GetMean}や\texttt{GetStdDev}\footnote{ROOTやPAWで「RMS」と言った場合、これは二乗平均ではなく標準偏差を指します。統計学の用語としては不適切なのですが、歴史的理由でRMSという言葉を使い続けているそうです。そのためこの業界ではRMSという用語を間違って覚えている人が沢山いますが、優しく注意してあげて下さい。最近のROOTでは、\texttt{GetRMS}と全く同じ働きをする関数として\texttt{GetStdDev}が用意されています。}というメンバ関数が見つかるはずです。何をする関数か、一目瞭然でしょう。それでは
+これは、インスタンス\texttt{hist}に操作可能な機能のうち、\texttt{Get}で始まるものの一覧です。C++の言葉で言い換えると、クラス\texttt{TH1D}のメンバ関数（member function）のうちゲッター（getter）の一覧です。候補を眺めてみると、\texttt{GetMean}や\texttt{GetStdDev}\footnote{\texttt{GetRMS}というメンバ関数も見つかると思います。ROOTやPAWで「RMS」と言った場合、これは二乗平均ではなく標準偏差を指します。統計学の用語としては不適切なのですが、歴史的理由でRMSという言葉を使い続けているそうです。そのためこの業界ではRMSという用語を間違って覚えている人が沢山いますが、優しく注意してあげて下さい。最近のROOTでは、\texttt{GetRMS}と全く同じ働きをする関数として\texttt{GetStdDev}が用意されています。}というメンバ関数が見つかるはずです。何をする関数か、一目瞭然でしょう。それでは
 \begin{lstlisting}[language=c++]
 root [3] hist->GetMe
 \end{lstlisting}
@@ -275,7 +335,7 @@ root [3] hist->GetMean(
 \begin{lstlisting}[language=c++]
 Double_t GetMean(Int_t axis = 1) const
 \end{lstlisting}
-と表示されます。これは、\texttt{TH1D::GetMean}\footnote{この書き方は、クラスTH1Dのメンバ関数GetMeanという意味です。}の引数の説明が表示されたものです。引数には整数（integer）値を取り、そのデフォルト（default）値が1だという意味です（1はX軸を意味しています）。何も打たなくてもX軸を指定するデフォルト値が入っているので、
+と表示されます。これは、\texttt{TH1D::GetMean}\footnote{この書き方は、クラス\texttt{TH1D}のメンバ関数\texttt{GetMean}という意味です。}の引数の説明が表示されたものです。引数には整数（integer）値を取り、そのデフォルト（default）値が1だという意味です（1はX軸を意味しています）。何も打たなくてもX軸を指定するデフォルト値が入っているので、
 \begin{lstlisting}[language=c++]
 root [3] hist->GetMean()
 (Double_t) 0.00833117
