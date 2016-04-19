@@ -212,7 +212,7 @@ root [0] .x demos.C
 \subsection{コマンドラインからの操作}
 まずはROOTを起動し、
 \begin{lstlisting}[language=c++]
-root [0] TH1D* hist = new TH1D("myhist", "Gaussian Histogram", 50, -5, 5)
+root [0] TH1D* hist = new TH1D("myhist", "Gaussian Histogram (#sigma = 1)", 50, -5, 5)
 root [1] hist->FillRandom("gaus", 10000)
 root [2] hist->Draw()
 Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
@@ -227,9 +227,9 @@ Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
 
 このままでは何が起きたか分からないので、簡単に説明します。C++やプログラミングの用語が混ざりますが、各自で調べつつ読んで下さい。これらの3行は、実はC++の言葉で書かれています。まず
 \begin{lstlisting}[language=c++]
-root [0] TH1D* hist = new TH1D("myhist", "Gaussian Histogram", 50, -5, 5)
+root [0] TH1D* hist = new TH1D("myhist", "Gaussian Histogram (#sigma = 1)", 50, -5, 5)
 \end{lstlisting}
-の部分では、\texttt{TH1D}クラス（class）のインスタンス（instance）を作成しています。このインスタンスの名前は、この例ではhistとしています。\texttt{*}や\texttt{new}は、おまじないだと思っておいて下さい\footnote{コンピュータ関連の説明文書の中で、「おまじない」という言葉がたまに出てきます。「それが何者であるか（今は）理解する必要はないが、こうしておくと正しく動作する」ようなものを「おまじない」と呼ぶ習慣があります。とりあえず気にするなということです。}。このhistが、ヒストグラムの実体になります。\texttt{"myhist"}や\texttt{"Gaussian Histogram"}という文字列、$50$、$-5$、$5$という数字が図\ref{fig_first_script}のどの箇所に対応するか、自分で考えて下さい。このヒストグラムは、この時点では作りたてなので、当然中身は空っぽです。そこで
+の部分では、\texttt{TH1D}クラス（class）のインスタンス（instance）を作成しています。このインスタンスの名前は、この例ではhistとしています。\texttt{*}や\texttt{new}は、おまじないだと思っておいて下さい\footnote{コンピュータ関連の説明文書の中で、「おまじない」という言葉がたまに出てきます。「それが何者であるか（今は）理解する必要はないが、こうしておくと正しく動作する」ようなものを「おまじない」と呼ぶ習慣があります。とりあえず気にするなということです。}。このhistが、ヒストグラムの実体になります。\texttt{"myhist"}や\texttt{"Gaussian Histogram (\#sigma = 1)"}という文字列、$50$、$-5$、$5$という数字が図\ref{fig_first_script}のどの箇所に対応するか、自分で考えて下さい。このヒストグラムは、この時点では作りたてなので、当然中身は空っぽです。そこで
 \begin{lstlisting}[language=c++]
 root [1] hist->FillRandom("gaus", 10000)
 \end{lstlisting}
