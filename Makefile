@@ -2,7 +2,8 @@ TEX := platex
 DVIPDFMX := dvipdfmx
 EXTRACTBB := extractbb
 
-TEXS := RHEA.tex $(wildcard tex/*.tex)
+NAME := RHEA
+TEXS := $(NAME).tex $(wildcard tex/*.tex)
 FIGS := $(wildcard fig/*)
 SRCS := $(wildcard src/*)
 
@@ -15,7 +16,7 @@ SRCS := $(filter-out src/*~, $(SRCS))
 
 .PHONY: all clean
 
-all: RHEA.pdf
+all: $(NAME).pdf
 
 %.xbb: %.pdf
 	$(EXTRACTBB) $<
@@ -23,14 +24,14 @@ all: RHEA.pdf
 %.xbb: %.png
 	$(EXTRACTBB) $<
 
-RHEA.dvi: $(TEXS) $(FIGS) $(SRCS) $(XBBS)
-	$(TEX)	$^
-	(while egrep '^LaTeX Warning: Label' RHEA.log;\
-		do platex $^;\
+$(NAME).dvi: $(TEXS) $(FIGS) $(SRCS) $(XBBS)
+	$(TEX)	$(NAME)
+	(while egrep '^LaTeX Warning: Label' $(NAME).log;\
+		do $(TEX) $(NAME);\
 	done)
 
-RHEA.pdf: RHEA.dvi
+$(NAME).pdf: $(NAME).dvi
 	$(DVIPDFMX) $^
 
 clean:
-	rm -f RHEA.pdf RHEA.dvi RHEA.aux RHEA.log RHEA.out RHEA.toc tex/*.aux *~ src/*~ tex/*~ $(XBBS)
+	rm -f $(NAME).pdf $(NAME).dvi $(NAME).aux $(NAME).log $(NAME).out $(NAME).toc tex/*.aux *~ src/*~ tex/*~ $(XBBS)
