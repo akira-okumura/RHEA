@@ -1,6 +1,7 @@
-\documentclass{jsbook}
+\documentclass[oneside]{jsbook}
 
 \usepackage[deluxe]{otf} % Avoid using Hira-Kaku W6
+\usepackage{enumitem} % Adjust description items
 \usepackage[dvipdfmx]{graphicx}
 \usepackage{times}
 \usepackage{fancybox}
@@ -58,7 +59,8 @@
 
 \newcommand{\cmd}{\UTF{2318}}
 \renewcommand{\prechaptername}{} % Do not print ``第''
-\renewcommand{\postchaptername}{} % Do not print ``章'' 
+\renewcommand{\postchaptername}{} % Do not print ``章''
+\renewcommand{\labelitemi}{$\circ$}
 
 \makeatletter
 % Do not print ``\n'' before a chapter title
@@ -207,12 +209,66 @@
 \makeatother
 
 \title{{\huge 高エネルギー宇宙物理学のためのROOT入門\\ROOT for High-Energy Astrophysics}}
-\author{{\Large 奥村 曉} \\ 名古屋大学宇宙地球環境研究所 \\ oxon@mac.com}
+\author{{\Large 奥村 曉} \\ 名古屋大学 宇宙地球環境研究所 \\ oxon@mac.com}
 
 \begin{document}
-
 \maketitle
 \frontmatter
+\section*{本書の入手方法について}
+この入門書は GitHub\footnote{\url{https://github.com/}} 上で公開されています。作成に用いた\LaTeX コード、図、また\texttt{C++}のコードなどは、すべて\url{https://github.com/akira-okumura/RHEA}から入手可能です。
+
+また、PDF として生成済みのものは\url{https://github.com/akira-okumura/RHEA/releases}で公開されています。必ずしも Git レポジトリの最新版とは対応していませんので、最新版は以下のコマンドを実行することで生成してください。\texttt{git clone}と\texttt{make}を実行すると、\texttt{RHEA.pdf}が作られます。\texttt{make}コマンド実行中に\texttt{platex}コマンドを使用しますので、日本語\LaTeX 環境を用意してください。
+
+\begin{lstlisting}[language=bash]
+$ git clone https://github.com/akira-okumura/RHEA.git
+$ cd RHEA
+$ ls
+Makefile  README.md RHEA.tex  fig       src       tex
+$ make
+$ ls
+Makefile  RHEA.aux  RHEA.log  RHEA.pdf  RHEA.toc  src
+README.md RHEA.dvi  RHEA.out  RHEA.tex  fig       tex
+\end{lstlisting}
+
+\section*{本書の再配布について}
+PDFでの再配布を禁止します。これは以下の理由のためです。
+\begin{itemize}
+\item[$\circ$]最新版でない PDF の流布を避け、ROOT などに関する情報をなるべく新しいもので伝えるため
+\item[$\circ$]読者に\texttt{git}や\texttt{make}コマンドに慣れてもらうため
+\item[$\circ$]注意書きや著作権表記などの変更が生じうるため
+\end{itemize}
+
+\section*{本書の著作権について}
+奥村曉が著作権を保持します。GitHub 上で\LaTeX コード等を公開していますが、これは著作権の放棄を意味しません。GitHub 上でのレポジトリの複製・改変は自由ですが、改変したもののGitHub以外での再配布や、改変した内容で生成したPDFの再配布を禁止します。
+
+\begin{flushright}
+$\copyright$ 2009--2016 Akira Okumura All Rights Reserved
+\end{flushright}
+
+\pagebreak
+
+\section*{著者について}
+{\large 奥村 曉（名古屋大学 宇宙地球環境研究所 助教）}
+         
+\begin{description}
+  \item[\quad2004年]ROOTの全身であるPAWの利用を開始
+  \item[\quad2005年]PAWの限界と時代遅れであることに気が付きROOTへ移行
+  \item[\quad2007年]ROOTを使った光線追跡ライブラリROBASTの開発を開始し、2010年に一般公開\footnote{\url{https://robast.github.io/}}
+  \item[\quad2009年]東京大学理学系研究科物理学専攻で博士号取得
+  \item[\quad2012年]名古屋大学 太陽地球環境研究所 助教
+  \item[\quad2015年]名古屋大学 宇宙地球環境研究所 助教（改組による）
+\end{description}
+
+2016 年現在、Cherenkov Telescope Array の小口径望遠鏡の開発で、焦点面カメラのデータ収集・カメラ制御ソフトウェア開発責任者、大口径望遠鏡用の集光装置の開発責任者などを担当している。専門は宇宙線物理学、ガンマ線天文学、光学系設計。
+
+\begin{description}[labelwidth=2.cm]
+  \item[\quad 電子メール]\url{oxon@mac.com}
+  \item[\quad blog]\url{http://oxon.hatenablog.com/}
+  \item[\quad Twitter]\href{https://twitter.com/AkiraOkumura}{AkiraOkumura}
+  \item[\quad Flickr]\href{https://www.flickr.com/photos/akiraokumura/}{akiraokumura}
+  \item[\quad 個人ページ]\url{http://www.isee.nagoya-u.ac.jp/~okumura/}
+\end{description}
+
 \tableofcontents
 \mainmatter
 \include{tex/Introduction}
