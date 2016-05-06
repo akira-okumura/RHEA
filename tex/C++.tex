@@ -6,13 +6,13 @@
 ただし、いきなり一般書籍を購入しても当たり外れがあります。特に、C++と銘打っていても、コードの書き方の癖がC言語に近い書物はやめたほうが無難です\footnote{C++の入門書ではありませんが、『Numerical Recipes in C++』は悪書の例です。}。例えば
 \begin{lstlisting}[language=c++]
 int i;
-for(i = 0; i < 100; i++){
+for (i = 0; i < 100; i++) {
   // some codes...
 }
 \end{lstlisting}
 のように書かれている本よりも
 \begin{lstlisting}[language=c++]
-for(int i = 0; i < 100; i++){
+for (int i = 0; i < 100; i++) {
   // some codes...
 }
 \end{lstlisting}
@@ -75,7 +75,7 @@ $ ./hello_world
 
 それではなぜ、この\texttt{printf}という関数を我々は使うことができるのでしょうか。その答えはコード\ref{code_hello_world}の先頭にあります。この行はインクルード（include）文と呼ばれ、他のファイルに既に存在している\texttt{printf}を見えるようにしています\footnote{\texttt{cstdio}は「C」、「standard」、「input/output」の合成語です。C言語の時代に作られた、標準入出力のためのライブラリです。}。したがって、この箇所を
 \begin{lstlisting}[language=c++]
-//#include <cstdio>
+// #include <cstdio>
 \end{lstlisting}
 のようにコメントアウト（comment out）\footnote{先頭が「//」で始まる行は、全てコンパイラに無視されます。}してコンパイルすると、
 \begin{lstlisting}[language=bash]
@@ -105,7 +105,7 @@ hello_world.cxx:5: error: ‘printf’ was not declared in this scope
 \end{lstlisting}
 のようにして作成しています。数学の変数は、その中身をいつでも整数や無理数や複素数に変更できます。しかしC++の場合は、その変数の種類を後から変更できません。変数\texttt{before}の中身は、いつでも整数値です。先頭の\texttt{int}は、変数\texttt{before}が常に整数値を持つという意味です。これを型（type）と呼びます。つづいて\texttt{= 15}というのが出てきますが、これは「\texttt{before}に15を代入する」という意味です。「\texttt{before}と15は等しい」という意味ではありません。ここは、数学の等号と使用方法が異なります。もしこの直後に
 \begin{lstlisting}[language=c++]
-before = before*before + 1;
+before = before * before + 1;
 \end{lstlisting}
 という文を足すと、\texttt{before}の値が226に変更されます。\texttt{before}の値が二次方程式$x=x^2+1$の解に自動的に変更されたりはしないのです。C++の\texttt{=}は、数学の等号ではなく代入を表します。
 
@@ -115,7 +115,7 @@ before = before*before + 1;
 \end{lstlisting}
 として変数\texttt{after}に関数の返り値を代入することができます。この右辺が呼ばれると、処理は関数\texttt{triple}の行に飛び、
 \begin{lstlisting}[language=c++]
-  return 3*v;
+  return 3 * v;
 \end{lstlisting}
 で値が返されて、左辺に代入されます。
 
@@ -155,10 +155,10 @@ before = before*before + 1;
 
 コード\ref{code_minmax}には、新しい関数\texttt{min}と\texttt{max}を作りました。初めて、
 \begin{lstlisting}[language=c++]
-  if(v1 < v2){ 
-    ret = v1; 
-  } else { 
-    ret = v2; 
+  if (v1 < v2) {
+    ret = v1;
+  } else {
+    ret = v2;
   }
 \end{lstlisting}
 という\texttt{if}文が出てきます。これを日本語訳すると、「もし（\texttt{if}）\texttt{v1}が\texttt{v2}よりも小さければ、\texttt{ret}に\texttt{v1}を代入しなさい。そうでなければ（\texttt{else}）\texttt{v2}を代入しなさい」となります。\texttt{<}は関係演算子や比較演算子（relational operator、comparison operator）と呼ばれるものです。もし左辺が小さければ1を、そうでなければ0を返します。つまり
@@ -188,9 +188,9 @@ int b = 10 > 20;
 
 以下の、\texttt{main}の中身が\texttt{for}文です。
 \begin{lstlisting}[language=c++]
-  for(int i = 1; i <= 100; i++){ 
-    printf("n = %d: pi = %lf\n", i, pi(i)); 
-  } // i 
+  for (int i = 1; i <= 100; ++i) {
+    printf("n = %d: pi = %lf\n", i, pi(i));
+  } // i
 \end{lstlisting}
 最初の行を日本語にすると、「\texttt{i}が1の状態から開始し、100以下の間だけ以下の作業を繰り返しなさい。ただし、1度繰り返した直後に、\texttt{i}は1ずつ増やせ」となります\footnote{\texttt{i}は「index」の「i」です。\texttt{for}文は入れ子にすることができ、そのような場合は\texttt{j}や\texttt{k}をその後の添え字として使います。ただし、小文字のL \texttt{l}を\texttt{k}の後に使うのは避けて下さい。数字の\texttt{1}と視覚的に区別が難しいためです。}。つまり、\texttt{i}が1から100まで変化します。\texttt{i++}という表現は始めて出てきました。これは
 \begin{lstlisting}[language=c++]
@@ -200,7 +200,14 @@ i = i + 1;
 \begin{lstlisting}[language=c++]
 i += 1;
 \end{lstlisting}
-と同じ意味を持ちます\footnote{なぜ複数の書き方が可能かというと、「1だけ増加させた」ということをより明示的にするためです。}。
+と同じ意味を持ちます\footnote{なぜ複数の書き方が可能かというと、「1だけ増加させた」ということをより明示的にするためです。}。これをインクリメント演算子（increment operator）と呼びます。
+
+\texttt{i++}（後置演算、pre-increment）の代わりに\texttt{++i}（前置演算、post-increment）という書き方を次のようにする場合もあります。単純なfor文では動作結果に違いはでませんが\footnote{\texttt{y = ++x;}や\texttt{y = x++;}のように、代入を伴う場合は挙動が異なるので注意してください。前者は\texttt{x += 1; y = x;}、後者は\texttt{y = x; x += 1;}という意味になります。}、コンパイラの生成する実行ファイルは若干高速になることがあるかもしれません。本書では\texttt{++i}を使用します。
+\begin{lstlisting}[language=c++]
+  for (int i = 1; i <= 100; ++i) {
+    printf("n = %d: pi = %lf\n", i, pi(i));
+  } // i
+\end{lstlisting}
 
 \texttt{for}文の文法さえ分かれば、\texttt{pi}関数の中で使われている\texttt{for}文も理解できるでしょう。関係演算子が\texttt{<}の場合と\texttt{<=}の場合で繰り返し回数が変わることに注意して読んで下さい。
 
@@ -256,11 +263,9 @@ $ ./Vector3D
 #ifndef VECTOR_3D
 #define VECTOR_3D
 
-class Vector3D 
-{ 
-};
+class Vector3D {};
 
-#endif // VECTOR_3D 
+#endif // VECTOR_3D
 \end{lstlisting}
 最後のセミコロンを忘れやすいので注意してください。
 
@@ -330,10 +335,9 @@ v.Print();
 
 コード\ref{code_Vector3D_h}と\ref{code_Vector3D_cxx}には、\texttt{operator}という文字の入った関数が出てきます。\ref{code_Vector3D_cxx}に定義された、\texttt{Vector3D}同士の足し算の定義を見てみましょう。
 \begin{lstlisting}[language=c++]
-Vector3D Vector3D::operator+(const Vector3D& vec) 
-{ 
-  return Vector3D(fX + vec.X(), fY + vec.Y(), fZ + vec.Z()); 
-} 
+Vector3D Vector3D::operator+(const Vector3D &vec) {
+  return Vector3D(fX + vec.X(), fY + vec.Y(), fZ + vec.Z());
+}
 \end{lstlisting}
 
 3次元ベクタ同士を足せば、その結果は当然3次元ベクタになります。したがって、\texttt{operator+}の返り値は当然\texttt{Vector3D}になります。また、\texttt{operator+}は関数の形をしていますが、実際に使うときは
@@ -402,15 +406,14 @@ class LorentzVector : public Vector3D
 
 コンストラクタは、新たに書き直しが必要です。コンストラクタは\texttt{fX}、\texttt{fY}、\texttt{fZ}、\texttt{fT}の全てを初期化する必要があるので、\texttt{Vector3D}のコンストラクタをそのまま使うことはできません。コード\ref{code_LorentzVector_cxx}では、\texttt{fT}の初期化作業が、\texttt{Vector3D}のコンストラクタに比べて増えています。ここで注目して欲しいのが、コード\ref{code_LorentzVector_cxx}のコンストラクタのうち、
 \begin{lstlisting}[language=c++]
-LorentzVector::LorentzVector(const LorentzVector& other) : Vector3D(other) 
-{ 
-  fT = other.fT; 
-} 
+LorentzVector::LorentzVector(const LorentzVector &other) : Vector3D(other) {
+  fT = other.fT;
+}
 \end{lstlisting}
 や
 \begin{lstlisting}[language=c++]
-LorentzVector::LorentzVector(double x, double y, double z, double t) 
-  : Vector3D(x, y, z) 
+LorentzVector::LorentzVector(double x, double y, double z, double t)
+    : Vector3D(x, y, z)
 \end{lstlisting}
 で使われている、単独のコロン（:）の後ろの部分です。このような書き方をすると、\texttt{LorentzVector}のうち\texttt{Vector3D}に由来する部分を\texttt{Vector3D}のコンストラクタを使って初期化することができます。いちいち、\texttt{fX}などへの代入作業を書き直す必要がなくなります。
 
