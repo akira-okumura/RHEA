@@ -1,11 +1,11 @@
 {
   // You MUST do the following settings regardless of your taste
-  gROOT->SetStyle("Plain"); // Set the overall design to "Plain" mode
+  gROOT->SetStyle("Plain");      // Set the overall design to "Plain" mode
   gStyle->SetTitleBorderSize(0); // Remove the boarder from title panels
-  gStyle->SetFrameFillColor(0); // Set the frame color to white
-  gStyle->SetCanvasColor(0); // Set the canvas color to white
-  gStyle->SetPadBorderSize(0); // Remove uneccesary margin in pads
-  gStyle->SetPalette(1); // Rainbow color palette
+  gStyle->SetFrameFillColor(0);  // Set the frame color to white
+  gStyle->SetCanvasColor(0);     // Set the canvas color to white
+  gStyle->SetPadBorderSize(0);   // Remove uneccesary margin in pads
+  gStyle->SetPalette(1);         // Rainbow color palette
 
   // Change the default position of titles to top-center (optional)
   gStyle->SetTitleAlign(22);

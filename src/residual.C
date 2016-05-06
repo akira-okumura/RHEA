@@ -1,10 +1,9 @@
-void residual()
-{
+void residual() {
   TGraphErrors* gra = new TGraphErrors();
   gra->SetTitle(";Time (s);Voltage (V)");
-  for(int i = 0; i < 20; i++){
+  for (int i = 0; i < 20; ++i) {
     double x = i + 0.5;
-    double y = 5*sin(x);
+    double y = 5 * sin(x);
     double ey = gRandom->Gaus();
     gra->SetPoint(i, x, y + ey);
     gra->SetPointError(i, 0, 1);
@@ -34,11 +33,11 @@ void residual()
   TGraphErrors* res = new TGraphErrors();
   res->SetTitle(";Time (s);#chi");
 
-  for(int i = 0; i < 20; i++){
+  for (int i = 0; i < 20; ++i) {
     double x = gra->GetX()[i];
     double y = gra->GetY()[i];
     double ey = gra->GetErrorY(i);
-    res->SetPoint(i, x, (y - f1->Eval(x))/ey);
+    res->SetPoint(i, x, (y - f1->Eval(x)) / ey);
     res->SetPointError(i, 0, 1);
   } // i
 

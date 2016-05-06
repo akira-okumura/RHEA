@@ -5,11 +5,12 @@ void StandardError() {
   const Double_t kSigma = 1.;
 
   TH1D* hMeanError = new TH1D("hMeanError", ";<#it{x}>", 100, -0.05, 0.05);
-  TH1D* hStdDevError = new TH1D("hStdDevError", ";#it{#sigma}_{#it{x}}", 100, -0.05, 0.05);
+  TH1D* hStdDevError =
+      new TH1D("hStdDevError", ";#it{#sigma}_{#it{x}}", 100, -0.05, 0.05);
 
-  for(Int_t i = 0; i < kRepeat; i++){
+  for (Int_t i = 0; i < kRepeat; ++i) {
     TH1D h("", "", 100, -5, 5);
-    for(Int_t j = 0; j < kSampleSize; j++){
+    for (Int_t j = 0; j < kSampleSize; ++j) {
       Double_t x = gRandom->Gaus(kMean, kSigma);
       h.Fill(x);
     }

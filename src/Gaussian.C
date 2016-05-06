@@ -5,8 +5,10 @@ void Gaussian() {
   TF1* f[kN];
   TLegend* leg = new TLegend(0.15, 0.6, 0.4, 0.85);
 
-  for(Int_t i = 0; i < kN; i++) {
-    f[i] = new TF1(Form("Gauss%d", i), "1/(2*pi*[0]**2)**0.5*exp(-(x-[1])**2/(2*[0]**2))", -10., 10.);
+  for (Int_t i = 0; i < kN; ++i) {
+    f[i] =
+        new TF1(Form("Gauss%d", i),
+                "1/(2*pi*[0]**2)**0.5*exp(-(x-[1])**2/(2*[0]**2))", -10., 10.);
     f[i]->SetParameter(0, kSigma[i]);
     f[i]->SetParameter(1, kMean[i]);
     f[i]->SetLineColor(i + 1);
@@ -21,7 +23,9 @@ void Gaussian() {
       f[i]->GetYaxis()->SetRangeUser(0, 1);
     }
 
-    leg->AddEntry(f[i], Form("#it{#mu} = %4.1f, #it{#sigma} = %.1f", kMean[i], kSigma[i]), "l");
+    leg->AddEntry(
+        f[i], Form("#it{#mu} = %4.1f, #it{#sigma} = %.1f", kMean[i], kSigma[i]),
+        "l");
   }
 
   leg->Draw();

@@ -1,14 +1,13 @@
-void multi_palette()
-{
+void multi_palette() {
   gStyle->SetOptStat(0);
 
   TCanvas* can = new TCanvas("can", "can", 400, 600);
   can->Divide(2, 3, 1e-10, 1e-10);
-  
-  TH2D* hist  = new TH2D("hist", "", 50, -5, 5, 50, -5, 5);
+
+  TH2D* hist = new TH2D("hist", "", 50, -5, 5, 50, -5, 5);
   hist->SetContour(100);
 
-  for(int i = 0; i < 100000; i++){
+  for (int i = 0; i < 100000; ++i) {
     double x = gRandom->Gaus();
     double y = gRandom->Gaus();
     hist->Fill(x, y);
@@ -25,7 +24,7 @@ void multi_palette()
   exe[4] = new TExec("ex4", "BPalette();");
   exe[5] = new TExec("ex5", "RBPalette();");
 
-  for(int i = 0; i < 6; i++){
+  for (int i = 0; i < 6; ++i) {
     gPad = can->cd(i + 1);
     hist->Draw("axis z");
     exe[i]->Draw();
