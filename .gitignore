@@ -11,4 +11,6 @@
 /src/*_C.d
 /src/*_C.so
 /src/*_C_*.pcm
+/src/*pyc
+/src/a.out
 /fig/*.xbb
