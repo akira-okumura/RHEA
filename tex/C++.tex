@@ -161,20 +161,20 @@ before = before * before + 1;
     ret = v2;
   }
 \end{lstlisting}
-という\texttt{if}文が出てきます。これを日本語訳すると、「もし（\texttt{if}）\texttt{v1}が\texttt{v2}よりも小さければ、\texttt{ret}に\texttt{v1}を代入しなさい。そうでなければ（\texttt{else}）\texttt{v2}を代入しなさい」となります。\texttt{<}は関係演算子や比較演算子（relational operator、comparison operator）と呼ばれるものです。もし左辺が小さければ1を、そうでなければ0を返します。つまり
+という\texttt{if}文が出てきます。これを日本語訳すると、「もし（\texttt{if}）\texttt{v1}が\texttt{v2}よりも小さければ、\texttt{ret}に\texttt{v1}を代入しなさい。そうでなければ（\texttt{else}）\texttt{v2}を代入しなさい」となります。\texttt{<}は関係演算子や比較演算子（relational operator、comparison operator）と呼ばれるものです。もし左辺が小さければ\texttt{true}を、そうでなければ\texttt{false}を返します。つまり
 \begin{lstlisting}[language=c++]
-int a = 10 < 20;
-int b = 10 > 20;
+bool a = 10 < 20;
+bool b = 10 > 20;
 \end{lstlisting}
-とすれば、\texttt{a}と\texttt{b}の値はそれぞれ1と0になります。\texttt{if}文の中身（\texttt{\{}と\texttt{\}}で囲まれた部分）は、条件式が1のときだけ実行されます。\texttt{v1}が小さいときは返り値として\texttt{v1}を返して\texttt{min}関数は終了します。
+とすれば、\texttt{a}と\texttt{b}の値はそれぞれ\texttt{true}と\texttt{false}になります。\texttt{if}文の中身（\texttt{\{}と\texttt{\}}で囲まれた部分）は、条件式が\texttt{true}もしくは真（非ゼロの値）のときだけ実行されます。\texttt{v1}が小さいときは返り値として\texttt{v1}を返して\texttt{min}関数は終了します。
 
-\texttt{<}があれば、当然\texttt{>}も存在します。同様に、 \texttt{<=}と\texttt{>=}も存在します。それぞれ見たままの通りで、$<$、$>$、$\le$、$\ge$を表します。一見その機能が分かりにくい、\texttt{==}と\texttt{!=}も存在します。前者は両辺が等しいときに1を返し、後者は等しくないときに1を返します\footnote{文字列の比較は、比較演算子ではできません。これは\ref{sec:ポインタと参照}節で説明します。}。
+\texttt{<}があれば、当然\texttt{>}も存在します。同様に、 \texttt{<=}と\texttt{>=}も存在します。それぞれ見たままの通りで、$<$、$>$、$\le$、$\ge$を表します。一見その機能が分かりにくい、\texttt{==}と\texttt{!=}も存在します。前者は両辺が等しいときに\texttt{true}を返し、後者は等しくないときに\texttt{true}を返します\footnote{C文字列の比較は、比較演算子ではできません。これは\ref{sec:ポインタと参照}節で説明します。}。
 
 \texttt{>}を使って、\texttt{max}関数も定義しました。しかし今度は
 \begin{lstlisting}[language=c++]
   return v1 > v2 ? v1 : v2;
 \end{lstlisting}
-という、わけの分からない記号が並んでいます。これは3項演算子と呼ばれる記法で、最初は分かりにくいですが慣れると\texttt{min}関数の中身よりも分かりやすいはずです。\texttt{?}と\texttt{:}で、これは3つの部分に分かれています。日本語に訳すと、「もし\texttt{v1}が\texttt{v2}よりも大きければ \texttt{?} \texttt{v1}を返す \texttt{:} そうでなければ\texttt{v2}を返す」となっています。
+という、わけの分からない記号が並んでいます。これは三項演算子もしくは条件演算子と呼ばれる記法で、最初は分かりにくいですが慣れると\texttt{min}関数の中身よりも分かりやすいはずです。\texttt{?}と\texttt{:}で、これは3つの部分に分かれています。日本語に訳すと、「もし\texttt{v1}が\texttt{v2}よりも大きければ \texttt{?} \texttt{v1}を返す \texttt{:} そうでなければ\texttt{v2}を返す」となっています。
 
 \section{\texttt{for}文}
 
