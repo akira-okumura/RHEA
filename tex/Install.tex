@@ -71,6 +71,11 @@ $ sudo tar zxvf ~/root_v6.06.02.macosx64-10.11-clang70.tar.gz
 \end{lstlisting}
 コンパイル済みのバイナリは、全ての環境用に配布されているわけではありません。ROOTのダウンロードページ\footnote{\url{https://root.cern.ch/content/release-60602}}から、自分の環境に対応したものをダウンロードしましょう\footnote{2016年4月現在、OS X 10.9（Mavericks）、10.10（Yosemite）、10.11（El Capitan）、RHEL6クローン（Scientific Linux 6など）、RHEL7クローン（CentOS 7など）などにバイナリ配布があります。}。
 
+\texttt{make}実行時に何もオプションを渡さない場合、ROOTの標準機能のみがコンパイルされます。例えば発展的な機能である\texttt{minuit2}や\texttt{gdml}は「Enabled support」の一覧に入っていません。このような機能が必要となった場合、次のようにオプションをつけて実行してください。
+\begin{lstlisting}[language=bash]
+$ ./configure --enable-minuit2 --enable-gdml
+\end{lstlisting}
+
 \subsection{\texttt{CMake}を使ったコンパイル}
 \label{subsec_compile_cmake}
 最近の\texttt{ROOT}では、\texttt{configure}コマンドではなく\texttt{cmake}コマンド\footnote{\url{https://cmake.org/}}を使ってビルドすることができます。これは\texttt{Geant4}でも同様で、最近のソフトウェアの流れです。\texttt{CMake}はまだ完全に市民権を得たわけではありませんが、徐々に浸透しつつあるため、興味のある人は\texttt{CMake}でビルドしてみるのも良いでしょう。
@@ -95,6 +100,11 @@ $ cmake ..
 あとは、\texttt{configure}のときと同様に\texttt{make}を実行します。
 \begin{lstlisting}[language=bash]
 $ make
+\end{lstlisting}
+
+\texttt{cmake}実行時に何もオプションを渡さない場合、\texttt{configure}の説明と同様、発展的な機能は「Enabled support」の一覧に入りません。\texttt{cmake}の場合は次のようにオプションをつけて実行してください。
+\begin{lstlisting}[language=bash]
+$ cmake ../ -Dminuit2=ON -Dgdml=ON
 \end{lstlisting}
 
 \subsection{最低限の初期設定}
