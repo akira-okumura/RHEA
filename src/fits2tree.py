@@ -54,8 +54,12 @@ def main(input_fits_file, output_root_file):
         event = data[i]
         if i%100 == 0:
             print i
-        for arr, col in zip(arrays, event):
-            arr[:] = col
+        #for arr in zip(arrays):
+        #for col in zip(event):
+        for col in event:
+        #for arr, col in zip(arrays, event):
+            pass
+        #    arr[:] = col
 
         fill()
 
