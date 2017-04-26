@@ -105,7 +105,7 @@ root [7] h2->Draw("colz")
 \begin{lstlisting}[language=C++]
 root [0] TCanvas* can = new TCanvas("can", "can", 100, 100)
 \end{lstlisting}
-のように第3、第4引数に横幅と高さを指定します。しかし予想外にも、図\ref{fig_100x100_png}に示すように、実はこの大きさは描画領域の大きさではありません。メニューバーは描画領域外周部まで含めた大きさなのです。したがって、実際に描画できる部分の大きさは、筆者の環境では$96\times72$ピクセルになってしまいます。図\ref{fig_100x100_v2_png}のように、描画領域を正確に$100\times100$ピクセルにしたい場合は、コード\ref{code_PreciseSizeCanvas}のような関数を用意しましょう。
+のように第3、第4引数に横幅と高さを指定します。しかし予想外にも、図\ref{fig_100x100_png}に示すように、実はこの大きさは描画領域の大きさではありません。メニューバーは描画領域外周部まで含めた大きさなのです。したがって、実際に描画できる部分の大きさは、筆者の環境では$96\times72$ピクセルになってしまいます。図\ref{fig_100x100_v2_png}のように、描画領域を正確に$100\times100$ピクセルにしたい場合は、コード\ref{code_ExactSizeCanvas}のような関数を用意しましょう。
 
 \begin{figure}
   \centering
@@ -122,13 +122,13 @@ root [0] TCanvas* can = new TCanvas("can", "can", 100, 100)
 \end{figure}
 
 \begin{NoFloat}
-\lstinputlisting[language=c++,caption=\texttt{PreciseSizeCanvas.C},label=code_PreciseSizeCanvas,numbers=left]{src/PreciseSizeCanvas.C}
+\lstinputlisting[language=c++,caption=\texttt{ExactSizeCanvas.C},label=code_ExactSizeCanvas,numbers=left]{src/ExactSizeCanvas.C}
 \end{NoFloat}
 
-次のように、\texttt{PresiceSizeCanvas.C}をロードしてから、\texttt{PresiceSizeCanvas}関数を\texttt{TCanvas}のコンストラクタのように使用すれば、描画領域が丁度$400\times400$ピクセルのキャンバスが得られます。
+次のように、\texttt{ExactSizeCanvas.C}をロードしてから、\texttt{ExactSizeCanvas}関数を\texttt{TCanvas}のコンストラクタのように使用すれば、描画領域が丁度$400\times400$ピクセルのキャンバスが得られます。
 \begin{lstlisting}[language=C++]
-root [0] .L PresiceSizeCanvas.C
-root [1] TCanvas* can = new PresiceSizeCanvas("can", "can", 400, 400)
+root [0] .L ExactSizeCanvas.C
+root [1] TCanvas* can = new ExactSizeCanvas("can", "can", 400, 400)
 \end{lstlisting}
 もし、得られた描画領域が$400\times400$でない場合は、お使いのコンピュータの画面の高さが$1000$ピクセル未満の可能性があります\footnote{画面が小さすぎるとROOTが勝手に判断し、\texttt{TCanvas}の大きさを自動調整するためです。}。\texttt{~/.rootrc}の
 \begin{lstlisting}
