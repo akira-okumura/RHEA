@@ -22,15 +22,84 @@ $ curl -O https://root.cern.ch/download/root_v6.08.06.source.tar.gz
 \end{lstlisting}
 などとして、好きなディレクトリにダウンロードして下さい。今の例では、\texttt{root\_v6.08.06.source.tar.gz}がホームディレクトリ（\texttt{\~}）に保存されます\footnote{ホームディレクトリとは、ユーザごとのファイルを置くためのディレクトリのことです。例えば Linux だと、ユーザ\texttt{oxon}の場合は\texttt{/home/oxon}が一般的にホームディレクトリになります。OS X の場合は\texttt{/Users/oxon}になります。これらは省略して\texttt{{\textasciitilde}oxon}、\texttt{\textasciitilde}、\texttt{\$HOME}と書かれることがあります。}。
 
-\subsection{\texttt{configure}を使ったコンパイル（非推奨）}
-\label{subsec_compile_configure}
+\subsection{\texttt{CMake}を使ったコンパイル（推奨）}
+\label{subsec_compile_cmake}
+最近の\texttt{ROOT}（6.08/00以降）では、後述する\texttt{configure}コマンドではなく\texttt{cmake}コマンド\footnote{\url{https://cmake.org/}}を使ってビルドすることが推奨されており、\texttt{configure}は既にサポート対象外です。これは\texttt{Geant4}でも同様で、最近のソフトウェアの流れです。\texttt{CMake}はまだ完全に市民権を得たわけではありませんが、徐々にソフトウェア開発で浸透しつつあります。
+
+\texttt{yum}や\texttt{homebrew}などのパッケージ管理ソフトウェア（付録~\ref{chap_package}参照）を使うか、自分で\texttt{CMake}のページからダウンロードし、まずは\texttt{CMake}を導入します。ROOT 6.08.06では\texttt{CMake}がバージョン3.4.3以上である必要がありますが、CentOS~7 や Scientific Linux~7 で\texttt{yum}を普通に使うと、バージョン2.8の\texttt{CMake}が入ってしまうので、自力でインストールしましょう。
+
 ROOTのコンパイル作業やインストール先は、好きな場所でやって構いません。もしあなたがコンピュータの管理者権限を持っているならば、\texttt{/usr/local}の下にインストールするのが標準的です。次のように、ターミナルから好きなディレクトリに移動し、ソースコードを展開して下さい\footnote{この例のように、先頭に\texttt{\$}がついている行は、ターミナルで入力していることを表します。実際にターミナルから入力する内容は、\texttt{\$}とその直後の半角スペースを取り除いた内容ですので、注意して下さい。}\footnote{管理者権限を持っていなかったり、\texttt{sudo}コマンドを使用できない場合、一般ユーザでもインストール可能なディレクトリを選択してください。}。
+
 \begin{lstlisting}[language=bash]
 $ cd /usr/local
 $ sudo tar zxvf ~/root_v6.08.06.source.tar.gz
 \end{lstlisting}
 
-\texttt{root-6.08.06}という名前のディレクトリが作成されるので、そこに移動してコンパイルを行います。一般的なソフトウェアのコンパイルと同様に、\texttt{configure}スクリプトを実行します。もし管理者権限を持たない一般ユーザとしてホームディレクトリなどで作業する場合、以降\texttt{sudo}はつける必要はありません。
+\texttt{root-6.08.06}という名前のディレクトリが作成されるので、そこに移動してコンパイルを行います。まずは作業用のディレクトリ\footnote{\texttt{cmake\_build}というディレクトリ名は好きなもので構いません。}を作成して移動し、\texttt{CMake}を実行します。もし管理者権限を持たない一般ユーザとしてホームディレクトリなどで作業する場合、以降\texttt{sudo}はつける必要はありません。
+
+\begin{lstlisting}[language=bash]
+$ sudo mkdir root-6.08.06/cmake_build
+$ cd root-6.08.06/cmake_build
+$ sudo cmake ..
+\end{lstlisting}
+
+\texttt{cmake}コマンドは上位ディレクトリ\footnote{上位ディレクトリは\texttt{..}で表します。}に存在する\texttt{CMakeLists.txt}というファイルの中身に従って、ROOTのビルドに必要となるライブラリが存在するかを調べたり、その計算機環境に適切なコンパイルオプションを指定したりする作業を行います。問題がなければ、色々とターミナルに出力された最後に次の表示が出るはずです。
+\begin{lstlisting}[language=bash]
+-- Enabled support for:  asimage astiff bonjour builtin_afterimage builtin_ftgl builtin_freetype builtin_gl2ps builtin_glew builtin_unuran builtin_llvm cxx11 cling cocoa exceptions explicitlink fitsio fortran gviz genvector krb5 ldap memstat opengl pch python shared sqlite thread tmva vdt xml
+.
+.
+.
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /usr/local/root-6.08.06/cmake_build
+\end{lstlisting}
+
+これで\texttt{/usr/local/root-6.08.06/cmake\_build/Makefile}が生成されました。このファイルは、ROOTの多数のソースコードファイルをどのような手順でコンパイルし、どのようなライブラリとリンクすれば良いかが記述されています。
+
+次に\texttt{make}コマンドを実行します。
+\begin{lstlisting}[language=bash]
+$ sudo make -j 4
+\end{lstlisting}
+\texttt{make}の使用経験がある人は\texttt{make}の実行後に\texttt{make install}を実行したくなるかもしれませんが、本書の説明通りに作業を進める場合は、別にやる必要はありません。複数コアのCPUを使える場合には、コアの数に応じて最後に\texttt{-j 4}のような引数をつけると、コンパイルが早くなります。
+
+問題がなければ、色々とターミナルに出力された最後に次のような表示が出るはずです。100\%の表示でエラーを出さずに終わっていれば正常にビルドできています\footnote{環境によっては\texttt{make}の処理の順番が前後する可能性があるので、必ずしもこれと完全に同じ表示ではないかもしれません。}。
+\begin{lstlisting}
+[100%] Building CXX object graf3d/eve/CMakeFiles/Eve.dir/src/TEveWindow.cxx.o
+[100%] Building CXX object graf3d/eve/CMakeFiles/Eve.dir/src/TEveWindowEditor.cxx.o
+[100%] Building CXX object graf3d/eve/CMakeFiles/Eve.dir/src/TEveWindowManager.cxx.o
+[100%] Linking CXX shared library ../../lib/libEve.so
+[100%] Built target Eve
+\end{lstlisting}
+
+これまで見てきたように、\texttt{CMake}を使用したソフトウェアのビルドは、\texttt{cmake}コマンドを使い\texttt{CMakeLists.txt}に従った\texttt{Makefile}の生成、\texttt{Makefile}に従った\texttt{make}コマンドの実行という流れになっています。
+
+\texttt{cmake}実行時に何もオプションを渡さない場合、ROOTの標準機能のみがコンパイルされます。例えば発展的な機能である\texttt{minuit2}や\texttt{gdml}は「Enabled support」の一覧に入っていません。このような機能が必要となった場合、次のようにオプションをつけて実行してください。
+
+\begin{lstlisting}[language=bash]
+$ sudo cmake .. -Dminuit2=ON -Dgdml=ON
+\end{lstlisting}
+
+ここまででエラーが出なければ成功です。もし不運にもエラーが出てしまった人は、コンパイル済みのバイナリをダウンロードしましょう。以下は、OS X版をダウンロードした場合の例です。コンパイル済みのものは最新版に更新されていない可能性もあるため、やはり自分でコンパイルするのが確実です。
+\begin{lstlisting}[language=bash]
+$ cd ~
+$ curl -O https://root.cern.ch/download/root_v6.08.06.macosx64-10.12-clang80.tar.gz
+$ cd /usr/local
+$ sudo tar zxvf ~/root_v6.08.06.macosx64-10.12-clang80.tar.gz
+\end{lstlisting}
+コンパイル済みのバイナリは、全ての環境用に配布されているわけではありません。ROOTのダウンロードページ\footnote{\url{https://root.cern.ch/content/release-60806}}から、自分の環境に対応したものをダウンロードしましょう\footnote{2017年4月現在、OS X Yosemite（10.10）、OS X El Capitan（10.11）、macOS Sierra（10.12）、RHEL7クローン（CentOS Cern 7）などにバイナリ配布があります。}。
+
+\subsection{\texttt{configure}を使ったコンパイル（非推奨）}
+\label{subsec_compile_configure}
+
+最近のROOTでは非推奨ですが、\texttt{configure}スクリプトと\texttt{make}コマンドを使ったROOTのビルドは、かつて標準的な手法でした。また同様の手法で多くのオープンソースソフトウェアをビルドすることもできますので、ここでは参考として\texttt{configure}と\texttt{make}を使ったビルド方法を紹介します。詳しくは付録~\ref{chap:configure}を参照してください。
+
+まずは\texttt{CMake}の時と同様にROOTのソースコードを\texttt{/usr/local}に展開します。
+\begin{lstlisting}[language=bash]
+$ cd /usr/local
+$ sudo tar zxvf ~/root_v6.08.06.source.tar.gz
+\end{lstlisting}
+
+次に\texttt{configure}スクリプトを実行します。このスクリプトは\texttt{CMake}や\texttt{CmakeLists.txt}と同様に、ソフトウェアのビルドに必要な情報を集約します。
 
 \begin{lstlisting}[language=bash]
 $ cd root-6.08.06
@@ -52,11 +121,11 @@ To build ROOT type:
 \end{lstlisting}
 ROOT 6.08/06 では、\texttt{configure}と\texttt{make}はサポートされないと表示されます。新しいROOTを使う場合は、節~\ref{subsec_compile_cmake}の\texttt{CMake}を使ったビルドを推奨します。
 
-では、出力の指示に従って\texttt{make}と打ってみましょう。
+あとは、\texttt{CMake}のときと同様に\texttt{make}を実行します。
 \begin{lstlisting}[language=bash]
 $ sudo make
 \end{lstlisting}
-\texttt{make}を実行した後に\texttt{make install}を実行したくなりますが、本書の説明通りに作業を進める場合は、別にやる必要はありません。複数コアのCPUを使える場合には、コアの数に応じて最後の行に\texttt{-j 4}のような引数をつけると、コンパイルが早くなります。うまくコンパイルが全て完了すると、以下のような表示が最後に出るはずです。
+うまくコンパイルが全て完了すると、次のような表示が最後に出るはずです。
 \begin{lstlisting}
 root [0] 
 Processing hsimple.C...
@@ -69,72 +138,24 @@ hsimple   : Real Time =   0.07 seconds Cpu Time =   0.05 seconds
    ============================================================
 \end{lstlisting}
 
-ここまででエラーが出なければ成功です。もし不運にもエラーが出てしまった人は、コンパイル済みのバイナリをダウンロードしましょう。以下は、OS X版をダウンロードした場合の例です。コンパイル済みのものは最新版に更新されていない可能性もあるため、やはり自分でコンパイルするのが確実です。
-\begin{lstlisting}[language=bash]
-$ cd ~
-$ curl -O https://root.cern.ch/download/root_v6.08.06.macosx64-10.12-clang80.tar.gz
-$ cd /usr/local
-$ sudo tar zxvf ~/root_v6.08.06.macosx64-10.12-clang80.tar.gz
-\end{lstlisting}
-コンパイル済みのバイナリは、全ての環境用に配布されているわけではありません。ROOTのダウンロードページ\footnote{\url{https://root.cern.ch/content/release-60806}}から、自分の環境に対応したものをダウンロードしましょう\footnote{2017年4月現在、OS X Yosemite（10.10）、OS X El Capitan（10.11）、macOS Sierra（10.12）、RHEL7クローン（CentOS Cern 7）などにバイナリ配布があります。}。
+\texttt{make}実行時に何もオプションを渡さない場合、発展的な機能やマイナーな機能は「Enabled support」の一覧に入りません。\texttt{make}実行時に例えば次のようにオプションをつけることで、オプションもビルドすることができるようになります。
 
-\texttt{make}実行時に何もオプションを渡さない場合、ROOTの標準機能のみがコンパイルされます。例えば発展的な機能である\texttt{minuit2}や\texttt{gdml}は「Enabled support」の一覧に入っていません。このような機能が必要となった場合、次のようにオプションをつけて実行してください。
 \begin{lstlisting}[language=bash]
 $ sudo ./configure --enable-minuit2 --enable-gdml
 \end{lstlisting}
 
-\subsection{\texttt{CMake}を使ったコンパイル（推奨）}
-\label{subsec_compile_cmake}
-最近の\texttt{ROOT}では、\texttt{configure}コマンドではなく\texttt{cmake}コマンド\footnote{\url{https://cmake.org/}}を使ってビルドすることが推奨されており、\texttt{configure}は既にサポート対象外です。これは\texttt{Geant4}でも同様で、最近のソフトウェアの流れです。\texttt{CMake}はまだ完全に市民権を得たわけではありませんが、徐々にソフトウェア開発で浸透しつつあります。
-
-\texttt{yum}や\texttt{homebrew}などのパッケージ管理ソフトウェア（付録~\ref{chap_package}参照）を使うか、自分で\texttt{CMake}のページからダウンロードし、まずは\texttt{CMake}を導入します。ROOT 6.08.06では\texttt{CMake}がバージョン3.4.3以上である必要がありますが、CentOS~7 や Scientific Linux~7 で\texttt{yum}を普通に使うと、バージョン2.8の\texttt{CMake}が入ってしまうので、自力でインストールしましょう。その後の流れは次の通りです\footnote{\texttt{cmake\_build}というディレクトリ名は好きなもので構いません。}。
-
-\begin{lstlisting}[language=bash]
-$ cd /usr/local
-$ sudo tar zxvf ~/root_v6.08.06.source.tar.gz
-$ sudo mkdir root-6.08.06/cmake_build
-$ cd root-6.08.06/cmake_build
-$ sudo cmake ..
-\end{lstlisting}
-
-問題がなければ、色々とターミナルに出力された最後に次の表示が出るはずです。
-\begin{lstlisting}[language=bash]
--- Enabled support for:  asimage astiff bonjour builtin_afterimage builtin_ftgl builtin_freetype builtin_gl2ps builtin_glew builtin_unuran builtin_llvm cxx11 cling cocoa exceptions explicitlink fitsio fortran gviz genvector krb5 ldap memstat opengl pch python shared sqlite thread tmva vdt xml
-.
-.
-.
--- Configuring done
--- Generating done
--- Build files have been written to: /usr/local/root-6.08.06/cmake_build
-\end{lstlisting}
-
-あとは、\texttt{configure}のときと同様に\texttt{make}を実行します。
-\begin{lstlisting}[language=bash]
-$ sudo make
-\end{lstlisting}
-問題がなければ、色々とターミナルに出力された最後に次のような表示が出るはずです。100\%の表示でエラーを出さずに終わっていれば正常にビルドできています\footnote{環境によっては\texttt{make}の処理の順番が前後する可能性があるので、必ずしもこれと完全に同じ表示ではないかもしれません。}。
-\begin{lstlisting}
-[100%] Building CXX object graf3d/eve/CMakeFiles/Eve.dir/src/TEveWindow.cxx.o
-[100%] Building CXX object graf3d/eve/CMakeFiles/Eve.dir/src/TEveWindowEditor.cxx.o
-[100%] Building CXX object graf3d/eve/CMakeFiles/Eve.dir/src/TEveWindowManager.cxx.o
-[100%] Linking CXX shared library ../../lib/libEve.so
-[100%] Built target Eve
-\end{lstlisting}
-
-\texttt{cmake}実行時に何もオプションを渡さない場合、\texttt{configure}の説明と同様、発展的な機能は「Enabled support」の一覧に入りません。\texttt{cmake}の場合は次のようにオプションをつけて実行してください。
-\begin{lstlisting}[language=bash]
-$ sudo cmake .. -Dminuit2=ON -Dgdml=ON
-\end{lstlisting}
-
 \subsection{最低限の初期設定}
 \label{subsec_settings}
-ソースをコンパイルしたり、バイナリ版をダウンロードしただけではROOTは使えるようになりません。ROOTの実行ファイルやライブラリの場所を設定する必要があります。次の3行を\texttt{\~{}/.bashrc}に書き足して下さい\footnote{もし\texttt{/usr/local/root-6.08.06}以外の場所にインストールした場合は、ディレクトリを適宜変更してください。}。
-\begin{NoFloat}
-\lstinputlisting[language=bash]{src/bashrc.sh}
-\end{NoFloat}
-もし\texttt{CMake}を使った場合は次のようになります。
+ソースをコンパイルしたり、バイナリ版をダウンロードしただけではROOTは使えるようになりません。ROOTの実行ファイルやライブラリの場所を設定する必要があります。\texttt{CMake}を使ってビルドした場合は、次の3行を\texttt{\~{}/.bashrc}に書き足して下さい\footnote{もし\texttt{/usr/local/root-6.08.06}以外の場所にインストールした場合は、ディレクトリを適宜変更してください。}。
 \begin{NoFloat}
 \lstinputlisting[language=bash]{src/bashrc_cmake.sh}
+\end{NoFloat}
+
+新しくターミナルを開いた場合、\texttt{bash}などのシェルが起動されます。この起動とともに各種設定が読み込まれ、その設定を\texttt{\~{}/.bashrc}に書くことになっています。1行目でROOTをビルドしたディレクトリに移動し、2行目でその下にあるシェルスクリプトを読み込み様々な環境変数を設定します。最後に3行目でもともといたディレクトリ\footnote{\texttt{-}は前にいたディレクトリを指します。}に戻り、そのときに吐かれる余計な標準出力を\texttt{/dev/null}に渡し、ターミナルに何も表示させないようにします。
+
+もし\texttt{configure}を使った場合は次のようになります。
+\begin{NoFloat}
+\lstinputlisting[language=bash]{src/bashrc.sh}
 \end{NoFloat}
 
 これらは、ログインシェルに\texttt{bash}を使っている人の場合です。もしzshを使っている場合は、\texttt{\~{}/.zshrc}に書いて下さい。書き終わったら、
@@ -151,14 +172,14 @@ $ source ~/.cshrc
 \end{lstlisting}
 とするか、新しいターミナルを開きましょう。\texttt{source}コマンドを実行する必要があるのは、初めて\texttt{.bashrc}や\texttt{.cshrc}の設定をROOT用に変更したときだけです。次にターミナルを開くときには自動的に処理されますので、\texttt{source}コマンドを打つ必要はありません。
 
-以上の設定で、使用しているシェルの環境変数の内容が更新されます。\texttt{ROOTSYS}という変数が追加され（これは\texttt{/usr/local/root-6.08.06}を指しているはずです）、\texttt{PATH}、\texttt{LD\_LIBRARY\_PATH}、\texttt{PYTHONPATH}などが\texttt{ROOTSYS}以下のディレクトリを含むように変更されています。次のコマンドの出力を確認してみましょう（ROOTをビルドする前から環境変数の設定がされている場合、表示が異なる可能性があります）。
+以上の設定で、使用しているシェルの環境変数の内容が更新されます。\texttt{ROOTSYS}という変数が追加され（これは\texttt{/usr/local/root-6.08.06/cmake\_build}を指しているはずです）、\texttt{PATH}、\texttt{LD\_LIBRARY\_PATH}、\texttt{PYTHONPATH}などが\texttt{ROOTSYS}以下のディレクトリを含むように変更されています。次のコマンドの出力を確認してみましょう（ROOTをビルドする前から環境変数の設定がされている場合、表示が異なる可能性があります）。
 \begin{lstlisting}[language=bash]
 $ echo $ROOTSYS
-/usr/local/root-6.08.06
+/usr/local/root-6.08.06/cmake_buiid
 $ echo $PATH
-/usr/local/root/bin-6.08.06:
+/usr/local/root-6.08.06/cmake_buiid/bin:
 $ echo $PYTHONPATH
-/usr/local/root-6.08.06/lib:
+/usr/local/root-6.08.06/cmake_buiid/lib:
 \end{lstlisting}
 
 \subsection{動作確認}

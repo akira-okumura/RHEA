@@ -79,13 +79,13 @@ root [7] h2->Draw("colz")
 \lstinputlisting[language=c++,caption=\texttt{frame\_fill\_color.C},label=code_frame_fill_color,numbers=left]{src/frame_fill_color.C}
 \end{NoFloat}
 
-コード\ref{code_frame_fill_color}は、フレームの背景色を変更する方法です。出力結果は図\ref{fig_frame_fill_color_eps}に示します。
+コード\ref{code_frame_fill_color}は、フレームの背景色を変更する方法です。出力結果は図\ref{fig_frame_fill_color_pdf}に示します。
 
 \begin{lstlisting}[language=C++]
   TPaletteAxis* palette 
     = (TPaletteAxis*)hist->GetListOfFunctions()->FindObject("palette"); 
 \end{lstlisting}
-この部分では、ヒストグラムから\texttt{TPaletteAxis}\footnote{図\ref{fig_frame_fill_color_eps}の右端にあるグラデーション付き目盛りのことです。}のポインタを取得します。その直前の行で\texttt{gPad}を更新しないと\texttt{0}を返すので注意してください。
+この部分では、ヒストグラムから\texttt{TPaletteAxis}\footnote{図\ref{fig_frame_fill_color_pdf}の右端にあるグラデーション付き目盛りのことです。}のポインタを取得します。その直前の行で\texttt{gPad}を更新しないと\texttt{0}を返すので注意してください。
 \begin{lstlisting}[language=C++]
   gPad->SetFrameFillColor(col); 
 \end{lstlisting}
