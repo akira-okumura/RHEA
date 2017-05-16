@@ -36,14 +36,14 @@ C++が分かればROOTは理解しやすいのですが、ユーザの利便性�
 $ g++ hello_world.cxx
 $ ./a.out
 \end{lstlisting}
-と打ちます\footnote{もし\texttt{g++}が見つからないという内容のエラーが出たら、お使いのコンピュータにGCCをインストールして下さい。「Scientific Linux GCC intall」「OS X GCC intall」などで検索すれば方法は見つかるはずです。Scientific Linux の場合は\texttt{yum}コマンドを使ってGCCを入れることができます。またOS Xの場合はXcodeをAppleからダウンロードしてインストールして下さい。}。
+と打ちます\footnote{もし\texttt{g++}が見つからないという内容のエラーが出たら、お使いのコンピュータにGCCもしくはClangをインストールして下さい。「Scientific Linux GCC intall」「OS X Clang intall」などで検索すれば方法は見つかるはずです。Scientific Linux の場合は\texttt{yum}コマンドを使ってGCCを入れることができます。Macの場合はXcodeをApp Storeからダウンロードしてインストールして下さい（無料）。}。
 \begin{lstlisting}
 Hello World!
 \end{lstlisting}
 と表示されるはずです。この一連の作業は、
 \begin{enumerate}
   \item あなたが\texttt{hello\_world.cxx}というプログラムをエディタで作成し
-  \item あなたが\texttt{g++}というコマンド\footnote{GNU Compiler Collection（GCC）に含まれる、C++用のコンパイラです。}に\texttt{hello\_world.cxx}をコンパイルするように指示を出し
+  \item あなたが\texttt{g++}というコマンド\footnote{GNU Compiler Collection（GCC）に含まれる、C++用のコンパイラです。Macで標準的に使用する\texttt{Clang}では\texttt{clang++}というコマンドが代わりに使えますが、\texttt{g++}コマンドが\texttt{clang++}を実際には呼び出すため、GCCの入っていないMacでも\texttt{g++}コマンドを使うことができます。}に\texttt{hello\_world.cxx}をコンパイルするように指示を出し
   \item \texttt{g++}が\texttt{hello\_world.cxx}をコンピュータが実行できるファイル\texttt{a.out}に変換し
   \item あなたが\texttt{a.out}を実行し
   \item 「Hello World!」という文字列が出力された
