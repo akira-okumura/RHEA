@@ -8,7 +8,7 @@ void Poisson() {
   TGraph* graphP[kN];
   TGraph* graphG[kN];
 
-  TLegend* leg = new TLegend(0.3, 0.6, 0.85, 0.85);
+  TLegend* leg = new TLegend(0.3, 0.65, 0.85, 0.85);
 
   for (Int_t i = 0; i < kN; ++i) {
     graphP[i] = new TGraph;
@@ -19,8 +19,6 @@ void Poisson() {
     graphP[i]->SetMarkerColor(i + 1);
     graphP[i]->SetMarkerStyle(20 + i);
     graphP[i]->SetLineColor(i + 1);
-
-    leg->AddEntry(graphP[i], Form("Poisson (#it{#lambda} = %2.0f)", kLambda[i]), "lp");
   }
 
   for (Int_t i = 0; i < kN; ++i) {
@@ -33,7 +31,10 @@ void Poisson() {
     graphG[i]->Draw("l same");
     graphG[i]->SetLineStyle(2);
     graphG[i]->SetLineColor(i + 1);
+  }
 
+  for (Int_t i = 0; i < kN; ++i) {
+    leg->AddEntry(graphP[i], Form("Poisson (#it{#lambda} = %2.0f)", kLambda[i]), "lp");
     leg->AddEntry(graphG[i], Form("Gaussian (#it{#mu} = %2.0f, #it{s} = #sqrt{%2.0f})", kLambda[i], kLambda[i]), "l");
   }
 
