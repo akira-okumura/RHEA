@@ -1,4 +1,5 @@
 TEX := platex
+BIB := pbibtex
 DVIPDFMX := dvipdfmx
 EXTRACTBB := extractbb
 
@@ -6,6 +7,7 @@ NAME := RHEA
 TEXS := $(NAME).tex $(wildcard tex/*.tex)
 FIGS := $(wildcard fig/*)
 SRCS := $(wildcard src/*)
+BBL  := $(NAME).bbl
 
 PDFS := $(wildcard fig/*pdf)
 PNGS := $(wildcard fig/*png)
@@ -23,8 +25,13 @@ all: $(NAME).pdf
 
 %.xbb: %.png
 	$(EXTRACTBB) $<
+%.aux: %.tex
+	$(TEX) $(NAME)
 
-$(NAME).dvi: $(TEXS) $(FIGS) $(SRCS) $(XBBS)
+$(BBL): $(NAME).aux $(NAME).bib $(NAME).bst
+	$(BIB) $(NAME)
+
+$(NAME).dvi: $(TEXS) $(FIGS) $(SRCS) $(XBBS) $(BBL)
 	$(TEX)	$(NAME)
 	(while egrep '^LaTeX Warning: Label' $(NAME).log;\
 		do $(TEX) $(NAME);\
@@ -34,4 +41,4 @@ $(NAME).pdf: $(NAME).dvi
 	$(DVIPDFMX) $^
 
 clean:
-	rm -f $(NAME).pdf $(NAME).dvi $(NAME).aux $(NAME).log $(NAME).out $(NAME).toc tex/*.aux *~ src/*~ tex/*~ $(XBBS)
+	rm -f $(NAME).pdf $(NAME).dvi $(NAME).aux $(NAME).log $(NAME).out $(NAME).toc $(NAME).bbl $(NAME).blg tex/*.aux *~ src/*~ tex/*~ $(XBBS)

@@ -6,6 +6,8 @@
 /RHEA.out
 /RHEA.toc
 /RHEA.dvi
+/RHEA.bbl
+/RHEA.blg
 /src/Vector3D
 /src/*.o
 /src/*_C.d
