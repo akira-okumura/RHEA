@@ -14,7 +14,7 @@
             bookmarksnumbered=false,
             bookmarkstype=toc]{hyperref}
 \AtBeginDvi{\special{pdf:tounicode EUC-UCS2}}
-\usepackage[dvipdfmx]{color}
+\usepackage[dvipdfmx]{xcolor}
 \usepackage{listings}
 \newcommand{\conted}{\texttt{cont'ed}} % for ROOT 6 prompt
 
@@ -57,10 +57,37 @@
 
 \usepackage[font=footnotesize,caption=false]{subfig}
 
+\newcommand{\emphasize}[1]{\textsf{\textbf{#1}}}
 \newcommand{\cmd}{\UTF{2318}}
 \renewcommand{\prechaptername}{} % Do not print ``第''
 \renewcommand{\postchaptername}{} % Do not print ``章''
 \renewcommand{\labelitemi}{$\circ$}
+
+% external link symbol
+% https://tex.stackexchange.com/questions/99316/symbol-for-external-links
+\usepackage{tikz}
+\newcommand{\ExternalLink}{%
+    \tikz[x=1.2ex, y=1.2ex, baseline=-0.05ex]{% 
+        \begin{scope}[x=1ex, y=1ex]
+            \clip (-0.1,-0.1) 
+                --++ (-0, 1.2) 
+                --++ (0.6, 0) 
+                --++ (0, -0.6) 
+                --++ (0.6, 0) 
+                --++ (0, -1);
+            \path[draw, 
+                line width = 0.5, 
+                rounded corners=0.5] 
+                (0,0) rectangle (1,1);
+        \end{scope}
+        \path[draw, line width = 0.5] (0.5, 0.5) 
+            -- (1, 1);
+        \path[draw, line width = 0.5] (0.6, 1) 
+            -- (1, 1) -- (1, 0.6);
+        }
+    }
+
+\newcommand{\myhref}[2]{\href{#1}{#2 \ExternalLink}}
 
 \makeatletter
 % Do not print ``\n'' before a chapter title
