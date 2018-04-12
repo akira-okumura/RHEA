@@ -11,35 +11,35 @@
 \label{subsec_download}
 ROOTは\url{http://root.cern.ch/}からダウンロードすることができます。既にコンパイルされているバイナリ版と、コンパイルされていないソースコードがあります。前者はコンパイルする必要がないので簡単ですが、本書では教育目的のため、ソースコードをダウンロードして、自分でコンパイルすることにします。
 
-2017年4月時点で、ROOT 6 の最新安定バージョン6.08/06です。バージョン5からバージョン6に変わるとき、大きな変更がありました。そのため、研究室によってはバージョン5系列を使っている人もまだまだ多いと思います。ROOT 5 では、バージョン 5.34/36 が最新です。最初の数字はメジャーバージョン、次の数字は大きな機能追加ごとに増えるマイナーバージョン、スラッシュの後ろの数字はバグフィックスを示す番号です。
+2018年4月時点で、ROOT 6 の最新安定バージョン6.12/02です。バージョン5からバージョン6に変わるとき、大きな変更がありました。そのため、研究室によってはバージョン5系列を使っている人もまだまだ多いと思います。ROOT 5 では、バージョン 5.34/36 が最新です\footnote{更新は 2016 年 4 月 5 日であり、今後は開発が継続されません。}。最初の数字はメジャーバージョン、次の数字は大きな機能追加ごとに増えるマイナーバージョン、スラッシュの後ろの数字はバグフィックスを示す番号です。
 
-どのバージョンを選択するかは研究室の計算機環境や実験グループの解析ソフトなどに依存しますが、本書では6.08/06を前提として話を進めます。
+どのバージョンを選択するかは研究室の計算機環境や実験グループの解析ソフトなどに依存しますが、本書では6.12/02を前提として話を進めます。
 
 上記URLを辿ると、ダウンロードのページがあります。リンクをクリックしてダウンロードすることも可能ですが、ここでは直接ターミナルからダウンロードします。
 \begin{lstlisting}[language=bash]
 $ cd ~
-$ curl -O https://root.cern.ch/download/root_v6.08.06.source.tar.gz
+$ curl -O https://root.cern.ch/download/root_v6.12.06.source.tar.gz
 \end{lstlisting}
-などとして、好きなディレクトリにダウンロードして下さい。今の例では、\texttt{root\_v6.08.06.source.tar.gz}がホームディレクトリ（\texttt{\~}）に保存されます\footnote{ホームディレクトリとは、ユーザごとのファイルを置くためのディレクトリのことです。例えば Linux だと、ユーザ\texttt{oxon}の場合は\texttt{/home/oxon}が一般的にホームディレクトリになります。OS X の場合は\texttt{/Users/oxon}になります。これらは省略して\texttt{{\textasciitilde}oxon}、\texttt{\textasciitilde}、\texttt{\$HOME}と書かれることがあります。}。
+などとして、好きなディレクトリにダウンロードして下さい。今の例では、\texttt{root\_v6.12.06.source.tar.gz}がホームディレクトリ（\texttt{\~}）に保存されます\footnote{ホームディレクトリとは、ユーザごとのファイルを置くためのディレクトリのことです。例えば Linux だと、ユーザ\texttt{oxon}の場合は\texttt{/home/oxon}が一般的にホームディレクトリになります。OS X の場合は\texttt{/Users/oxon}になります。これらは省略して\texttt{{\textasciitilde}oxon}、\texttt{\textasciitilde}、\texttt{\$HOME}と書かれることがあります。}。
 
 \subsection{\texttt{CMake}を使ったコンパイル（推奨）}
 \label{subsec_compile_cmake}
 最近の\texttt{ROOT}（6.08/00以降）では、後述する\texttt{configure}コマンドではなく\texttt{cmake}コマンド\footnote{\url{https://cmake.org/}}を使ってビルドすることが推奨されており、\texttt{configure}は既にサポート対象外です。これは\texttt{Geant4}でも同様で、最近のソフトウェアの流れです。\texttt{CMake}はまだ完全に市民権を得たわけではありませんが、徐々にソフトウェア開発で浸透しつつあります。
 
-\texttt{yum}や\texttt{homebrew}などのパッケージ管理ソフトウェア（付録~\ref{chap_package}参照）を使うか、自分で\texttt{CMake}のページからダウンロードし、まずは\texttt{CMake}を導入します。ROOT 6.08.06では\texttt{CMake}がバージョン3.4.3以上である必要がありますが、CentOS~7 や Scientific Linux~7 で\texttt{yum}を普通に使うと、バージョン2.8の\texttt{CMake}が入ってしまうので、自力でインストールしましょう。
+\texttt{yum}や\texttt{homebrew}などのパッケージ管理ソフトウェア（付録~\ref{chap_package}参照）を使うか、自分で\texttt{CMake}のページからダウンロードし、まずは\texttt{CMake}を導入します。ROOT 6.12.06では\texttt{CMake}がバージョン3.4.3以上である必要がありますが、CentOS~7 や Scientific Linux~7 で\texttt{yum}を普通に使うと、バージョン2.8の\texttt{CMake}が入ってしまうので、自力でインストールしましょう。
 
 ROOTのコンパイル作業やインストール先は、好きな場所でやって構いません。もしあなたがコンピュータの管理者権限を持っているならば、\texttt{/usr/local}の下にインストールするのが標準的です。次のように、ターミナルから好きなディレクトリに移動し、ソースコードを展開して下さい\footnote{この例のように、先頭に\texttt{\$}がついている行は、ターミナルで入力していることを表します。実際にターミナルから入力する内容は、\texttt{\$}とその直後の半角スペースを取り除いた内容ですので、注意して下さい。}\footnote{管理者権限を持っていなかったり、\texttt{sudo}コマンドを使用できない場合、一般ユーザでもインストール可能なディレクトリを選択してください。}。
 
 \begin{lstlisting}[language=bash]
 $ cd /usr/local
-$ sudo tar zxvf ~/root_v6.08.06.source.tar.gz
+$ sudo tar zxvf ~/root_v6.12.06.source.tar.gz
 \end{lstlisting}
 
-\texttt{root-6.08.06}という名前のディレクトリが作成されるので、そこに移動してコンパイルを行います。まずは作業用のディレクトリ\footnote{\texttt{cmake\_build}というディレクトリ名は好きなもので構いません。}を作成して移動し、\texttt{CMake}を実行します。もし管理者権限を持たない一般ユーザとしてホームディレクトリなどで作業する場合、以降\texttt{sudo}はつける必要はありません。
+\texttt{root-6.12.06}という名前のディレクトリが作成されるので、そこに移動してコンパイルを行います。まずは作業用のディレクトリ\footnote{\texttt{cmake\_build}というディレクトリ名は好きなもので構いません。}を作成して移動し、\texttt{CMake}を実行します。もし管理者権限を持たない一般ユーザとしてホームディレクトリなどで作業する場合、以降\texttt{sudo}はつける必要はありません。
 
 \begin{lstlisting}[language=bash]
-$ sudo mkdir root-6.08.06/cmake_build
-$ cd root-6.08.06/cmake_build
+$ sudo mkdir root-6.12.06/cmake_build
+$ cd root-6.12.06/cmake_build
 $ sudo cmake ..
 \end{lstlisting}
 
@@ -51,16 +51,16 @@ $ sudo cmake ..
 .
 -- Configuring done
 -- Generating done
--- Build files have been written to: /usr/local/root-6.08.06/cmake_build
+-- Build files have been written to: /usr/local/root-6.12.06/cmake_build
 \end{lstlisting}
 
-これで\texttt{/usr/local/root-6.08.06/cmake\_build/Makefile}が生成されました。このファイルは、ROOTの多数のソースコードファイルをどのような手順でコンパイルし、どのようなライブラリとリンクすれば良いかが記述されています。
+これで\texttt{/usr/local/root-6.12.06/cmake\_build/Makefile}が生成されました。このファイルは、ROOTの多数のソースコードファイルをどのような手順でコンパイルし、どのようなライブラリとリンクすれば良いかが記述されています。
 
 次に\texttt{make}コマンドを実行します。
 \begin{lstlisting}[language=bash]
-$ sudo make -j 4
+$ sudo make -j 8
 \end{lstlisting}
-\texttt{make}の使用経験がある人は\texttt{make}の実行後に\texttt{make install}を実行したくなるかもしれませんが、本書の説明通りに作業を進める場合は、別にやる必要はありません。複数コアのCPUを使える場合には、コアの数に応じて最後に\texttt{-j 4}のような引数をつけると、コンパイルが早くなります。
+\texttt{make}の使用経験がある人は\texttt{make}の実行後に\texttt{make install}を実行したくなるかもしれませんが、本書の説明通りに作業を進める場合は、別にやる必要はありません。複数コアのCPUを使える場合には、コアの数に応じて最後に\texttt{-j 8}のような引数をつけると、コンパイルが早くなります\footnote{最近のCPUでは実コア数に比べて論理コア数が多い場合があります。例えば Hyper-Threading という技術の含まれる Intel の CPU の場合、実コア数が4でも、論理コア数が8に見えるため、\texttt{-j 8}をつけると速度を最大化できます。}。
 
 問題がなければ、色々とターミナルに出力された最後に次のような表示が出るはずです。100\%の表示でエラーを出さずに終わっていれば正常にビルドできています\footnote{環境によっては\texttt{make}の処理の順番が前後する可能性があるので、必ずしもこれと完全に同じ表示ではないかもしれません。}。
 \begin{lstlisting}
@@ -82,11 +82,11 @@ $ sudo cmake .. -Dminuit2=ON -Dgdml=ON
 ここまででエラーが出なければ成功です。もし不運にもエラーが出てしまった人は、コンパイル済みのバイナリをダウンロードしましょう。以下は、OS X版をダウンロードした場合の例です。コンパイル済みのものは最新版に更新されていない可能性もあるため、やはり自分でコンパイルするのが確実です。
 \begin{lstlisting}[language=bash]
 $ cd ~
-$ curl -O https://root.cern.ch/download/root_v6.08.06.macosx64-10.12-clang80.tar.gz
+$ curl -O https://root.cern.ch/download/root_v6.12.06.macosx64-10.12-clang80.tar.gz
 $ cd /usr/local
-$ sudo tar zxvf ~/root_v6.08.06.macosx64-10.12-clang80.tar.gz
+$ sudo tar zxvf ~/root_v6.12.06.macosx64-10.12-clang80.tar.gz
 \end{lstlisting}
-コンパイル済みのバイナリは、全ての環境用に配布されているわけではありません。ROOTのダウンロードページ\footnote{\url{https://root.cern.ch/content/release-60806}}から、自分の環境に対応したものをダウンロードしましょう\footnote{2017年4月現在、OS X Yosemite（10.10）、OS X El Capitan（10.11）、macOS Sierra（10.12）、RHEL7クローン（CentOS Cern 7）などにバイナリ配布があります。}。
+コンパイル済みのバイナリは、全ての環境用に配布されているわけではありません。ROOTのダウンロードページ\footnote{\url{https://root.cern.ch/content/release-60806}}から、自分の環境に対応したものをダウンロードしましょう\footnote{2018年4月現在、macOS High Sierra（10.13）、macOS Sierra（10.12）、RHEL7クローン（CentOS Cern 7）などにバイナリ配布があります。}。
 
 \subsection{\texttt{configure}を使ったコンパイル（非推奨）}
 \label{subsec_compile_configure}
@@ -96,13 +96,13 @@ $ sudo tar zxvf ~/root_v6.08.06.macosx64-10.12-clang80.tar.gz
 まずは\texttt{CMake}の時と同様にROOTのソースコードを\texttt{/usr/local}に展開します。
 \begin{lstlisting}[language=bash]
 $ cd /usr/local
-$ sudo tar zxvf ~/root_v6.08.06.source.tar.gz
+$ sudo tar zxvf ~/root_v6.12.06.source.tar.gz
 \end{lstlisting}
 
 次に\texttt{configure}スクリプトを実行します。このスクリプトは\texttt{CMake}や\texttt{CmakeLists.txt}と同様に、ソフトウェアのビルドに必要な情報を集約します。
 
 \begin{lstlisting}[language=bash]
-$ cd root-6.08.06
+$ cd root-6.12.06
 $ sudo ./configure
 \end{lstlisting}
 
@@ -146,7 +146,7 @@ $ sudo ./configure --enable-minuit2 --enable-gdml
 
 \subsection{最低限の初期設定}
 \label{subsec_settings}
-ソースをコンパイルしたり、バイナリ版をダウンロードしただけではROOTは使えるようになりません。ROOTの実行ファイルやライブラリの場所を設定する必要があります。\texttt{CMake}を使ってビルドした場合は、次の3行を\texttt{\~{}/.bashrc}に書き足して下さい\footnote{もし\texttt{/usr/local/root-6.08.06}以外の場所にインストールした場合は、ディレクトリを適宜変更してください。}。
+ソースをコンパイルしたり、バイナリ版をダウンロードしただけではROOTは使えるようになりません。ROOTの実行ファイルやライブラリの場所を設定する必要があります。\texttt{CMake}を使ってビルドした場合は、次の3行を\texttt{\~{}/.bashrc}に書き足して下さい\footnote{もし\texttt{/usr/local/root-6.12.06}以外の場所にインストールした場合は、ディレクトリを適宜変更してください。}。
 \begin{NoFloat}
 \lstinputlisting[language=bash]{src/bashrc_cmake.sh}
 \end{NoFloat}
@@ -172,14 +172,14 @@ $ source ~/.cshrc
 \end{lstlisting}
 とするか、新しいターミナルを開きましょう。\texttt{source}コマンドを実行する必要があるのは、初めて\texttt{.bashrc}や\texttt{.cshrc}の設定をROOT用に変更したときだけです。次にターミナルを開くときには自動的に処理されますので、\texttt{source}コマンドを打つ必要はありません。
 
-以上の設定で、使用しているシェルの環境変数の内容が更新されます。\texttt{ROOTSYS}という変数が追加され（これは\texttt{/usr/local/root-6.08.06/cmake\_build}を指しているはずです）、\texttt{PATH}、\texttt{LD\_LIBRARY\_PATH}、\texttt{PYTHONPATH}などが\texttt{ROOTSYS}以下のディレクトリを含むように変更されています。次のコマンドの出力を確認してみましょう（ROOTをビルドする前から環境変数の設定がされている場合、表示が異なる可能性があります）。
+以上の設定で、使用しているシェルの環境変数の内容が更新されます。\texttt{ROOTSYS}という変数が追加され（これは\texttt{/usr/local/root-6.12.06/cmake\_build}を指しているはずです）、\texttt{PATH}、\texttt{LD\_LIBRARY\_PATH}、\texttt{PYTHONPATH}などが\texttt{ROOTSYS}以下のディレクトリを含むように変更されています。次のコマンドの出力を確認してみましょう（ROOTをビルドする前から環境変数の設定がされている場合、表示が異なる可能性があります）。
 \begin{lstlisting}[language=bash]
 $ echo $ROOTSYS
-/usr/local/root-6.08.06/cmake_buiid
+/usr/local/root-6.12.06/cmake_buiid
 $ echo $PATH
-/usr/local/root-6.08.06/cmake_buiid/bin:
+/usr/local/root-6.12.06/cmake_buiid/bin:
 $ echo $PYTHONPATH
-/usr/local/root-6.08.06/cmake_buiid/lib:
+/usr/local/root-6.12.06/cmake_buiid/lib:
 \end{lstlisting}
 
 \subsection{動作確認}
