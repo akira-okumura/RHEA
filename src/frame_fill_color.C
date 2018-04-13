@@ -12,7 +12,7 @@ void frame_fill_color() {
     double x = gRandom->Gaus();
     double y = gRandom->Gaus();
     hist->Fill(x, y);
-  } // i
+  }
 
   gROOT->ProcessLine(".L color_def.C");
   BPalette();

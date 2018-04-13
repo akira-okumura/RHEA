@@ -12,11 +12,11 @@ void BPalette() {
     Int_t index = TColor::CreateGradientColorTable(5, stop, r, g, b, kN);
     for (int i = 0; i < kN; ++i) {
       colors[i] = index + i;
-    } // i
+    }
     initialized = kTRUE;
   } else {
     gStyle->SetPalette(kN, colors);
-  } // if
+  }
 }
 
 void GrayPalette() {
@@ -33,11 +33,11 @@ void GrayPalette() {
     Int_t index = TColor::CreateGradientColorTable(2, stop, r, g, b, kN);
     for (int i = 0; i < kN; ++i) {
       colors[i] = index + i;
-    } // i
+    }
     initialized = kTRUE;
   } else {
     gStyle->SetPalette(kN, colors);
-  } // if
+  }
 }
 
 void GrayInvPalette() {
@@ -54,11 +54,11 @@ void GrayInvPalette() {
     Int_t index = TColor::CreateGradientColorTable(2, stop, r, g, b, kN);
     for (int i = 0; i < kN; ++i) {
       colors[i] = index + i;
-    } // i
+    }
     initialized = kTRUE;
   } else {
     gStyle->SetPalette(kN, colors);
-  } // if
+  }
 }
 
 void RBPalette() {
@@ -74,9 +74,9 @@ void RBPalette() {
     Int_t index = TColor::CreateGradientColorTable(3, stop, r, g, b, kN);
     for (int i = 0; i < kN; ++i) {
       colors[i] = index + i;
-    } // i
+    }
     initialized = kTRUE;
   } else {
     gStyle->SetPalette(kN, colors);
-  } // if
+  }
 }

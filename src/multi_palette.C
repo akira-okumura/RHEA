@@ -11,7 +11,7 @@ void multi_palette() {
     double x = gRandom->Gaus();
     double y = gRandom->Gaus();
     hist->Fill(x, y);
-  } // i
+  }
 
   gROOT->ProcessLine(".L color_def.C");
 
@@ -30,5 +30,5 @@ void multi_palette() {
     exe[i]->Draw();
     hist->Draw("same colz");
     gPad->Update();
-  } // i
+  }
 }

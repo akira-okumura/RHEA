@@ -7,7 +7,7 @@ void residual() {
     double ey = gRandom->Gaus();
     gra->SetPoint(i, x, y + ey);
     gra->SetPointError(i, 0, 1);
-  } // i
+  }
 
   TCanvas* can = new TCanvas("can", "can");
   can->cd(1);
@@ -39,7 +39,7 @@ void residual() {
     double ey = gra->GetErrorY(i);
     res->SetPoint(i, x, (y - f1->Eval(x)) / ey);
     res->SetPointError(i, 0, 1);
-  } // i
+  }
 
   pad->cd(0);
   res->GetXaxis()->SetLimits(0, 20);

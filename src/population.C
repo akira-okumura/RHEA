@@ -9,15 +9,15 @@ void population() {
     std::string str;
     fin >> str;
     hist[i] = new TH1D(str.c_str(), str.c_str(), kBinsN, 0, 105);
-  } // i
+  }
 
   for (Int_t j = 0; j < kBinsN; ++j) {
     for (Int_t i = 0; i < kHistN; ++i) {
       Int_t pop;
       fin >> pop;
       hist[i]->SetBinContent(j + 1, pop);
-    } // i
-  }   // j
+    }
+  }
 
   TCanvas* can1 = new TCanvas("can1", "histogram");
 
@@ -41,7 +41,7 @@ void population() {
     hist[i]->SetBarOffset(0.08 + 0.28 * i);
     hist[i]->Draw("bar same");
     leg1->AddEntry(hist[i], hist[i]->GetTitle(), "f");
-  } // i
+  }
   leg1->Draw();
 
   TCanvas* can2 = new TCanvas("can2", "graph");
@@ -55,11 +55,11 @@ void population() {
     for (Int_t j = 0; j < kBinsN; ++j) {
       graph[i]->SetPoint(j, hist[i]->GetBinCenter(j + 1),
                          hist[i]->GetBinContent(j + 1));
-    } // j
+    }
     graph[i]->SetLineColor(kColor[i]);
     graph[i]->SetMarkerColor(kColor[i]);
     graph[i]->Draw("same");
     leg2->AddEntry(graph[i], hist[i]->GetTitle(), "l");
-  } // i
+  }
   leg2->Draw();
 }
