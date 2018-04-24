@@ -1,7 +1,7 @@
 \chapter{C++の基礎}
-\label{chapter_C++}
+\label{chap:C++}
 
-この章では、プログラミングやC++の初心者向けに、C++の簡単な解説を行います。第\ref{chapter_Install}章の内容や用語がチンプンカンプンだった人は、この章を読んでから先に進むのが良いでしょう。筆者が重要だと思う箇所だけを抜粋して解説しますので、網羅的なC++の解説書も参照することをお勧めします。
+この章では、プログラミングやC++の初心者向けに、C++の簡単な解説を行います。第\ref{chap:Install}章の内容や用語がチンプンカンプンだった人は、この章を読んでから先に進むのが良いでしょう。筆者が重要だと思う箇所だけを抜粋して解説しますので、網羅的なC++の解説書も参照することをお勧めします。
 
 ただし、いきなり一般書籍を購入しても当たり外れがあります。特に、C++と銘打っていても、コードの書き方の癖がC言語に近い書物はやめたほうが無難です\footnote{C++の入門書ではありませんが、『Numerical Recipes in C++』は悪書の例です。}。例えば
 \begin{lstlisting}[language=c++]
@@ -28,15 +28,16 @@ for (int i = 0; i < 100; i++) {
 C++が分かればROOTは理解しやすいのですが、ユーザの利便性を考えて、ROOTには独自の仕様が存在します。このような両者の違いについても、この章では説明します。 
 \clearpage
 \section{Hello World!}
+\section{sec:helloworld}
 %\begin{NoFloat}
-\lstinputlisting[language=c++,float=tb,caption=\texttt{hello\_world.cxx},label=code_hello_world,numbers=left]{src/hello_world.cxx}
+\lstinputlisting[language=c++,float=tb,caption=\texttt{hello\_world.cxx},label=code:hello_world,numbers=left]{src/hello_world.cxx}
 %\end{NoFloat}
-まず好きなエディタを使って、コード\ref{code_hello_world}を\texttt{hello\_world.cxx}というファイル名で保存して下さい\footnote{Emacs、vi、gedit、TextEditなど何でも構いません。}。次にターミナルから、
+まず好きなエディタを使って、コード\ref{code:hello_world}を\texttt{hello\_world.cxx}というファイル名で保存して下さい\footnote{Emacs、vi、gedit、TextEditなど何でも構いません。}。次にターミナルから、
 \begin{lstlisting}[language=bash]
 $ g++ hello_world.cxx
 $ ./a.out
 \end{lstlisting}
-と打ちます\footnote{もし\texttt{g++}が見つからないという内容のエラーが出たら、お使いのコンピュータにGCCもしくはClangをインストールして下さい。「Scientific Linux GCC intall」「OS X Clang intall」などで検索すれば方法は見つかるはずです。Scientific Linux の場合は\texttt{yum}コマンドを使ってGCCを入れることができます。Macの場合はXcodeをApp Storeからダウンロードしてインストールして下さい（無料）。}。
+と打ちます\footnote{もし\texttt{g++}が見つからないという内容のエラーが出たら、お使いのコンピュータにGCCもしくはClangをインストールして下さい。「Scientific Linux GCC intall」「Mac Clang intall」などで検索すれば方法は見つかるはずです。Scientific Linux の場合は\texttt{yum}コマンドを使ってGCCを入れることができます。Macの場合はXcodeをApp Storeからダウンロードしてインストールして下さい（無料）。}。
 \begin{lstlisting}
 Hello World!
 \end{lstlisting}
@@ -57,7 +58,7 @@ $ ./hello_world
 \end{lstlisting}
 とすれば、好きな名前で実行ファイルを作成してくれます。
 
-さて、コード\ref{code_hello_world}の解説です。まずこのプログラムは、「Hello World!」と呼ばれる、初心者の解説向けによく用いられるものです\footnote{\url{http://ja.wikipedia.org/wiki/Hello_world}などに解説あり。}。このプログラムの主な作業は
+さて、コード\ref{code:hello_world}の解説です。まずこのプログラムは、「Hello World!」と呼ばれる、初心者の解説向けによく用いられるものです\footnote{\url{http://ja.wikipedia.org/wiki/Hello_world}などに解説あり。}。このプログラムの主な作業は
 \begin{lstlisting}[language=c++]
   printf("Hello World!\n");
 \end{lstlisting}
@@ -69,15 +70,16 @@ $ ./hello_world
 \end{lstlisting}
 と書かれていては、可読性が悪くなります。
 
-さて、「\textbackslash n」という2文字は何でしょうか。これは改行を表す特殊文字です。2文字で1文字だと考えて下さい。試しにコード\ref{code_hello_world}から「\textbackslash n」を取り除いてコンパイルし、実行してみて下さい。改行の有無で出力結果が変わります。
+さて、「\textbackslash n」という2文字は何でしょうか。これは改行を表す特殊文字です。2文字で1文字だと考えて下さい。試しにコード\ref{code:hello_world}から「\textbackslash n」を取り除いてコンパイルし、実行してみて下さい。改行の有無で出力結果が変わります。
 
 この「Hello World!」という文字列のことを、\texttt{printf}に渡した引数（ひきすう、argument）と言います\footnote{文字列は常に二重引用符で囲む必要があります。二重引用符自体を文字列の中で使用する場合には、\texttt{"\textbackslash ""}のように、バックスラッシュを前方に置きます。}。好きな文字列を渡すことによって、出力結果が変わります。「Hello World!」という文字列しか出力できない関数を作るのではなく、このように引数を変更することで結果を変更できるのが、関数を用意することの最大の利点です。
 
-それではなぜ、この\texttt{printf}という関数を我々は使うことができるのでしょうか。その答えはコード\ref{code_hello_world}の先頭にあります。この行はインクルード（include）文と呼ばれ、他のファイルに既に存在している\texttt{printf}を見えるようにしています\footnote{\texttt{cstdio}は「C」、「standard」、「input/output」の合成語です。C言語の時代に作られた、標準入出力のためのライブラリです。}。したがって、この箇所を
+それではなぜ、この\texttt{printf}という関数を我々は使うことができるのでしょうか。その答えはコード\ref{code:hello_world}の先頭にあります。この行はインクルード（include）文と呼ばれ、他のファイルに既に存在している\texttt{printf}を見えるようにしています\footnote{\texttt{cstdio}は「C」、「standard」、「input/output」の合成語です。C言語の時代に作られた、標準入出力のためのライブラリです。}。したがって、この箇所を
 \begin{lstlisting}[language=c++]
 // #include <cstdio>
 \end{lstlisting}
 のようにコメントアウト（comment out）\footnote{先頭が「//」で始まる行は、全てコンパイラに無視されます。}してコンパイルすると、
+
 \begin{lstlisting}[language=bash]
 $ g++ -Wall hello_world.cxx
 hello_world.cxx: In function ‘int main()’:
@@ -94,10 +96,10 @@ hello_world.cxx:5: error: ‘printf’ was not declared in this scope
 と書くことで、確かに\texttt{0}を返す設計になっています。返り値は、\texttt{return}を使って返すことができます。もしこれを\texttt{0}ではなく\texttt{-1}などにすれば、このプログラムは異常終了したとOS側が判断します。
 
 \section{型と関数}
-\label{sec:型と関数}
-前節の説明では、型、関数、引数、返り値という用語がでてきました。ここでは、もう少し例を挙げて説明します。コード\ref{code_triple}を作成してコンパイルし、実行してみましょう。
+\label{sec:types}
+前節の説明では、型、関数、引数、返り値という用語がでてきました。ここでは、もう少し例を挙げて説明します。コード\ref{code:triple}を作成してコンパイルし、実行してみましょう。
 %\begin{NoFloat}
-\lstinputlisting[language=c++,float=tb,caption=\texttt{triple.cxx},label=code_triple,numbers=left]{src/triple.cxx}
+\lstinputlisting[language=c++,float=tb,caption=\texttt{triple.cxx},label=code:triple,numbers=left]{src/triple.cxx}
 %\end{NoFloat}
 15という整数値を持つ変数（variable）\texttt{before}を
 \begin{lstlisting}
@@ -128,13 +130,13 @@ before = before * before + 1;
 
 \texttt{int}以外にも、C++には何種類か型があります。代表的なものが、\texttt{double}（ダブル）です。\texttt{double}型は、\texttt{int}と異なり小数を使うことができます。なぜ\texttt{double}という名前かと言うと、同じように小数を扱う型に\texttt{float}（フロート）があるからです。\texttt{double}は\texttt{float}に比べてメモリを2倍（double）消費します。しかしその分、精度がよくなります\footnote{C++で扱われる小数には精度がつきまといます。例えば$\frac{3}{2}$を小数に直すと、どれだけ小さいほうの桁を見ても0が続きます。しかしコンピュータ上にこのような無限の精度を持つ数を定義すると、メモリが無限大必要になります。これでは実現不可能なため、ある程度の精度を犠牲にします。例えば円周率を\texttt{double}型で扱いたい場合には、有効桁数が15桁しかありません。 $3.14159265358979$までしか精度が保証されないのです。\texttt{float}にした場合はさらに精度が下がり、7桁しか有効桁数がありません。したがって、$1.3\times10^{20}$と$3.4\times10^{-13}$の引き算をそのままC++で実行しても、数学的に正しい数字は得られないので注意が必要です。}。
 
-さて、コード\ref{code_triple}の例では、\texttt{triple}関数は引数と返り値が\texttt{int}型でした。もし\texttt{before}の値が$16.9$だとすれば、\texttt{after}の値は期待通りに動作しません。そこで引数と返り値を\texttt{double}に変更したものを追加したのが、コード\ref{code_triple2}です。同名の\texttt{triple}関数が2つありますが、片方は\texttt{int}用で片方は\texttt{double}用です。このように同じ名前の関数に対して、異なる引数を与えることで処理内容を変更することを、関数のオーバーロード（overload）と言います。コンパイラが引数の違いを適切に見つけ出し、異なる処理をしてくれます。
+さて、コード\ref{code:triple}の例では、\texttt{triple}関数は引数と返り値が\texttt{int}型でした。もし\texttt{before}の値が$16.9$だとすれば、\texttt{after}の値は期待通りに動作しません。そこで引数と返り値を\texttt{double}に変更したものを追加したのが、コード\ref{code:triple2}です。同名の\texttt{triple}関数が2つありますが、片方は\texttt{int}用で片方は\texttt{double}用です。このように同じ名前の関数に対して、異なる引数を与えることで処理内容を変更することを、関数のオーバーロード（overload）と言います。コンパイラが引数の違いを適切に見つけ出し、異なる処理をしてくれます。
 
 %\begin{NoFloat}
-\lstinputlisting[language=c++,float=tb,caption=\texttt{triple2.cxx},label=code_triple2,numbers=left]{src/triple2.cxx}
+\lstinputlisting[language=c++,float=tb,caption=\texttt{triple2.cxx},label=code:triple2,numbers=left]{src/triple2.cxx}
 %\end{NoFloat}
 
-コード\ref{code_triple2}はコード\ref{code_triple}と違い、\texttt{main}の前に実体を伴わない2つの関数が書かれています。これは関数の前方宣言（forward declaration）と呼ばれるものです。今はなくても構いませんが、ヘッダーファイルを分割して書くようになるときには必須の作業です。このように返り値と引数だけ先に書いておくことで、実際の関数の中身を知らなくても（関数が後で定義されていても）、コンパイラは\texttt{main}関数の中で\texttt{triple}が出てきても問題なく処理を続行できるようになります。プログラムの可読性を高めるという意味もあります。\texttt{main}関数の後に、実際の\texttt{triple}関数の中身が記述されています。これを、関数の定義（definition）と呼びます。
+コード\ref{code:triple2}はコード\ref{code:triple}と違い、\texttt{main}の前に実体を伴わない2つの関数が書かれています。これは関数の前方宣言（forward declaration）と呼ばれるものです。今はなくても構いませんが、ヘッダーファイルを分割して書くようになるときには必須の作業です。このように返り値と引数だけ先に書いておくことで、実際の関数の中身を知らなくても（関数が後で定義されていても）、コンパイラは\texttt{main}関数の中で\texttt{triple}が出てきても問題なく処理を続行できるようになります。プログラムの可読性を高めるという意味もあります。\texttt{main}関数の後に、実際の\texttt{triple}関数の中身が記述されています。これを、関数の定義（definition）と呼びます。
 
 新たな\texttt{printf}の使い方として、
 \begin{lstlisting}[language=c++]
@@ -150,10 +152,10 @@ before = before * before + 1;
 ここまでで、関数の簡単な使い方が分かりました。しかし、四則演算程度しかまだやり方をしりません。2つの数字の大小を比べるにはどうしたら良いでしょうか。この節では、関係演算子と\texttt{if}文の使い方を説明します。
 
 %\begin{NoFloat}
-\lstinputlisting[language=c++,float=tb,caption=\texttt{minmax.cxx},label=code_minmax,numbers=left]{src/minmax.cxx}
+\lstinputlisting[language=c++,float=tb,caption=\texttt{minmax.cxx},label=code:minmax,numbers=left]{src/minmax.cxx}
 %\end{NoFloat}
 
-コード\ref{code_minmax}には、新しい関数\texttt{min}と\texttt{max}を作りました。初めて、
+コード\ref{code:minmax}には、新しい関数\texttt{min}と\texttt{max}を作りました。初めて、
 \begin{lstlisting}[language=c++]
   if (v1 < v2) {
     ret = v1;
@@ -168,7 +170,7 @@ bool b = 10 > 20;
 \end{lstlisting}
 とすれば、\texttt{a}と\texttt{b}の値はそれぞれ\texttt{true}と\texttt{false}になります。\texttt{if}文の中身（\texttt{\{}と\texttt{\}}で囲まれた部分）は、条件式が\texttt{true}もしくは真（非ゼロの値）のときだけ実行されます。\texttt{v1}が小さいときは返り値として\texttt{v1}を返して\texttt{min}関数は終了します。
 
-\texttt{<}があれば、当然\texttt{>}も存在します。同様に、 \texttt{<=}と\texttt{>=}も存在します。それぞれ見たままの通りで、$<$、$>$、$\le$、$\ge$を表します。一見その機能が分かりにくい、\texttt{==}と\texttt{!=}も存在します。前者は両辺が等しいときに\texttt{true}を返し、後者は等しくないときに\texttt{true}を返します\footnote{C文字列の比較は、比較演算子ではできません。これは\ref{sec:ポインタと参照}節で説明します。}。
+\texttt{<}があれば、当然\texttt{>}も存在します。同様に、 \texttt{<=}と\texttt{>=}も存在します。それぞれ見たままの通りで、$<$、$>$、$\le$、$\ge$を表します。一見その機能が分かりにくい、\texttt{==}と\texttt{!=}も存在します。前者は両辺が等しいときに\texttt{true}を返し、後者は等しくないときに\texttt{true}を返します\footnote{C文字列の比較は、比較演算子ではできません。これは\ref{sec:pointers}節で説明します。}。
 
 \texttt{>}を使って、\texttt{max}関数も定義しました。しかし今度は
 \begin{lstlisting}[language=c++]
@@ -181,10 +183,10 @@ bool b = 10 > 20;
 なぜコンピュータを使ってプログラミングをするのかと言えば、人間には手に負えない、複雑な計算をする必要があるからです。特に同じ作業を繰り返す場合には、コンピュータを利用すると劇的に処理速度が向上します。そこで登場するのが\texttt{for}（フォー）文です。\texttt{for}文の使い方を学ぶために、非常に初等的な手段で円周率$\pi$を計算してみましょう。
 
 %\begin{NoFloat}
-\lstinputlisting[language=c++,float=tb,caption=\texttt{pi.cxx},label=code_pi,numbers=left]{src/pi.cxx}
+\lstinputlisting[language=c++,float=tb,caption=\texttt{pi.cxx},label=code:pi,numbers=left]{src/pi.cxx}
 %\end{NoFloat}
 
-コード\ref{code_pi}では、$-1<x<1$、$-1<y<1$の範囲に等間隔で並ぶ、$4n^2$個の格子点の場所を計算しています。これらの点のうち、半径1の単位円の内部に存在する個数を数え上げると、$\simeq\pi n^2$個になるはずです\footnote{$n\rightarrow\infty$の場合、本当に$\pi$に収束するかは真面目に考えていません。}。
+コード\ref{code:pi}では、$-1<x<1$、$-1<y<1$の範囲に等間隔で並ぶ、$4n^2$個の格子点の場所を計算しています。これらの点のうち、半径1の単位円の内部に存在する個数を数え上げると、$\simeq\pi n^2$個になるはずです\footnote{$n\rightarrow\infty$の場合、本当に$\pi$に収束するかは真面目に考えていません。}。
 
 以下の、\texttt{main}の中身が\texttt{for}文です。
 \begin{lstlisting}[language=c++]
@@ -234,16 +236,16 @@ Vector3D v3 = v1 + v2;
 \end{lstlisting}
 のように書けたほうがすっきりします。これがクラス（class）の発想です。自分で好きな型を作ることが可能になります。
 
-それでは、早速クラスを自分で作ってみましょう。ソースコードを眺めながら、クラスとは何かを理解してください。コード\ref{code_Vector3D_h}、\ref{code_Vector3D_cxx}、\ref{code_Vector3D_main_cxx}は、3次元ベクトルを扱うためのクラスの作成例です。\texttt{virtual}という予約語が出てきますが、今はこれを無視して読み飛ばしてください。\ref{subsec:virtual}節で説明します。
+それでは、早速クラスを自分で作ってみましょう。ソースコードを眺めながら、クラスとは何かを理解してください。コード\ref{code:Vector3D_h}、\ref{code:Vector3D_cxx}、\ref{code:Vector3D_main_cxx}は、3次元ベクトルを扱うためのクラスの作成例です。\texttt{virtual}という予約語が出てきますが、今はこれを無視して読み飛ばしてください。\ref{subsec:virtual}節で説明します。
 
 \begin{NoFloat}
-\lstinputlisting[language=c++,caption=\texttt{Vector3D.h},label=code_Vector3D_h,numbers=left]{src/Vector3D.h}
+\lstinputlisting[language=c++,caption=\texttt{Vector3D.h},label=code:Vector3D_h,numbers=left]{src/Vector3D.h}
 \end{NoFloat}
 \begin{NoFloat}
-\lstinputlisting[language=c++,caption=\texttt{Vector3D.cxx},label=code_Vector3D_cxx,numbers=left]{src/Vector3D.cxx}
+\lstinputlisting[language=c++,caption=\texttt{Vector3D.cxx},label=code:Vector3D_cxx,numbers=left]{src/Vector3D.cxx}
 \end{NoFloat}
 \begin{NoFloat}
-\lstinputlisting[language=c++,caption=\texttt{Vector3D\_main.cxx},label=code_Vector3D_main_cxx,numbers=left]{src/Vector3D_main.cxx}
+\lstinputlisting[language=c++,caption=\texttt{Vector3D\_main.cxx},label=code:Vector3D_main_cxx,numbers=left]{src/Vector3D_main.cxx}
 \end{NoFloat}
 
 3つのファイルに分割したのは、可読性と可搬性\footnote{他のプログラムでも使い回しが効くという意味です。}を高めるためです。もし全てを1つのファイルに書いてしまうと、せっかく作った\texttt{Vector3D}というクラスを他のプログラムで使うのが面倒になります。クラスの記述と\texttt{main}文を分けておくことで、他の\texttt{main}文を書いたときにも、クラスの記述を何度も繰り返す必要がなくなります。\texttt{Vector3D.h}と\texttt{Vector3D.cxx}は、それぞれヘッダーファイル（header file）、ソースファイル（source file）と呼ばれます\footnote{C++のヘッダーとソースの拡張子には、いくつかの流儀があります。例えばROOTでは、\texttt{.h}と\texttt{.cxx}という拡張子をそれぞれに使っています（ただし、スクリプトファイルには区別のために\texttt{.C}を採用しています）。またGeant4では、\texttt{.hh}と\texttt{.cc}を使っています。C++のソースコードの拡張子には、他にも\texttt{.C}、\texttt{.c++}、\texttt{.cpp}なども世の中では使われています。どの拡張子を使うかは本質的な問題ではありません。本書では、ROOTの流儀に合わせて\texttt{.h}と\texttt{.cxx}を採用します。}。まずは新しく作ったこのプログラムをコンパイルして、コンパイル済みの実行ファイルを走らせてみましょう。
@@ -256,7 +258,7 @@ $ ./Vector3D
 1行目と2行目では\texttt{-c}オプションをつけて、\texttt{Vector3D.cxx}と\texttt{Vector3D\_main.cxx}をコンパイルだけしています。これらはコンパイル後に拡張子が\texttt{.o}のオブジェクトファイル（object file）に変換されます。「コンパイルだけ」というのは、実行ファイルを作成しないということです。\texttt{Vector3D.cxx}には\texttt{main}文が存在せず、また\texttt{Vector3D\_main.cxx}にはクラスの中身が書かれていないので、そのままでは実行ファイルが作成できません。3行目で2つのオブジェクトファイルを結合し、\texttt{Vector3D}という実行ファイルが作成されます。今のコードでは必要性をあまり感じませんが、膨大な量のソースコードをコンパイルするときには、このような分割コンパイルは必須です。修正個所だけコンパイルし直すことで、時間を節約できるからです。
 
 \subsection{クラス宣言}
-それでは、\texttt{Vector3D}クラスの説明に移ります。コード\ref{code_Vector3D_h}では、クラス\texttt{Vector3D}の宣言（declaration）を行っています。「宣言」とは、クラスの基本仕様を書く作業のことです。C++では\texttt{int}や\texttt{double}のような基本的な型しか持っていませんので、あなたが新しいクラスを作るときには、それがどんなものであるかを教えてやる必要があります。
+それでは、\texttt{Vector3D}クラスの説明に移ります。コード\ref{code:Vector3D_h}では、クラス\texttt{Vector3D}の宣言（declaration）を行っています。「宣言」とは、クラスの基本仕様を書く作業のことです。C++では\texttt{int}や\texttt{double}のような基本的な型しか持っていませんので、あなたが新しいクラスを作るときには、それがどんなものであるかを教えてやる必要があります。
 
 クラスの宣言に最低限必要な部分は、次の箇所だけです。他の箇所は、そのクラスがどんな性質を持つかを記述するためのものですので、以下の記述だけでは何の役にも立たないクラスができあがります。
 \begin{lstlisting}[language=c++]
@@ -272,11 +274,11 @@ class Vector3D {};
 \texttt{\#}で始まる行は、おまじないです。色々なファイルから\texttt{Vector3D.h}を何度もインクルードすると、あたかも\texttt{Vectr3D}クラスが何度も宣言されたように見え、コンパイルエラーが起きます。これを防ぐために、\texttt{VECTOR\_3D}と文字列をここでは定義しています。\texttt{\#ifndef VECTOR\_3D}は、「もし\texttt{VECTOR\_3D}が定義されていなかったら（IF Not DEFine）」という意味です。\texttt{VECTOR\_3D}が定義されていないときだけ、\texttt{\#endif}までの内容が実行されます。つまり、\texttt{VECTOR\_3D}を\texttt{\#define}し、クラス宣言を行います。この仕組みを「インクルードガード（inclue guard）」と呼びます\footnote{\texttt{VECTOR\_3D}という文字列は、\texttt{VECTOR3D}でも\texttt{HOGE}でも、別に好きなもので構いません。ただし、コードを読む人が分かりやすいもので、なおかつ、他のプログラムで使われていなさそうな名前にしてください。\texttt{\#endif}の後のコメント行は無くても構いませんが、長いコードの場合は、何に対応する\texttt{\#endif}なのかを分かりやすくするため、このような書き方をすることがあります。}。
 
 \subsection{メンバ変数}
-\label{subsec:メンバ変数}
-クラスが保持する情報は、メンバ変数（member variable）に格納されます。コード\ref{code_Vector3D_h}では、\texttt{fX}、\texttt{fY}、\texttt{fZ}\footnote{変数名の最初のfは、メンバ変数と他の変数の区別をしやすくするためのものです。これはROOTで使われる変数名の命名規則ですが、他にも\texttt{mX}や\texttt{m\_x}と書いたり（memberのm）、単に\texttt{x}とする文化もあります。}という3つのメンバ変数が存在します。今はメンバ変数に\texttt{double}型しか使っていませんが、\texttt{int}を使ったり、他のクラスを使うことも可能です。今回は3次元ベクタを記述するためのクラスの例ですので、XYZ座標をこれらのメンバ変数が\texttt{double}型で保持します。これらメンバ変数の直前に書かれている\texttt{private:}は、「次の変数はプライベート変数だよ」という目印です。個人情報のようなもので、特別に公開する手段を持たない限り、本人以外は外から知ることができません。
+\label{subsec:members}
+クラスが保持する情報は、メンバ変数（member variable）に格納されます。コード\ref{code:Vector3D_h}では、\texttt{fX}、\texttt{fY}、\texttt{fZ}\footnote{変数名の最初のfは、メンバ変数と他の変数の区別をしやすくするためのものです。これはROOTで使われる変数名の命名規則ですが、他にも\texttt{mX}や\texttt{m\_x}と書いたり（memberのm）、単に\texttt{x}とする文化もあります。}という3つのメンバ変数が存在します。今はメンバ変数に\texttt{double}型しか使っていませんが、\texttt{int}を使ったり、他のクラスを使うことも可能です。今回は3次元ベクタを記述するためのクラスの例ですので、XYZ座標をこれらのメンバ変数が\texttt{double}型で保持します。これらメンバ変数の直前に書かれている\texttt{private:}は、「次の変数はプライベート変数だよ」という目印です。個人情報のようなもので、特別に公開する手段を持たない限り、本人以外は外から知ることができません。
 
 \subsection{コンストラクタ}
-\texttt{Vector3D()}、\texttt{Vector3D(double x, double y, double z)}、\texttt{Vector3D(const Vector3D\& other)}の3つの関数は、コンストラクタ（constructor）と呼ばれる特殊な関数です。クラス名と同じ関数名になっています。これらの関数がいつ使われるかというと、クラスを実際に使用し始める瞬間です。コード\ref{code_Vector3D_main_cxx}では\texttt{v0}という変数\footnote{インスタンス（instance）とも呼びます。}を
+\texttt{Vector3D()}、\texttt{Vector3D(double x, double y, double z)}、\texttt{Vector3D(const Vector3D\& other)}の3つの関数は、コンストラクタ（constructor）と呼ばれる特殊な関数です。クラス名と同じ関数名になっています。これらの関数がいつ使われるかというと、クラスを実際に使用し始める瞬間です。コード\ref{code:Vector3D_main_cxx}では\texttt{v0}という変数\footnote{インスタンス（instance）とも呼びます。}を
 \begin{lstlisting}[language=c++]
   Vector3D v0;
 \end{lstlisting}
@@ -284,7 +286,7 @@ class Vector3D {};
 \begin{lstlisting}[language=c++]
   Vector3D v1(1.5, 2.3, -0.4);
 \end{lstlisting}
-のように引数をつけて変数を作成した場合は、\texttt{Vector3D(double x, double y, double z)}のほうが呼び出されます。それぞれのコンストラクタの実体はコード\ref{code_Vector3D_cxx}に書かれており、それぞれのコンストラクタで\texttt{fX}、\texttt{fY}、\texttt{fZ}全てにゼロを代入するか、与えられた引数を代入していることが分かります。コンストラクタはクラスが使われる瞬間に呼び出されるため、一般的にはメンバ変数などの初期化に使われます。\texttt{Vector3D}では、$(x, y, z)$をデフォルトコンストラクタで$(0, 0, 0)$に設定するか、与えられた3変数を代入することによって、初期化しています。
+のように引数をつけて変数を作成した場合は、\texttt{Vector3D(double x, double y, double z)}のほうが呼び出されます。それぞれのコンストラクタの実体はコード\ref{code:Vector3D_cxx}に書かれており、それぞれのコンストラクタで\texttt{fX}、\texttt{fY}、\texttt{fZ}全てにゼロを代入するか、与えられた引数を代入していることが分かります。コンストラクタはクラスが使われる瞬間に呼び出されるため、一般的にはメンバ変数などの初期化に使われます。\texttt{Vector3D}では、$(x, y, z)$をデフォルトコンストラクタで$(0, 0, 0)$に設定するか、与えられた3変数を代入することによって、初期化しています。
 
 もしあなたがどちらのコンストラクタも作らないと、コンパイラは自動的にデフォルトコンストラクタを作るので注意が必要です。しかし引数を持つコンストラクタを1つでも作れば、コンパイラはデフォルトコンストラクタを作成しません。そのため、今回の例ではデフォルトコンストラクタと引数を持つコンストラクタを両方作成しています\footnote{このようにデフォルトコンストラクタを作らなくても、\texttt{Vector3D v0(0, 0, 0)}と書けば全く同じ結果が得られます。しかし後々複雑なプログラムを書くようになると、どんな値を詰めるか考えないで、ひとまず変数を用意する場面が出てきます。このようなときにデフォルトコンストラクタは必要になります。}。コンパイラにデフォルトコンストラクタを自動生成させた場合、メンバ変数はその型やクラスの初期値を持ちます。この例では、\texttt{fX}、\texttt{fY}、\texttt{fZ}はどれも\texttt{double}型なので、初期値はゼロになります。
 
@@ -295,25 +297,25 @@ Vector3D v0();
 \end{lstlisting}
 コンストラクタも関数的に振る舞うため本来は\texttt{()}の部分が必要なのですが、引数を持たないデフォルトコンストラクタでは省略することができます。
 
-\ref{sec:型と関数}節で説明したように、一般的な関数は返り値を持ちます。しかしコンストラクタは特殊な関数であり、返り値は持ちません。返り値を持たない関数には通常\texttt{void}を付ける必要がありますが、コンストラクタは返り値を持たないのが分かっているので、\texttt{void}を書く必要はありません。
+\ref{sec:types}節で説明したように、一般的な関数は返り値を持ちます。しかしコンストラクタは特殊な関数であり、返り値は持ちません。返り値を持たない関数には通常\texttt{void}を付ける必要がありますが、コンストラクタは返り値を持たないのが分かっているので、\texttt{void}を書く必要はありません。
 
 これらコンストラクタと別に
 \begin{lstlisting}[language=c++]
   Vector3D(const Vector3D& other);
 \end{lstlisting}
-として宣言されているコンストラクタをコピーコンストラクタ（copy constructor）と呼びます。既に存在しているインスタンスから、全く同じ内容のインスタンスを作成するときに使用します。コード\ref{code_Vector3D_main_cxx}の例では、
+として宣言されているコンストラクタをコピーコンストラクタ（copy constructor）と呼びます。既に存在しているインスタンスから、全く同じ内容のインスタンスを作成するときに使用します。コード\ref{code:Vector3D_main_cxx}の例では、
 \begin{lstlisting}[language=c++]
   Vector3D v4(v1 - v2);
 \end{lstlisting}
-が該当します。\texttt{v1 - v2}の部分や\texttt{\&}の意味は節\ref{subsec:演算子オーバーロード}で説明しますが、ここでは引数に\texttt{Vector3D}が与えられ、その中身が\texttt{v4}にそのままコピーされます。
+が該当します。\texttt{v1 - v2}の部分や\texttt{\&}の意味は節\ref{subsec:operator_overload}で説明しますが、ここでは引数に\texttt{Vector3D}が与えられ、その中身が\texttt{v4}にそのままコピーされます。
 
-この例ではコピーコンストラクタを本当は自作する必要はありません。なぜなら、コピーコンストラクタを明示的に作成しなかった場合、これもコンパイラによって自動生成されるからです。コード\ref{code_Vector3D_cxx}、\ref{code_Vector3D_h}では、わざわざ自分で書きましたが、その必要はありません。特に、メンバ変数の中身をそのままコピーするだけのコピーコンストラクタならば、自分でコードを書かずにコンパイラに任せてしまいましょう。人間がやるとバグの元になります。
+この例ではコピーコンストラクタを本当は自作する必要はありません。なぜなら、コピーコンストラクタを明示的に作成しなかった場合、これもコンパイラによって自動生成されるからです。コード\ref{code:Vector3D_cxx}、\ref{code:Vector3D_h}では、わざわざ自分で書きましたが、その必要はありません。特に、メンバ変数の中身をそのままコピーするだけのコピーコンストラクタならば、自分でコードを書かずにコンパイラに任せてしまいましょう。人間がやるとバグの元になります。
 
 \subsection{メンバ関数}
 
-プライベートなメンバ変数とコンストラクタを持つだけでは、そのクラスが持つ情報にユーザはアクセスすることができません。そこで、\ref{subsec:メンバ変数}節に書いたように、「特別に公開する手段」が必要となります。コード\ref{code_Vector3D_h}に書かれた\texttt{X()}、\texttt{Y()}、\texttt{Z()}の3つの関数は、メンバ変数\texttt{fX}などを取り出すための関数で、その中身は短く、単純にメンバ変数の値を返しています。\texttt{const}修飾子というものが出てきていますが、これはクラスの持つメンバ変数の値を変更しないという目印です。つけなくてもこの例では大差ありませんが、おまじないです。\texttt{X()}のような短い関数は、可読性の落ちない限り、このようにヘッダーの中に書いてしまうことが頻繁に行われます。ヘッダーの中に書き込むことで、処理速度の向上が見込まれるためです。これを関数のインライン化と言います。また、\texttt{inline}という予約語を使うことでインライン関数をクラス定義の外側に書くことができます。コード\ref{code_Vector3D_h}では、\texttt{Vector3D::Z()}だけクラス定義の外側でインライン化させています。
+プライベートなメンバ変数とコンストラクタを持つだけでは、そのクラスが持つ情報にユーザはアクセスすることができません。そこで、\ref{subsec:members}節に書いたように、「特別に公開する手段」が必要となります。コード\ref{code:Vector3D_h}に書かれた\texttt{X()}、\texttt{Y()}、\texttt{Z()}の3つの関数は、メンバ変数\texttt{fX}などを取り出すための関数で、その中身は短く、単純にメンバ変数の値を返しています。\texttt{const}修飾子というものが出てきていますが、これはクラスの持つメンバ変数の値を変更しないという目印です。つけなくてもこの例では大差ありませんが、おまじないです。\texttt{X()}のような短い関数は、可読性の落ちない限り、このようにヘッダーの中に書いてしまうことが頻繁に行われます。ヘッダーの中に書き込むことで、処理速度の向上が見込まれるためです。これを関数のインライン化と言います。また、\texttt{inline}という予約語を使うことでインライン関数をクラス定義の外側に書くことができます。コード\ref{code:Vector3D_h}では、\texttt{Vector3D::Z()}だけクラス定義の外側でインライン化させています。
 
-メンバ変数の情報を取り出す以外にも、様々な動作をメンバ関数にさせることが可能です。コード\ref{code_Vector3D_h}ではさらに、\texttt{Print()}というメンバ関数を追加しています。実行ファイル\texttt{Vector3D}を走らせれば分かるように、これは3次元ベクタの中身を表示するための関数です。この関数の実体は、やはりコード\ref{code_Vector3D_cxx}に書かれています。
+メンバ変数の情報を取り出す以外にも、様々な動作をメンバ関数にさせることが可能です。コード\ref{code:Vector3D_h}ではさらに、\texttt{Print()}というメンバ関数を追加しています。実行ファイル\texttt{Vector3D}を走らせれば分かるように、これは3次元ベクタの中身を表示するための関数です。この関数の実体は、やはりコード\ref{code:Vector3D_cxx}に書かれています。
 
 コンストラクタやメンバ関数をソースファイルに記述するとき、
 \begin{lstlisting}[language=c++]
@@ -321,7 +323,7 @@ void Vector3D::Print() const
 \end{lstlisting}
 のような記述方法をします。\texttt{Print()}という関数がどのクラスのメンバ関数なのかをはっきりさせるため、\texttt{Vector3D::}という所有格を明示する記述が必要になります。この\texttt{Print()}というメンバ関数ではメンバ変数を表示するだけなので、やはり\texttt{const}を付けておきましょう。
 
-コード\ref{code_Vector3D_cxx}で定義した\texttt{Print()}や\texttt{X()}という\texttt{Vector3D}クラスのメンバ関数は、
+コード\ref{code:Vector3D_cxx}で定義した\texttt{Print()}や\texttt{X()}という\texttt{Vector3D}クラスのメンバ関数は、
 \begin{lstlisting}[language=c++]
 Vector3D v(1., 2., 3.);
 double x = v.X();
@@ -330,10 +332,10 @@ v.Print();
 のようにして、変数\texttt{v}の後に\texttt{.}と関数名を繋げることにより、呼び出すことが可能です。この\texttt{.}は、日本語の「の」だと思えば良いでしょう。上記の例では、「変数\texttt{v}の\texttt{X()}を呼び出す」「変数\texttt{v}の\texttt{Print()}を呼び出す」のように理解してください。
 
 \subsection{演算子オーバーロード}
-\label{subsec:演算子オーバーロード}
-せっかく3次元ベクタを扱うクラスを作っても、数学的な演算ができなければ役に立ちません。そこで、C++には演算子オーバーロード（operator overloading）という機能があります。ベクタの加減や、内積といった演算が直感的に行えれば、ややこしいコードを何度も書く必要はなくなります。コード\ref{code_Vector3D_main_cxx}では、ベクタの加減算と内積を行っています。コンピュータには\texttt{Vector3D}同士の足し算とは一体何をするべき作業なのか分かりません。そのため、\texttt{+}や\texttt{*}演算子を使ったときにどのような処理を実行するべきかは、ユーザが決定してやる必要があります。これが演算子オーバーロードです。
+\label{subsec:operator_overload}
+せっかく3次元ベクタを扱うクラスを作っても、数学的な演算ができなければ役に立ちません。そこで、C++には演算子オーバーロード（operator overloading）という機能があります。ベクタの加減や、内積といった演算が直感的に行えれば、ややこしいコードを何度も書く必要はなくなります。コード\ref{code:Vector3D_main_cxx}では、ベクタの加減算と内積を行っています。コンピュータには\texttt{Vector3D}同士の足し算とは一体何をするべき作業なのか分かりません。そのため、\texttt{+}や\texttt{*}演算子を使ったときにどのような処理を実行するべきかは、ユーザが決定してやる必要があります。これが演算子オーバーロードです。
 
-コード\ref{code_Vector3D_h}と\ref{code_Vector3D_cxx}には、\texttt{operator}という文字の入った関数が出てきます。\ref{code_Vector3D_cxx}に定義された、\texttt{Vector3D}同士の足し算の定義を見てみましょう。
+コード\ref{code:Vector3D_h}と\ref{code:Vector3D_cxx}には、\texttt{operator}という文字の入った関数が出てきます。\ref{code:Vector3D_cxx}に定義された、\texttt{Vector3D}同士の足し算の定義を見てみましょう。
 \begin{lstlisting}[language=c++]
 Vector3D Vector3D::operator+(const Vector3D &vec) {
   return Vector3D(fX + vec.X(), fY + vec.Y(), fZ + vec.Z());
@@ -352,7 +354,7 @@ Vetor3D v3 = v1.operator+(v2);
 
 さて、\texttt{operator+}の引数の記述はこれまで見たことがない形式です。まず\texttt{const}修飾子がここでも出てきています。これは、引数\texttt{vec}の中身を一切変更しませんという宣言です。\texttt{v1}と\texttt{v2}の足し算をしている最中に、\texttt{v2}の中身が変わったりしたら困るからです。また、引数の型が\texttt{Vector3D}なのは当然です。\texttt{Vector3D}同士の足し算を定義しているからです。\texttt{\&}という初めて使う記号がその直後についています。これは、参照渡し（call by reference）と呼ばれる方法です。\texttt{\&}がない場合、C++では引数のコピーをその都度作成し、その関数を実行し終えると自動的にそのコピーが破棄されます。今はたった3つのメンバ変数しか持っていませんが、メンバ変数に長い文字列や画像データを持つクラスでは、いちいちコピーを作成しているとコンピュータ資源の無駄になります。そこで、\texttt{\&}をつけた場合には、その関数は引数の本体を参照するようになります。
 
-さて、\texttt{+}、\texttt{-}、\texttt{*}に加えて、代入演算子\texttt{=}がコード\ref{code_Vector3D_main_cxx}では使われています。これは他の演算子と異なり、返り値が\texttt{Vector3D}ではなく\texttt{Vector3D\&}です。また\texttt{this}という予約語が使われています\footnote{\ref{sec:ポインタと参照}を読んでから、再度この段落を読んでみてください。}。\texttt{this}は、インスタンスが自分自身を指し示すポインタです。したがって、
+さて、\texttt{+}、\texttt{-}、\texttt{*}に加えて、代入演算子\texttt{=}がコード\ref{code:Vector3D_main_cxx}では使われています。これは他の演算子と異なり、返り値が\texttt{Vector3D}ではなく\texttt{Vector3D\&}です。また\texttt{this}という予約語が使われています\footnote{\ref{sec:pointers}を読んでから、再度この段落を読んでみてください。}。\texttt{this}は、インスタンスが自分自身を指し示すポインタです。したがって、
 \begin{lstlisting}[language=c++]
   if (this != &other) { 
     fX = other.fX; 
@@ -374,7 +376,7 @@ v1 = v2 = v3;
 
 \subsection{継承}
 
-クラスの面白い機能に継承（inheritance）があります。あるクラスの機能をそのまま受け継いだ（継承した）、他のクラスを作る機能です。ここでは、ローレンツベクタを例に考えることにします。ローレンツベクタは、空間情報$(x, y, z)$に加えて、時間という新たな変数$t$が追加されます。したがって、先ほど作成した\texttt{Vector3D}を継承した、変数$t$を持つクラスを作れば、色々なコードを再利用できます。コード\ref{code_LorentzVector_h}、\ref{code_LorentzVector_cxx}、\ref{code_LorentzVector_main_cxx}に、\texttt{Vector3D}を継承した新しいクラス\texttt{LorentzVector}の例を示します。前と同様に、
+クラスの面白い機能に継承（inheritance）があります。あるクラスの機能をそのまま受け継いだ（継承した）、他のクラスを作る機能です。ここでは、ローレンツベクタを例に考えることにします。ローレンツベクタは、空間情報$(x, y, z)$に加えて、時間という新たな変数$t$が追加されます。したがって、先ほど作成した\texttt{Vector3D}を継承した、変数$t$を持つクラスを作れば、色々なコードを再利用できます。コード\ref{code:LorentzVector_h}、\ref{code:LorentzVector_cxx}、\ref{code:LorentzVector_main_cxx}に、\texttt{Vector3D}を継承した新しいクラス\texttt{LorentzVector}の例を示します。前と同様に、
 \begin{lstlisting}[language=bash]
 $ g++ -c Vector3D.cxx
 $ g++ -c LorentzVector.cxx
@@ -385,16 +387,16 @@ $ ./LorentzVector
 とすれば実行可能です。\texttt{Vector3D.cxx}のコンパイルも必要なことに注意してください。
 
 \begin{NoFloat}
-\lstinputlisting[language=c++,caption=\texttt{LorentzVector.h},label=code_LorentzVector_h,numbers=left]{src/LorentzVector.h}
+\lstinputlisting[language=c++,caption=\texttt{LorentzVector.h},label=code:LorentzVector_h,numbers=left]{src/LorentzVector.h}
 \end{NoFloat}
 \begin{NoFloat}
-\lstinputlisting[language=c++,caption=\texttt{LorentzVector.cxx},label=code_LorentzVector_cxx,numbers=left]{src/LorentzVector.cxx}
+\lstinputlisting[language=c++,caption=\texttt{LorentzVector.cxx},label=code:LorentzVector_cxx,numbers=left]{src/LorentzVector.cxx}
 \end{NoFloat}
 \begin{NoFloat}
-\lstinputlisting[language=c++,caption=\texttt{LorentzVector\_main.cxx},label=code_LorentzVector_main_cxx,numbers=left]{src/LorentzVector_main.cxx}
+\lstinputlisting[language=c++,caption=\texttt{LorentzVector\_main.cxx},label=code:LorentzVector_main_cxx,numbers=left]{src/LorentzVector_main.cxx}
 \end{NoFloat}
 
-コード\ref{code_LorentzVector_h}では\texttt{Vector3D}のときと同様に、\texttt{LorentzVector}クラスの宣言を行っています。前と違うところは、\texttt{Vector3D}を継承している点です。
+コード\ref{code:LorentzVector_h}では\texttt{Vector3D}のときと同様に、\texttt{LorentzVector}クラスの宣言を行っています。前と違うところは、\texttt{Vector3D}を継承している点です。
 \begin{lstlisting}[language=c++]
 class LorentzVector : public Vector3D
 \end{lstlisting}
@@ -404,7 +406,7 @@ class LorentzVector : public Vector3D
 
 \texttt{fT}を追加したのであれば、これを取り出すための関数も必要になります。これも同様に、\texttt{X()}などは既に\texttt{Vector3D}から継承済みなので、\texttt{T()}だけ追加すれば良いことになります。他のメンバ変数は\texttt{private}として\texttt{Vector3D}で宣言されていました。そのため、\texttt{LorentzVector}のメンバ関数からは、\texttt{fX}などは\texttt{X()}などを通じないと取り出せなくなっています。そのため\texttt{LorentzVector::operator+}などの定義では、\texttt{fX}を直接触らずに\texttt{X()}を使っています。
 
-コンストラクタは、新たに書き直しが必要です。コンストラクタは\texttt{fX}、\texttt{fY}、\texttt{fZ}、\texttt{fT}の全てを初期化する必要があるので、\texttt{Vector3D}のコンストラクタをそのまま使うことはできません。コード\ref{code_LorentzVector_cxx}では、\texttt{fT}の初期化作業が、\texttt{Vector3D}のコンストラクタに比べて増えています。ここで注目して欲しいのが、コード\ref{code_LorentzVector_cxx}のコンストラクタのうち、
+コンストラクタは、新たに書き直しが必要です。コンストラクタは\texttt{fX}、\texttt{fY}、\texttt{fZ}、\texttt{fT}の全てを初期化する必要があるので、\texttt{Vector3D}のコンストラクタをそのまま使うことはできません。コード\ref{code:LorentzVector_cxx}では、\texttt{fT}の初期化作業が、\texttt{Vector3D}のコンストラクタに比べて増えています。ここで注目して欲しいのが、コード\ref{code:LorentzVector_cxx}のコンストラクタのうち、
 \begin{lstlisting}[language=c++]
 LorentzVector::LorentzVector(const LorentzVector &other) : Vector3D(other) {
   fT = other.fT;
@@ -420,11 +422,11 @@ LorentzVector::LorentzVector(double x, double y, double z, double t)
 また、\texttt{Print()}や演算子も\texttt{fT}に関する記述を追加する必要があるので、新たに書き直しています。\texttt{Print()}のように、親クラスの持つメンバ関数と外見上全く同じメンバ関数を作成することを、関数のオーバーライド（override）と言います。\texttt{fX}、\texttt{fY}、\texttt{fZ}は\texttt{private}として宣言しました。そのため、\texttt{LorentzVector}からは\texttt{X()}などの関数を使わないとアクセスできなくなっていることに注意してください。
 
 \section{配列}
-\label{sec:配列}
+\label{sec:arrays}
 \texttt{int}や\texttt{double}という型を使って、整数や有限桁の少数を扱うことができました。メモリの許す限り、好きなだけ変数を用意して計算をすることができます。しかし、変数が数百にもなると、もはや人力で変数を管理するのは困難です。また重複しないように変数名を考えることすらできません。そこで、関連した変数をひと塊にすることができます。それが配列（array）です。
 
 \section{ポインタと参照}
-\label{sec:ポインタと参照}
+\label{sec:pointers}
 
 \section{文字列}
 

@@ -8,7 +8,80 @@
 \setcounter{table}{0}
 \renewcommand{\thetable}{\Alph{chapter}.\arabic{table}}
 \appendix
+
+\chapter{パッケージ管理システム}
+\label{chap:package}
+macOS や Linux にソフトウェアやライブラリを追加インストールする場合、主に3つの方法があります。1つ目はインストーラの付属したソフトウェアをダウンロードしたり、Apple の App Store を経由してインストールする方法です。例えば LINE のパソコン用アプリケーションなどがこれに該当します。また Python もインストーラを配布していますが、この使用はあまり一般的ではないように思います\footnote{\url{https://www.python.org/downloads/mac-osx/}}。
+
+2 つ目はパッケージ管理システム（package management system、package manager）を使用する方法です。これは主に、Python などコマンドラインで使用するソフトウェアのインストールや管理に用いられます。パッケージ管理システムは単に必要なソフトウェアやライブラリをインストールするだけでなく、そのソフトウェアに必要となる他のライブラリを自動的に選択してインストールしたり、バージョンの依存関係を解決してくれたりします。またソフトウェアごとに異なるウェブサイトに情報が散逸することなく、同一のレポジトリに情報が集約され、インストール方法も共通化されているという利点があります。
+
+Mac では後述する Homebrew が 2018 年現在では主流であり\footnote{Mac OS X がリリースされた当初は Fink（\url{http://www.finkproject.org}）がもっとも人気があり、その後 MacPort（\url{https://www.macports.org}）に人気が移り、今では Homebrew が主流となりました。}、CentOS~7 では Yum が標準です。また Python に特化したパッケージ管理システムとして pip や conda があるのは第~\ref{chap:Python}~章で説明した通りです。本章では、このHomebrewとYumについて簡単に解説します。
+
+3 つ目の方法はCMakeやconfigureを使ってソフトウェアのビルドとインストールをする方法です。この解説は付録~\ref{chap:configure}を参照してください。
+
+\section{Homebrew}
+\label{sec:Homebrew}
+Homebrew は 2018 年現在、Mac でもっとも人気のあるパッケージ管理システムです\footnote{\url{https://brew.sh}}\footnote{「home brew」は日本語で自家醸造という意味であり、Homebrew に出てくる用語は cask（大樽）や cellar（貯蔵庫）など、酒関係の英語が多いです。}。\texttt{homebrew}
+
+まず \url{https://brew.sh} に記述のある通り、Homebrew をインストールしてみましょう\footnote{Homebrewの更新に従いこのコマンドは変更になる可能性があるので、必ず本家の記述を参照してください。}。次のコマンドを管理者権限をもつユーザで実行すると
+\begin{lstlisting}[language=bash]
+$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+\end{lstlisting}
+色々と出てきた後にパスワードを聞かれますので、パスワードを入れて進めてください。
+\begin{lstlisting}[language=bash]
+Press RETURN to continue or any other key to abort
+==> /usr/bin/sudo /bin/mkdir -p /usr/local/Cellar /usr/local/Homebrew /usr/local/Frameworks /usr/local/bin /usr/local/etc /usr/local/include /usr/local/lib /usr/local/opt /usr/local/sbin /usr/local/share /usr/local/share/zsh /usr/local/share/zsh/site-functions /usr/local/var
+Password:
+\end{lstlisting}
+そうすると \texttt{/usr/local} が作成され、Homebrew 関係のファイルが（ほぼ）全てそこにインストールされるようになります\footnote{例えば MacTeX を入れた場合などは、\texttt{/Library}以下にファイルが置かれる場合があります}。例えば Python~3 を Homebrew でインストールすると \texttt{/usr/local/bin/python3} という場所に置かれます。
+
+Homebrew によって \texttt{/usr/local} 以下に作られるディレクトリは、管理者権限を持つユーザが読み書きできる設定に変更されます。そのため、最初の Homebrew にインストール以降は原則としてパスワードの入力は求められません。
+
+第~\ref{chap:Python}~章で説明したように、Python~3のインストールなどを試してみましょう。
+
+\begin{lstlisting}[language=bash]
+$ brew install python3
+\end{lstlisting}
+
+他にまず必要なものは CMake と MacTeX\footnote{Macに\LaTeX をインストールする方法はいくつかありますが、Homebrew で MacTeX をインストールするのが一番簡単だと思います。} だと思います。
+\begin{lstlisting}[language=bash]
+$ brew install cmake
+$ brew cask install mactex
+\end{lstlisting}
+
+\section{\texttt{yum}}
+
+CentOS~7などの Red Hat Enterprise Linux（RHEL）派生の Linux ディストリビューション（いわゆる「RHEL クローン」）では、Yum（Yellowdog Updater Modified、ヤム）というパッケージ管理システムが多く使われています。macOS の Homebrew とは違いシステム標準で組み込まれています。そのためCentOS の OS インストール時点で追加パッケージを選択するのと、OS インストール後に \texttt{yum} コマンドで追加インストールのは基本的に同じことだと思ってください。
+
+CentOS~7やRHELは比較的「枯れた」ソフトウェアを提供する傾向にあります。つまり、あまり新しいソフトウェアのバージョンを取り込まず、実績と安定性を重視して古いバージョンを使用します。そのため Python~3 など新しいソフトウェアは、標準の Yum のレポジトリからは取得できません。そこで、第~\ref{chap:Python}~章で説明したように、場合によってレポジトリを追加する必要があります\footnote{追加レポジトリは多数ありますので、ここに例として示す\url{https://centos7.iuscommunity.org/ius-release.rpm}に限りません。}。
+
+\begin{lstlisting}[language=bash]
+$ sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+\end{lstlisting}
+
+例えば Python~3をインストールするには、次のようにします\footnote{\texttt{yum search python3}を実行すると、\texttt{python36u-devel}と\texttt{python36u}が見つかるはずです。この例のように\texttt{-devel}がついているものは、ソフトウェア開発で必要となるヘッダーファイルなども一緒にインストールします。例えばROOTのビルド時にPythonのヘッダーファイルも必要となりますので、\texttt{-devel}のほうをインストールするようにしてください。}。\texttt{/usr}以下に新たにファイルを追加するため、管理者権限で実行する必要があります。
+
+\begin{lstlisting}[language=bash]
+$ sudo yum install python36u-devel
+$ which python3.6
+/usr/local/python3.6
+\end{lstlisting}
+
+また ROOT のビルドで必要となるCMakeは3.4.3以上ですので、\texttt{cmake3}を入れてください。
+
+\begin{lstlisting}[language=bash]
+$ sudo yum install cmake3
+$ which cmake3
+/usr/bin/cmake3
+$ cmake3 --version
+cmake3 version 3.6.3
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+\end{lstlisting}
+
 \chapter{Macでの研究環境の構築}
+※ここの説明はかなり古い情報になってしまっています。そのうち書き直すので、あまり参考にしないでください。
+
 ここでは、Macで研究環境を構築する祭に最低限やるべきこと、知っておくべきことを説明します。Macに限らずWindowsやLinuxでも、計算機環境の設定は個々人の好みや研究内容によって大きく変わります。そのため、ここに書くことは参考程度にとどめて下さい。この章での説明は、OS X Lionを前提に書かれており、また使用するスクリーンショットもLion環境のものです。Snow Leopardでは多少異なる可能性があるので注意してください。
 \section{英語環境にする}
 日本の研究室でMacを使う場合、OSの言語環境を日本語にしている人が多いでしょう。しかしMacを研究で使う場合には英語環境に変更することを強くお勧めします。大きく四つの理由があるからです。
@@ -23,95 +96,95 @@
 
 ただし、英語環境にすることで問題が生じる場合があります。例えば英語環境でAdobe Flashを表示すると日本語が文字化けすることがあります。これはFlashが既に廃れつつある技術であり、かつFlashの開発チームが能力不足だからです。他にも英語環境にすると日本語表示がうまくいかないソフトがあるかもしれませんが、そのようなソフトを使うのはやめましょう。日本語表示以外にも色々と問題を抱えている可能性があります。
 
-図\ref{fig_English1_png}から図\ref{fig_English3_png}のように「システム環境設定」から英語環境に変更することができます。この設定後に起動したアプリケーションは、全て英語環境として起動されます。全てのメニューなどが英語で表示されるはずです。図\ref{fig_English3_png}にある「単語区切り」の設定は忘れないようにして下さい。ダブルクリックで日本語文字列を選択する場合に、熟語やカタカナ語が一つの単語として認識されるようになります。
+図\ref{fig:English1_png}から図\ref{fig:English3_png}のように「システム環境設定」から英語環境に変更することができます。この設定後に起動したアプリケーションは、全て英語環境として起動されます。全てのメニューなどが英語で表示されるはずです。図\ref{fig:English3_png}にある「単語区切り」の設定は忘れないようにして下さい。ダブルクリックで日本語文字列を選択する場合に、熟語やカタカナ語が一つの単語として認識されるようになります。
 
 \begin{figure}
   \centering
   \includegraphics[scale=0.35]{fig/English1.png}
   \caption{「システム環境設定」から「言語とテキスト」を開く}
-  \label{fig_English1_png}
+  \label{fig:English1_png}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[scale=0.35]{fig/English2.png}
   \caption{「日本語」ではなく「English」を先頭に持ってくる（この画面は既に英語環境になっている場合のもの）}
-  \label{fig_English2_png}
+  \label{fig:English2_png}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[scale=0.35]{fig/English3.png}
   \caption{「単語区切り（Word Break）」を「Japanese」にする（この画面は既に英語環境になっている場合のもの）}
-  \label{fig_English3_png}
+  \label{fig:English3_png}
 \end{figure}
 
 
 \section{拡張子を表示する}
-Macの初期設定では、ファイルの拡張子（extension）が表示されません。図~\ref{fig_Extension_png}のようにFinder.appの「Preferences\ldots」から表示する設定に変更しましょう。この表示をしないと、Terminal.appから操作するファイル名とFinder.appからファイル名が見かけ上一致しない場合があります。
+Macの初期設定では、ファイルの拡張子（extension）が表示されません。図~\ref{fig:Extension_png}のようにFinder.appの「Preferences\ldots」から表示する設定に変更しましょう。この表示をしないと、Terminal.appから操作するファイル名とFinder.appからファイル名が見かけ上一致しない場合があります。
 
 \begin{figure}
   \centering
   \includegraphics[scale=0.35]{fig/Extension.png}
   \caption{「Show all filename extensions」にチェックを入れると、全てのファイルで拡張子が表示されるようになる}
-  \label{fig_Extension_png}
+  \label{fig:Extension_png}
 \end{figure}
 
 \section{キーボードの設定}
 
 \subsection{Caps LockキーをControlキーに変更する}
-もしあなたのMacがUS配列のキーボードならば、Caps LockキーはControlキーとして機能するように設定を変更しましょう。図\ref{fig_Keyboard1_png}のように、System Preferencesから「Keyboard」を開いて「Keyboard」タブの「Modifier keys\ldots」を押し、Caps LockをControlにします。後述するように、OS~X環境ではEmacsの操作体系に倣ったキーボードショートカットが使われています。そのため、Controlキーの使用率が他のOSに比べて非常に高くなるのが特徴です。US配列のキーボードを使用している場合にはControlキーが押しにくい位置にあるため、滅多に使わない、かつ最も押しやすい位置にあるCaps LockをControlキーにしてしまうことがよく行われています。
+もしあなたのMacがUS配列のキーボードならば、Caps LockキーはControlキーとして機能するように設定を変更しましょう。図\ref{fig:Keyboard1_png}のように、System Preferencesから「Keyboard」を開いて「Keyboard」タブの「Modifier keys\ldots」を押し、Caps LockをControlにします。後述するように、macOS環境ではEmacsの操作体系に倣ったキーボードショートカットが使われています。そのため、Controlキーの使用率が他のOSに比べて非常に高くなるのが特徴です。US配列のキーボードを使用している場合にはControlキーが押しにくい位置にあるため、滅多に使わない、かつ最も押しやすい位置にあるCaps LockをControlキーにしてしまうことがよく行われています。
 
 \begin{figure}
   \centering
   \includegraphics[scale=0.35]{fig/Keyboard1.png}
   \caption{Caps LockをControlキーに変更する}
-  \label{fig_Keyboard1_png}
+  \label{fig:Keyboard1_png}
 \end{figure}
 
 \subsection{Tabキーの動作の変更}
-次に、図\ref{fig_Keyboard2_png}のように「Keyboard Shortcuts」のタブに移動し、ボタンなどの選択を全てTabキーで行えるようにします。このようにすることで、様々な画面操作をするときに、いちいちキーボードからトラックパッドやマウスへ手の移動をしなくて済むようになります。
+次に、図\ref{fig:Keyboard2_png}のように「Keyboard Shortcuts」のタブに移動し、ボタンなどの選択を全てTabキーで行えるようにします。このようにすることで、様々な画面操作をするときに、いちいちキーボードからトラックパッドやマウスへ手の移動をしなくて済むようになります。
 
 \begin{figure}
   \centering
   \includegraphics[scale=0.35]{fig/Keyboard2.png}
   \caption{全てのボタンなどをtabキーで移動できるようにする}
-  \label{fig_Keyboard2_png}
+  \label{fig:Keyboard2_png}
 \end{figure}
 
-例えば、Mac の電源ボタンを軽く一度だけ押すと、図\ref{fig_reboot_png}のような確認ダイアログが出てくるはずです。ここで数回Tabキーを押すと、「Cancel」ボタンが強調表示されるようになります。また「Shut Down」ボタンが明滅しているでしょう。この状態でSpaceキーを押すと、マウスやトラックパッドの操作をしなくても強調表示された「Cancel」ボタンが押されます。またReturnキーを押すと明滅している「Shut Down」ボタンが押されてMacが再起動します。このように、Macではダイアログのボタンをクリックする代わりにSpaceキーとReturnキーで操作することができます。
+例えば、Mac の電源ボタンを軽く一度だけ押すと、図\ref{fig:reboot_png}のような確認ダイアログが出てくるはずです。ここで数回Tabキーを押すと、「Cancel」ボタンが強調表示されるようになります。また「Shut Down」ボタンが明滅しているでしょう。この状態でSpaceキーを押すと、マウスやトラックパッドの操作をしなくても強調表示された「Cancel」ボタンが押されます。またReturnキーを押すと明滅している「Shut Down」ボタンが押されてMacが再起動します。このように、Macではダイアログのボタンをクリックする代わりにSpaceキーとReturnキーで操作することができます。
 
 \begin{figure}
   \centering
   \includegraphics[scale=0.35]{fig/reboot.png}
   \caption{再起動の確認ダイアログ。Tabを数回押すと、「Cancel」が強調表示される。「Shut Down」は明滅している。}
-  \label{fig_reboot_png}
+  \label{fig:reboot_png}
 \end{figure}
 
 \subsection{Spotlightのショートカットの変更}
-最後に、Spotlightのショートカットを図\ref{fig_Keyboard3_png}のようにControl-Space（画面上の表示は「\verb|^|Space」）の組み合わせからCommand-Space（画面上の表示は「\cmd{}Space」）などの組み合わせに変更しましょう。Control-Spaceは後述するようにEmacsで頻繁に使用するショートカットであるため、Spotlightのショートカットとして使用されてしまうと不便だからです。
+最後に、Spotlightのショートカットを図\ref{fig:Keyboard3_png}のようにControl-Space（画面上の表示は「\verb|^|Space」）の組み合わせからCommand-Space（画面上の表示は「\cmd{}Space」）などの組み合わせに変更しましょう。Control-Spaceは後述するようにEmacsで頻繁に使用するショートカットであるため、Spotlightのショートカットとして使用されてしまうと不便だからです。
 
-Command-SpaceをSpotlightにあてがってしまうと、文字入力の日本語と英語の切り替えはどうするのかと、Macに少し慣れた人なら疑問に思うかもしれません。しかし最近のMacにはJIS配列の場合「かな」と「英数」キーが存在するため、これらのキーを使ったほうが文字入力の切り替えは簡単に行えます。またUS配列のMacを使っている場合には、\ref{sec_KeyRemap4MacBook}にて後述するKeyRemap4MacBookを使うことで「かな」と「英数」をCommandキーに割り当てることが可能になるため、やはりCommand-Spaceのショートカットは不要です。
+Command-SpaceをSpotlightにあてがってしまうと、文字入力の日本語と英語の切り替えはどうするのかと、Macに少し慣れた人なら疑問に思うかもしれません。しかし最近のMacにはJIS配列の場合「かな」と「英数」キーが存在するため、これらのキーを使ったほうが文字入力の切り替えは簡単に行えます。またUS配列のMacを使っている場合には、\ref{sec:KeyRemap4MacBook}にて後述するKeyRemap4MacBookを使うことで「かな」と「英数」をCommandキーに割り当てることが可能になるため、やはりCommand-Spaceのショートカットは不要です。
 
 \begin{figure}
   \centering
   \includegraphics[scale=0.35]{fig/Keyboard3.png}
   \caption{Spotlightのショートカットを「Control-Space」から「Command-Space」に変更した状態}
-  \label{fig_Keyboard3_png}
+  \label{fig:Keyboard3_png}
 \end{figure}
 
 \section{KeyRemap4MacBook}
-\label{sec_KeyRemap4MacBook}
+\label{sec:KeyRemap4MacBook}
 
-\ref{sec_Emacs}で述べるように、OS Xのキーボード操作の多くはEmacsの操作体系に基づいています。しかし、この操作に対応していないアプリケーションも存在するため（Microsoft製品、Adobe製品、Eclipseなど）、KeyRemap4MacBook\footnote{\url{http://pqrs.org/macosx/keyremap4macbook/index.html.ja}}をインストールすることでOS Xの操作を快適にすることができます。
+\ref{sec:Emacs}で述べるように、macOSのキーボード操作の多くはEmacsの操作体系に基づいています。しかし、この操作に対応していないアプリケーションも存在するため（Microsoft製品、Adobe製品、Eclipseなど）、KeyRemap4MacBook\footnote{\url{http://pqrs.org/macosx/keyremap4macbook/index.html.ja}}をインストールすることでmacOSの操作を快適にすることができます。
 
-KeyRemap4MacBookをインストール後、「System Preferences」から「KeyRemap4MacBook」の「Change Key」タブを開くと、図\ref{fig_KeyRemap4MacBook1_png}のような画面が現われます。大量の設定項目が存在しますが、そのうち、「Control+D to Forward Delete」、「Control+H to Delete」、「Control-I to Tab」、「Control+M to Return」、「Control+PNBF to Up/Down/Left/Right」、「Control+V to PageDown」などを動作させると良いでしょう。
+KeyRemap4MacBookをインストール後、「System Preferences」から「KeyRemap4MacBook」の「Change Key」タブを開くと、図\ref{fig:KeyRemap4MacBook1_png}のような画面が現われます。大量の設定項目が存在しますが、そのうち、「Control+D to Forward Delete」、「Control+H to Delete」、「Control-I to Tab」、「Control+M to Return」、「Control+PNBF to Up/Down/Left/Right」、「Control+V to PageDown」などを動作させると良いでしょう。
 
 \begin{figure}
   \centering
   \includegraphics[scale=0.35]{fig/KeyRemap4MacBook1.png}
-  \caption{OS Xのほとんどの操作で、Emacsに似た操作体系を実現するための設定の例。USキーボードの使用者は、赤枠内の設定も追加することで日本語入力が楽になる。}
-  \label{fig_KeyRemap4MacBook1_png}
+  \caption{macOSのほとんどの操作で、Emacsに似た操作体系を実現するための設定の例。USキーボードの使用者は、赤枠内の設定も追加することで日本語入力が楽になる。}
+  \label{fig:KeyRemap4MacBook1_png}
 \end{figure}
 
 また、JIS配列のキーボードではなく、US配列のものを使用している人の場合、「Command\_L to Command\_L」、「Command\_L x2 to EISUU x2」、「Command\_R to Command\_R」、「Command\_R x2 to KANA x2」を動作させておけば、左右のCommandキーを英数キー、かなキーとして使用することが可能になります。もちろん、他のキーと組み合わせた場合にはCommandキーとしても動作します。
@@ -122,31 +195,31 @@ KeyRemap4MacBookをインストール後、「System Preferences」から「KeyR
   \centering
   \includegraphics[scale=0.35]{fig/KeyRemap4MacBook2.png}
   \caption{キーボードを押下し続けた場合の繰り返し入力の設定}
-  \label{fig_KeyRemap4MacBook2_png}
+  \label{fig:KeyRemap4MacBook2_png}
 \end{figure}
 
 \section{zsh}
 
-OS Xの標準のshell環境は、Snow LeopardやLionではbashになっています。bashはLinuxやOS Xで広く使われており、ソフトウェアの一部やOSの設定スクリプトなどで見ることができます。cshやtcshを使う人も少なくない数が存在しますが、2012年現在でMacを研究に使うにはbashを選択するのが標準的です。
+macOSの標準のshell環境は、Snow LeopardやLionではbashになっています。bashはLinuxやmacOSで広く使われており、ソフトウェアの一部やOSの設定スクリプトなどで見ることができます。cshやtcshを使う人も少なくない数が存在しますが、2012年現在でMacを研究に使うにはbashを選択するのが標準的です。
 
 一方で、bashよりも更に高機能なshellとして最近ではzshの人気が高まっています。zshはbashの文法に非常に似ているものの、独自の拡張機能をたくさん持っているため、bashに慣れている人には「便利なbash」として使うことが可能です。また、初学者の場合はbashとzshの違いは全く気にする必要はないでしょうから、bashではなくzshを使い始めるのが良いでしょう。
 
-図\ref{fig_zsh1_png}と図\ref{fig_zsh2_png}に、shellをzshに変更する方法を説明します。まず図\ref{fig_zsh1_png}のように、「System Preferences」の「Users \& Groups」を表示し、自分のアカウントを右クリック（トラックパッドの場合は二本指クリック）します。「Advanced Options\ldots」が現われるので、これを選択します。ウィンドウ左下の鍵マークがロックされている状態の場合は右クリックが効きませんので、パスワードを入力してこれを解除して下さい。
+図\ref{fig:zsh1_png}と図\ref{fig:zsh2_png}に、shellをzshに変更する方法を説明します。まず図\ref{fig:zsh1_png}のように、「System Preferences」の「Users \& Groups」を表示し、自分のアカウントを右クリック（トラックパッドの場合は二本指クリック）します。「Advanced Options\ldots」が現われるので、これを選択します。ウィンドウ左下の鍵マークがロックされている状態の場合は右クリックが効きませんので、パスワードを入力してこれを解除して下さい。
 
 \begin{figure}
   \centering
   \includegraphics[scale=0.35]{fig/zsh1.png}
   \caption{自分のアカウントを右クリックして「Advanced Options\ldots」を表示する}
-  \label{fig_zsh1_png}
+  \label{fig:zsh1_png}
 \end{figure}
 
-図\ref{fig_zsh2_png}が表示されるので、「Login shell」を「/bin/bash」から「/bin/zsh」に書き換えて下さい。ここで、{\bf{\textgt{絶対に打ち間違えをしないように注意してください}}}。これで、次にTerminalを開くときから、ログインshellがzshに変更されます。
+図\ref{fig:zsh2_png}が表示されるので、「Login shell」を「/bin/bash」から「/bin/zsh」に書き換えて下さい。ここで、{\bf{\textgt{絶対に打ち間違えをしないように注意してください}}}。これで、次にTerminalを開くときから、ログインshellがzshに変更されます。
 
 \begin{figure}
   \centering
   \includegraphics[scale=0.35]{fig/zsh2.png}
   \caption{「/bin/bash」を「/bin/zsh」に書き換える}
-  \label{fig_zsh2_png}
+  \label{fig:zsh2_png}
 \end{figure}
 
 bashからzshに変更すると、各種の設定は\texttt{\$HOME/.bashrc}ではなく\texttt{\$HOME/.zshrc}に書くようになります。例えば次の設定を\texttt{\$HOME/.bashrc}に書けと指示があった場合、\texttt{\$HOME/.zshrc}にこれを書いて下さい。
@@ -157,11 +230,12 @@ export ROOTSYS=/usr/local/root
 
 zshの設定や\texttt{\$HOME/.zshrc}の書きかたについては、「漢のzsh\footnote{\url{http://news.mynavi.jp/column/zsh/index.html}}」というコラムの解説が非常に詳しく分かりやすいので、参考にして下さい。
 
+
 \section{MacPorts}
-\label{sec_MacPorts}
+\label{sec:MacPorts}
 MacPorts\footnote{\url{http://www.macports.org/}}とは、UNIXやLinuxで広く使われ、また開発の行われてきたソフトウェア資産を、Macでも使えるようにするためのプロジェクトのひとつです。GUIソフトウェアでもそうですが、他の環境で動作するソフトウェアだからと言って、Macでも簡単に動くわけではありません。Mac以外のUNIXに書かれたソフトウェアであっても、Mac用にコンパイルしたり、各種設定を変更してやる必要があります。しかしMacPortsのようにMacに移植するプロジェクトの成果を利用することで、難しい作業を一般ユーザが行う必要がなくなります。
 
-同様のプロジェクトに、Fink\footnote{\url{http://www.finkproject.org/}}やHomebrew\footnote{\url{http://mxcl.github.com/homebrew/}}があります。OS Xのリリース初期ではFinkが最も活発でしたが、ROOTと組み合わせた場合に問題が何度か発生したため、筆者はMacPortsに移行しました。最近ではHomebrewが流行っていますが、MacPortsに比べるとまだユーザ数は多くありません。新しもの好きの人はHomebrewを検討してみて下さい。
+同様のプロジェクトに、Fink\footnote{\url{http://www.finkproject.org/}}やHomebrew\footnote{\url{http://mxcl.github.com/homebrew/}}があります。macOSのリリース初期ではFinkが最も活発でしたが、ROOTと組み合わせた場合に問題が何度か発生したため、筆者はMacPortsに移行しました。最近ではHomebrewが流行っていますが、MacPortsに比べるとまだユーザ数は多くありません。新しもの好きの人はHomebrewを検討してみて下さい。
 
 \subsection{MacPortsの導入}
 
@@ -179,7 +253,7 @@ Terminalから、次のコマンドを実行して\texttt{\$HOME/.zshrc}の設�
 $ source ~/.zshrc
 \end{lstlisting}
 
-MacPortsで好きなソフトウェアをインストールするには、いくつかコマンドを実行する必要があります。Emacsの導入事例を\ref{sec_Emacs}で説明します。
+MacPortsで好きなソフトウェアをインストールするには、いくつかコマンドを実行する必要があります。Emacsの導入事例を\ref{sec:Emacs}で説明します。
 
 \subsection{Emacs}
 
@@ -247,7 +321,7 @@ License:              GPL-3+
 Maintainers:          dports@macports.org, openmaintainer@macports.org
 \end{lstlisting}
 
-実は、OS Xには最初からEmacsがインストールしてあるため、必ずしもEmacsを自分でインストールする必要はありません。しかし、OS Xに含まれるEmacsはX11に対応していないため、Terminalの中でしかEmacsを立ち上げることはできません。一方、MacPortsの場合にはX11に対応したEmacsをインストールすることが可能です。研究をする上では、こちらのほうが便利なのでMacPortsでEmacsを導入しましょう。
+実は、macOSには最初からEmacsがインストールしてあるため、必ずしもEmacsを自分でインストールする必要はありません。しかし、macOSに含まれるEmacsはX11に対応していないため、Terminalの中でしかEmacsを立ち上げることはできません。一方、MacPortsの場合にはX11に対応したEmacsをインストールすることが可能です。研究をする上では、こちらのほうが便利なのでMacPortsでEmacsを導入しましょう。
 
 ここで、「Variants:」と書かれた説明を見ると、「x11」とあるのが分かります。EmacsをMacPortsでインストールするときに、どのようなオプションが選択可能かを示しており、この場合は「x11」というオプションを指定すればX11に対応したEmacsがインストールされることを示しています。
 
@@ -328,11 +402,11 @@ $ sudo port install ptex
 \end{lstlisting}
 
 \section{Emacsの操作体系に慣れる}
-\label{sec_Emacs}
+\label{sec:Emacs}
 
-ここでは、OS Xでの標準的なエディタ（editor）のひとつであるEmacsの操作について、その初歩の初歩について説明します。エディタは文章を書くためのソフトウェアです。ただし、ワープロのように様々な装飾をするための機能はありません。プログラムを書いたり、\LaTeX{}のソースを書いたりと、装飾ではなく文そのものに意味があるときに使います。そのような作業に特化したワープロにはない様々な機能が搭載されています。
+ここでは、macOSでの標準的なエディタ（editor）のひとつであるEmacsの操作について、その初歩の初歩について説明します。エディタは文章を書くためのソフトウェアです。ただし、ワープロのように様々な装飾をするための機能はありません。プログラムを書いたり、\LaTeX{}のソースを書いたりと、装飾ではなく文そのものに意味があるときに使います。そのような作業に特化したワープロにはない様々な機能が搭載されています。
 
-Emacsの特徴のひとつに、文字入力に特殊なキーボードショートカット（Emacs key binding）を使うことが挙げられます。慣れないうちは全く便利に感じないと思いますが、一度慣れてしまうと、もう他のエディタには戻れなくなるのでぜひ覚えて下さい。OS Xを使う場合、このショートカットをほとんどのソフトウェアでも利用可能です。例えば、OS Xに標準で付属しているメールクライアント「Mail」でメッセージを編集する時にも、このショートカットが使用できます。基本的なキーボードショートカットの一覧を表\ref{tab_emacs}にまとめました。
+Emacsの特徴のひとつに、文字入力に特殊なキーボードショートカット（Emacs key binding）を使うことが挙げられます。慣れないうちは全く便利に感じないと思いますが、一度慣れてしまうと、もう他のエディタには戻れなくなるのでぜひ覚えて下さい。macOSを使う場合、このショートカットをほとんどのソフトウェアでも利用可能です。例えば、macOSに標準で付属しているメールクライアント「Mail」でメッセージを編集する時にも、このショートカットが使用できます。基本的なキーボードショートカットの一覧を表\ref{tab_emacs}にまとめました。
 
 \begin{table}
   \centering
@@ -367,7 +441,7 @@ M gg & 不明 & 特定の行に移動する\\\hline
   \end{tabular}
 \end{table}
 
-まずはEmacsを次のコマンドで起動してみましょう。MacPortsからEmacsを入れていなかったり、MacPortsで「+x11」をつけずにEmacsをインストールした場合には図\ref{fig_emacs_nox11_png}のような表示が現われるはずです\footnote{X11に対応したEmacsでも、「-nw」という引数をつけてEmacsを起動すれば、同様の表示にすることが可能です。接続速度の遅い（つまり画像を飛ばすのが遅い）SSHの接続先などで作業する場合に使うこともあります。}。
+まずはEmacsを次のコマンドで起動してみましょう。MacPortsからEmacsを入れていなかったり、MacPortsで「+x11」をつけずにEmacsをインストールした場合には図\ref{fig:emacs_nox11_png}のような表示が現われるはずです\footnote{X11に対応したEmacsでも、「-nw」という引数をつけてEmacsを起動すれば、同様の表示にすることが可能です。接続速度の遅い（つまり画像を飛ばすのが遅い）SSHの接続先などで作業する場合に使うこともあります。}。
 
 \begin{lstlisting}[language=bash]
 $ emacs
@@ -377,55 +451,72 @@ $ emacs
   \centering
   \includegraphics[scale=0.35]{fig/emacs_nox11.png}
   \caption{X11対応でないEmacsの起動例}
-  \label{fig_emacs_nox11_png}
+  \label{fig:emacs_nox11_png}
 \end{figure}
 
-X11に対応したEmacsを起動した場合は、図\ref{fig_emacs1_png}のようなウィンドウが表示されます。まずは、新しいファイルを作成してみましょう。Controlキーを左手小指で押下し、左手中指でXキーを同時に押します。その後、Controlキーを押した状態のまま左手人さし指でFキーを同時に押します。これを、「C-x C-f」のように表記します\footnote{Control-x、Ctl-x、Cn-xなど、いくつかの表記方法があります。好みの問題です。}。表\ref{tab_emacs}にあるように、これは新規ファイルを作成するためのショートカットです。図\ref{fig_emacs2_png}のように「Find file:」の後に続けて作成したいファイル名を入力しましょう。図\ref{fig_emacs2_png}では\texttt{~/foo.txt}を作成しています。
+X11に対応したEmacsを起動した場合は、図\ref{fig:emacs1_png}のようなウィンドウが表示されます。まずは、新しいファイルを作成してみましょう。Controlキーを左手小指で押下し、左手中指でXキーを同時に押します。その後、Controlキーを押した状態のまま左手人さし指でFキーを同時に押します。これを、「C-x C-f」のように表記します\footnote{Control-x、Ctl-x、Cn-xなど、いくつかの表記方法があります。好みの問題です。}。表\ref{tab_emacs}にあるように、これは新規ファイルを作成するためのショートカットです。図\ref{fig:emacs2_png}のように「Find file:」の後に続けて作成したいファイル名を入力しましょう。図\ref{fig:emacs2_png}では\texttt{~/foo.txt}を作成しています。
 
 \begin{figure}
   \centering
   \includegraphics[scale=0.35]{fig/emacs1.png}
   \caption{X11対応のEmacsの起動例}
-  \label{fig_emacs1_png}
+  \label{fig:emacs1_png}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[scale=0.35]{fig/emacs2.png}
   \caption{Emacsで新規ファイルを作成する}
-  \label{fig_emacs2_png}
+  \label{fig:emacs2_png}
 \end{figure}
 
-あらたなファイルが作成されたので（保存はされていません）、図\ref{fig_emacs3_png}のように文字を入力しましょう。この後、C-x C-s を入力すると実際にディスク上に保存されます。図\ref{fig_emacs3_png}の下部に「Wrote /Users/oxon/foo.txt」と表示されます。最後に、C-x C-cと入力してEmacsを終了しましょう。
+あらたなファイルが作成されたので（保存はされていません）、図\ref{fig:emacs3_png}のように文字を入力しましょう。この後、C-x C-s を入力すると実際にディスク上に保存されます。図\ref{fig:emacs3_png}の下部に「Wrote /Users/oxon/foo.txt」と表示されます。最後に、C-x C-cと入力してEmacsを終了しましょう。
 
 \begin{figure}
   \centering
   \includegraphics[scale=0.35]{fig/emacs3.png}
   \caption{Emacsで文字入力をし、保存する}
-  \label{fig_emacs3_png}
+  \label{fig:emacs3_png}
 \end{figure}
 
 Emacsの操作に慣れるには、まずこのControlキーを多用した操作に慣れることが重要です。表\ref{tab_emacs}に挙げたショートカットを中心にまずは覚え、どのような操作や機能、設定があるのかを調べていきましょう。多機能過ぎて、うんざりするはずです。
 
-\section{C-Space C-wをOS Xで使う}
+\section{C-Space C-wをmacOSで使う}
 
-表\ref{tab_emacs}に示したショートカットの多くはOS Xのアプリケーションでも使うことができます。また使えないアプリケーションでも、\ref{sec_KeyRemap4MacBook}に書いたようにKeyRemap4MacBookの設定で使用可能になります。
+表\ref{tab_emacs}に示したショートカットの多くはmacOSのアプリケーションでも使うことができます。また使えないアプリケーションでも、\ref{sec:KeyRemap4MacBook}に書いたようにKeyRemap4MacBookの設定で使用可能になります。
 
-しかし、デフォルトの状態ではC-Space C-wはOS Xのアプリケーションでは使うことができません。Emacsに慣れてくると、C-Space C-wがEmacs以外で使えないのが不便に感じるでしょう。OS Xにはこの操作を実現するための機能が隠されています。
+しかし、デフォルトの状態ではC-Space C-wはmacOSのアプリケーションでは使うことができません。Emacsに慣れてくると、C-Space C-wがEmacs以外で使えないのが不便に感じるでしょう。macOSにはこの操作を実現するための機能が隠されています。
 
-コード\ref{code_DefaultKeyBinding}を、\texttt{\~{}/Library/KeyBindings/DefaultKeyBinding.dict}として保存して下さい\footnote{\url{http://akenox.dip.jp/index.php?Translations\%2FMac\%20OS\%20X\%20Key\%20Bindings}に詳しい解説がある。}。「Mail」などを起動して文字入力する際に、C-Space C-wやC-x C-sが有効になっているはずです\footnote{Lionからは「Save As\ldots」が「Duplicate」などに置き換わってしまったため、コード\ref{code_DefaultKeyBinding}の設定をしてもC-x C-wは動作しません。}。
+コード\ref{code:DefaultKeyBinding}を、\texttt{\~{}/Library/KeyBindings/DefaultKeyBinding.dict}として保存して下さい\footnote{\url{http://akenox.dip.jp/index.php?Translations\%2FMac\%20OS\%20X\%20Key\%20Bindings}に詳しい解説がある。}。「Mail」などを起動して文字入力する際に、C-Space C-wやC-x C-sが有効になっているはずです\footnote{Lionからは「Save As\ldots」が「Duplicate」などに置き換わってしまったため、コード\ref{code:DefaultKeyBinding}の設定をしてもC-x C-wは動作しません。}。
 
 %\begin{NoFloat}
-\lstinputlisting[float=tb,caption=\texttt{DefaultKeyBinding.dict},label=code_DefaultKeyBinding,numbers=left]{src/DefaultKeyBinding.dict}
+\lstinputlisting[float=tb,caption=\texttt{DefaultKeyBinding.dict},label=code:DefaultKeyBinding,numbers=left]{src/DefaultKeyBinding.dict}
 %\end{NoFloat}
 
 \section{Xcode}
 
-\section{知っていると便利な OS X 特有のコマンド}
+\begin{lstlisting}[language=bash]
+$ clang
+xcode-select: note: no developer tools were found at '/Applications/Xcode.app', requesting install. Choose an option in the dialog to download the command line developer tools.
+\end{lstlisting}
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.5]{fig/command-line-developer-tools.png}
+  \caption{Command Line Developer Tools のインストールダイアログ}
+  \label{fig:command-line-developer-tools}
+\end{figure}
+
+\begin{lstlisting}[language=bash]
+$ clang
+clang: error: no input files
+\end{lstlisting}
+
+\section{知っていると便利な macOS 特有のコマンド}
 
 \chapter{configure と Make}
 \label{chap:configure}
-OS XやLinux環境でソフトウェアを導入する時、インストールの方法は主に3つあります。1つ目は、\ref{sec_MacPorts}で説明したようなパッケージ管理ソフト\footnote{OS XではMacPorts、Fink、Homebrewなど、LinuxではYumやAPTなど。}を使う方法す。2つ目は、既にコンパイル済みでバイナリ配布されているソフトを導入する方法です。例えば、KeyRemap4MacBookをインストーラを使ってインストールしたのがこれに当たります。また、ROOTを入れる場合でもバイナリ配布されているものを使うことが可能です。3つ目は、ソースコードの配布されているソフトウェアを自分でコンパイル（compile）する\footnote{ビルド（build）するとも言います。}方法です。これは\ref{sec_ROOT_install}でROOTの導入として説明しました。
+macOSやLinux環境でソフトウェアを導入する時、インストールの方法は主に3つあります。1つ目は、\ref{sec:MacPorts}で説明したようなパッケージ管理ソフト\footnote{macOSではMacPorts、Fink、Homebrewなど、LinuxではYumやAPTなど。}を使う方法す。2つ目は、既にコンパイル済みでバイナリ配布されているソフトを導入する方法です。例えば、KeyRemap4MacBookをインストーラを使ってインストールしたのがこれに当たります。また、ROOTを入れる場合でもバイナリ配布されているものを使うことが可能です。3つ目は、ソースコードの配布されているソフトウェアを自分でコンパイル（compile）する\footnote{ビルド（build）するとも言います。}方法です。これは\ref{sec:ROOT_install}でROOTの導入として説明しました。
 
 自分でソフトウェアをソースコードからコンパイルする場合、標準的なやり方が存在します。また、研究で通常使うソフトウェアの多くがこの標準的な方法に則して作成されています。そのためここで説明する方法を覚えておけば、多くのソフトウェアを自分で簡単にインストールできるようになります。
 
@@ -513,15 +604,9 @@ General help using GNU software: <http://www.gnu.org/gethelp/>
 $ man hello
 \end{lstlisting}
 
-\chapter{パッケージ管理ソフトウェア}
-\label{chap_package}
-\section{\texttt{yum}}
-\section{\texttt{homebrew}}
-
-
 \chapter{本文で登場したROOTスクリプトのPyROOT版}
 ここでは、本文中で登場したROOTスクリプトをPyROOTで書き換えた例を掲載します。\texttt{foo.C}というROOTスクリプトであれば、\texttt{foo.py}というPyROOTスクリプトにしてあります。
 
 \begin{NoFloat}
-\lstinputlisting[language=python,breaklines=true,caption=\texttt{population.py},label=code_population_py,numbers=left]{src/population.py}
+\lstinputlisting[language=python,breaklines=true,caption=\texttt{population.py},label=code:population_py,numbers=left]{src/population.py}
 \end{NoFloat}

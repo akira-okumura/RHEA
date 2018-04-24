@@ -1,5 +1,5 @@
 \chapter{統計学の基礎}
-\label{chap_Statistics}
+\label{chap:Statistics}
 
 実験データの解析作業の目的のひとつは、何らかの物理量をそこから抽出し、その値が統計学的にどれだけ正しいかを評価することです。例えば電子の質量が約511~keVであることを私たちは知っていますが、その真の値がいくつかは誰も知りません\footnote{光速$c$のように299~792~458~$\mathrm{m}/\mathrm{s}$と正確に「定義」されている物理量も存在します。}。物理実験から統計学的な表現で言えるのは、電子質量は
 \begin{equation}
@@ -89,7 +89,7 @@ ROOTではヒストグラムが自動で計算する平均値や標準偏差と�
 となります。このことから、測定回数（標本の大きさ）$n$を増やすと標本平均の分散は$n$に反比例して小さくなることが分かります。また標本平均の誤差はこの平方根を取り$\sigma/\sqrt{n}$で与えられます。ただし$\sigma$は標本分散から推定するのが通常のため、母平均の推定値として
 \begin{equation}
   \mu = \bar{x}\pm\frac{s}{\sqrt{n}}
-  \label{eq_estimated_mean}
+  \label{eq:estimated_mean}
 \end{equation}
 が得られます。
 
@@ -99,42 +99,42 @@ $n$が大きいとき、$x_i$がどのような確率分布にしたがって発
 
 繰り返し行うことが可能で、かつ各試行が互いに影響を及ぼさない測定があるとき、その測定を多数回繰り返した際に得られる測定値の平均は、その測定の期待値に近づきます。これを\emphasize{大数の法則（law of large numbers）}と言います。例えばサイコロの出る目の期待値は常に$\frac{7}{2}$であるので、サイコロを繰り返し投げたときに出る目の平均はこの値に近づくという、直感的に分かりやすい現象を数学的に証明したものです。
 
-実際にROOTを使ってこの法則を確かめてみます。\texttt{dice.C}を実行すると、図~\ref{fig_dice_law_of_large_numbers}のように、サイコロの目の標本平均が試行回数を増やすにつれて$\frac{7}{2}$に近づいていくのが分かります。
+実際にROOTを使ってこの法則を確かめてみます。\texttt{dice.C}を実行すると、図~\ref{fig:dice_law_of_large_numbers}のように、サイコロの目の標本平均が試行回数を増やすにつれて$\frac{7}{2}$に近づいていくのが分かります。
 
 \begin{figure}
   \centering
   \includegraphics[width=12cm]{fig/dice_law_of_large_numbers.pdf}
   \caption{サイコロを振るシミュレーションによる大数の法則の実証例。$10^5$回の試行を繰り返した場合の標本平均の変化を、100通り表示したもの。}
-  \label{fig_dice_law_of_large_numbers}
+  \label{fig:dice_law_of_large_numbers}
 \end{figure}
 
 \subsection{中心極限定理}
 
-図~\ref{fig_dice_law_of_large_numbers}では100通りの標本平均の変化を示しましたが、そのばらつきは試行回数を増やすにつれて小さくなっていくのが分かります。またこのばらつきは試行回数$n$が大きくなると、正規分布に近づきます。このように、試行回数$n$が大きいときに標本平均が正規分布で近似できることを\emphasize{中心極限定理（central limit of theorem）}と言います。中心極限定理は測定値の分布がどのような確率分布であっても成り立つことが知られています\footnote{ただし、もとの確率分布で分散が定義できない場合、正規分布にならない場合があります。}。
+図~\ref{fig:dice_law_of_large_numbers}では100通りの標本平均の変化を示しましたが、そのばらつきは試行回数を増やすにつれて小さくなっていくのが分かります。またこのばらつきは試行回数$n$が大きくなると、正規分布に近づきます。このように、試行回数$n$が大きいときに標本平均が正規分布で近似できることを\emphasize{中心極限定理（central limit of theorem）}と言います。中心極限定理は測定値の分布がどのような確率分布であっても成り立つことが知られています\footnote{ただし、もとの確率分布で分散が定義できない場合、正規分布にならない場合があります。}。
 
-図~\ref{fig_central_limit_theorem}も同じく\texttt{dice.C}で行ったシミュレーションです。試行回数が1回、10回、$\cdots$$10^5$回の場合の標本平均の分布がどのようになるかを、10000通り試してその分布を示しています。試行回数が1回のときは当然離散的ですが、$n$を大きくするにつれて分布が滑らかになり、正規分布へと近づきます。
+図~\ref{fig:central_limit_theorem}も同じく\texttt{dice.C}で行ったシミュレーションです。試行回数が1回、10回、$\cdots$$10^5$回の場合の標本平均の分布がどのようになるかを、10000通り試してその分布を示しています。試行回数が1回のときは当然離散的ですが、$n$を大きくするにつれて分布が滑らかになり、正規分布へと近づきます。
 
 \begin{figure}
   \centering
   \includegraphics[width=15cm]{fig/dice_central_limit_theorem.pdf}
   \caption{サイコロを振るシミュレーションによる中心極限定理の実証。試行回数$n$を大きくするにつれて、標本平均の分布が正規分布に近づく。}
-  \label{fig_central_limit_theorem}
+  \label{fig:central_limit_theorem}
 \end{figure}
 
-式~\ref{eq_estimated_mean}では標本平均が母平均の周辺に$\frac{\sigma}{\sqrt{n}}$の標準偏差を持つ正規分布になることを説明しました。実際、図~\ref{fig_central_limit_theorem}を見ると$n=10^5$のときに標準偏差$s=0.005416$となっており、これはサイコロの目の標準偏差$\sigma=1.70783$を$\sqrt{100000}$で割ったものと近くなっています。
+式~\ref{eq:estimated_mean}では標本平均が母平均の周辺に$\frac{\sigma}{\sqrt{n}}$の標準偏差を持つ正規分布になることを説明しました。実際、図~\ref{fig:central_limit_theorem}を見ると$n=10^5$のときに標準偏差$s=0.005416$となっており、これはサイコロの目の標準偏差$\sigma=1.70783$を$\sqrt{100000}$で割ったものと近くなっています。
 
 \section{様々な確率分布}
 
 \subsection{正規分布}
 \subsection{ポアソン分布}
 
-\lstinputlisting[language=c++,float=tb,caption=\texttt{Poisson.C},label=code_Poisson,numbers=left]{src/Poisson.C}
+\lstinputlisting[language=c++,float=tb,caption=\texttt{Poisson.C},label=code:Poisson,numbers=left]{src/Poisson.C}
 
 \begin{figure}
   \centering
   \includegraphics[width=12cm]{fig/Poisson.pdf}
   \caption{様々な平均値を持つポアソン分布と正規分布の比較}
-  \label{fig_Poisson}
+  \label{fig:Poisson}
 \end{figure}
 
 \subsection{指数分布}

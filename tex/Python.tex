@@ -1,13 +1,16 @@
 \chapter{Python}
-\label{chapter_Python}
+\label{chap:Python}
+
+\section{注意}
+Python に関係する技術の発展は ROOT のそれより目覚ましく、この文書も含め、ウェブ上に転がる情報が簡単に陳腐化します。これはオープンソースコミュニティの活発さや、Python という言語の人気のためです。ここに書かれている情報は 2018 年 4 月現在、筆者の知る限りの範囲で、なるべく新しいものになるように務めていますが、数年で古くなるということを知っておいてください。
 
 \section{なぜPythonを使うのか}
 
-Pythonとは、プログラミング言語の1つです。第\ref{chapter_C++}章で説明した概念は、ほぼそのままPythonでも通用します。C++と異なる点は、例えば以下のようなものが挙げられます。
+Pythonとはプログラミング言語の1つです。第\ref{chap:C++}章で説明した概念は、ほぼそのままPythonでも通用します。C++と異なる点は、例えば以下のようなものが挙げられます。
 \begin{itemize}
-  \item コンパイルしなくてもコードを実行可能な、スクリプト言語と呼ばれるものです。これはROOTのCINTに似ています。
-  \item 様々なモジュールが標準で用意されており、C++に比べると、手軽に様々な機能を使うことができます。例えば、オプション解析の機能が標準で利用可能です。
-  \item 物理、天文業界でPythonを利用する研究者が近年増えており、データ解析に必要な外部モジュールが多く用意されています。
+  \item コンパイルしなくてもコードを実行可能な、スクリプト言語と呼ばれるものです。これはROOTのClingに似ています。
+  \item 様々なパッケージが標準で用意されており、C++に比べると、手軽に様々な機能を使うことができます。例えば、オプション解析の機能が標準で利用可能です。
+  \item 物理、天文業界でPythonを利用する研究者が近年増えており、データ解析に必要な外部パッケージが多く用意されています。
   \item Linux/Mac/WindowsといったOS環境を気にせずに使うことができます。
 \end{itemize}
 特に3つ目は重要で、ROOT、IRAF、DS9、Geant4、FITSといったものを、Pythonという1つの言語の中で同時に扱えるようになります。もちろん、これらの機能をC++から呼び出してコンパイルすることも可能です。しかし、リンクすべきライブラリやヘッダーファイルを把握し、どのような環境でも確実に動作するプログラムを組むのは大変なことです。Pythonであれば、OSを意識せずに様々な機能を簡単に使うことができます。
@@ -15,17 +18,170 @@ Pythonとは、プログラミング言語の1つです。第\ref{chapter_C++}�
 例えば、エネルギー、座標、時間などで構成される光子イベントがFITSのバイナリテーブルで用意されているとしましょう。このイベントのエネルギー分布をROOTのヒストグラムに詰めたいと思った場合、以下のような簡単なコードで作業が終了します。もしあなたがこのコードを見て、短くて簡単だと感じるならば、ぜひPythonに挑戦してみましょう。
 
 \begin{lstlisting}[language=python]
->>> import ROOT
->>> import pyfits
->>> hist = ROOT.TH1D("hist", "Energy distribution;Energy (MeV)", 100, 0, 1e3) 
->>> energies = pyfits.open("event_list.fits")[0].data.field("ENERGY")
->>> for i in range(energies.size):
-...     hist.Fill(energies[i])
->>> hist.Draw()
+In [1]: import ROOT
+In [2]: from astropy.io import fits 
+In [3]: hist = ROOT.TH1D("hist", "Energy distribution;Energy (MeV)", 100, 0, 1e3
+   ...: )
+In [4]: energies = fits.open("photon/lat_photon_weekly_w009_p302_v001.fits")[1]
+   ...: .data.field("ENERGY")
+In [5]: for i in range(energies.size):
+   ...:     hist.Fill(energies[i])
+In [6]: hist.Draw()
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
 \end{lstlisting}
 
-\section{Pythonのインストール}
+\section{簡単に使ってみる}
+Python は ROOT と同様にコマンドラインからインタープリタを呼び出して 1 行ずつコマンドを実行することもできれば、スクリプトにまとめて実行することもできます。
+
+\subsection{起動と終了}
+まず Python（ここでは IPython）のインタープリタに 1 行ずつ命令を渡していく操作を試してみましょう。面白い例ではありませんが、\ref{sec:helloworld}~節で解説したC++の \texttt{hello\_world.cxx} を Python に直してみましょう。
+
+まず IPython を起動します。
+
+\begin{lstlisting}[language=bash]
+$ ipython
+Python 3.6.5 (default, Mar 30 2018, 06:41:53) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 6.2.1 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: 
+\end{lstlisting}
+
+次に、C の \texttt{printf} に似た関数である \texttt{print} 関数を使って、「Hello World!」という文字列を出力してみます。
+\begin{lstlisting}[language=python]
+In [1]: print('Hello World!')
+Hello World!
+\end{lstlisting}
+
+Python 2 までは \texttt{print} 関数の使い方として、次のような例がよく用いられていました。しかし Python 3 では多くの仕様が変更になり、このような \texttt{print} 関数の使い方は Python~3 で動作しなくなりました。書籍やインターネット上にある情報は Python~2 と Python~3 のものが混在していますので、注意してください。
+
+\begin{lstlisting}[language=python]
+In [1]: print 'Hello World!'
+Hello World!
+\end{lstlisting}
+
+最後に、Ctrl-D を入力すると IPython を終了できます\footnote{Control キーを押しながら、D キーを同時に押す}。本当に終了して良いのか聞かれるので、良い場合はそのまま Enter キーを、IPython を続ける場合は N キーを押してから Enter キーを押します。
+
+\begin{lstlisting}[language=python]
+In [2]:
+Do you really want to exit ([y]/n)? 
+$ 
+\end{lstlisting}
+
+\subsection{スクリプトの書き方}
+
+Python スクリプトの使い方は、大別して三通りあります。
+
+\section{Python~3のインストール}
 \label{sec:Python_Install}
+
+macOSやCentOS~7では、標準でPythonがインストールされているはずです。ただし、このPythonのバージョンはPython~2のため、特にこだわりが無くPythonをこれから新たに習得する人は、Python~3を導入して使い始めることを推奨します。
+
+\subsection{macOS High Sierra の場合}
+
+macOS で新たにソフトウェアを追加する場合、節~\ref{sec:Homebrew}で説明する通り、Homebrewというパッケージ管理システムを使うのが一般的です。ここではHomebrewがすでに入っているという前提で説明します。
+
+次のコマンドを実行することで、\texttt{python3}と\texttt{pip3}が、
+\begin{lstlisting}[language=bash]
+$ brew install python3
+\end{lstlisting}
+また次のコマンドでPython~3用の\texttt{ipython}がインストールされます。
+\begin{lstlisting}[language=bash]
+$ sudo pip3 install ipython
+\end{lstlisting}
+
+問題なく Python~3 が入ったことを確かめるため、\texttt{python3}コマンドを実行してみます。次のように表示されれば成功です。
+\begin{lstlisting}[language=bash]
+$ python3                  
+Python 3.6.4 (default, Jan  6 2018, 11:51:59) 
+[GCC 4.2.1 Compatible Apple LLVM 9.0.0 (clang-900.0.39.2)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
+\end{lstlisting}
+
+HomebrewではPython~3のコマンドを\texttt{python3}や\texttt{python3.6}としてインストールし、\texttt{python}コマンドはデフォルトの\texttt{/usr/bin/python}としてPython~2のまま残ります。ただし、他の環境では\texttt{python2}がPython~2で\texttt{python}がPython~3だったりするので、自分がPython~2を使っているのかPython~3を使っているのか、よく注意してください。
+
+\begin{lstlisting}[language=bash]
+$ python
+Python 2.7.10 (default, Oct  6 2017, 22:29:07) 
+[GCC 4.2.1 Compatible Apple LLVM 9.0.0 (clang-900.0.31)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
+\end{lstlisting}
+
+\subsection{CentOS~7 の場合}
+
+CentOS~7のようなRed Hat Enterprise Linux（RHEL）クローンと呼ばれるLinuxディストリビューションでは、\texttt{yum}（ヤム）と呼ばれるパッケージ管理システムが標準的に使われます。多くのソフトウェアを\texttt{yum}から入手可能ですが、Python~3 は標準では入れられないため、まずレポジトリを追加します。
+
+\begin{lstlisting}[language=bash]
+$ sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+\end{lstlisting}
+
+これで\texttt{yum}がソフトウェアを検索する際の新たな場所が追加されます。次に\texttt{python36u-devel}をインストールし、\texttt{python3.6}と\texttt{pip3.6}をインストールします。
+
+\begin{lstlisting}[language=bash]
+$ sudo yum install python36u-devel
+$ sudo yum install python36u-pip
+\end{lstlisting}
+
+これで、\texttt{python3.6}を実行するとPython~3.6を起動することができるようになりました。
+\begin{lstlisting}[language=bash]
+$ which python3.6
+/usr/bin/python3.6
+$ python3.6
+Python 3.6.4 (default, Dec 19 2017, 14:48:12) 
+[GCC 4.8.5 20150623 (Red Hat 4.8.5-16)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
+\end{lstlisting}
+
+デフォルトで入っているPythonは2.7.5です。これは\texttt{/usr/bin/python}として残ります。
+\begin{lstlisting}[language=bash]
+$ which python
+/usr/bin/python
+$ python
+Python 2.7.5 (default, Aug  4 2017, 00:39:18) 
+[GCC 4.8.5 20150623 (Red Hat 4.8.5-16)] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
+\end{lstlisting}
+
+次に\texttt{pip3.6}を使ってPython~3用のIPythonをインストールします。
+
+\begin{lstlisting}[language=bash]
+$ which pip3.6 
+/usr/bin/pip3.6
+$ sudo pip3.6 install ipython
+$ sudo pip3.6 install --upgrade pip
+\end{lstlisting}
+
+Python~2用のIPythonを入れていない場合、\texttt{/usr/bin/ipython}と\texttt{/usr/bin/ipython3}がPython~3用のIPythonになります。
+
+\begin{lstlisting}[language=bash]
+$ which ipython
+/usr/bin/ipython
+$ which ipython3
+/usr/bin/ipython3
+$ ipython
+Python 3.6.4 (default, Dec 19 2017, 14:48:12) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 6.3.1 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]:
+\end{lstlisting}
+
+\section{\texttt{pip}}
+
+すでに前節までで見たように、\texttt{pip}もしくは\texttt{pip3}というコマンドを使ってPythonの追加パッケージをインストールする方法を説明しました。この\texttt{pip}（ピップ）というコマンドはPythonのコミュニティで広く使われているパッケージ管理システムのひとつです。Python Package Index（PyPI、パイピーアイ）\footnote{\url{https://pypi.org}}に登録されている様々な追加パッケージを自動でインストールします。通常は \texttt{/usr/local/lib/python/site-package} という場所に新しいパッケージが追加されます。
+
+\texttt{pip} の基本は次のコマンドです。\texttt{search}でその名前のパッケージの情報やすでにインストールされているかを調べ、\texttt{install}でインストールします。
+\begin{lstlisting}[language=bash]
+$ pip search PACKAGE_NAME
+$ pip install PACKAGE_NAME
+\end{lstlisting}  
+
+\section{IPython}
+IPython
 
 \section{追加しておきたいモジュール}
 
