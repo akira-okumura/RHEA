@@ -251,11 +251,15 @@
 $ git clone https://github.com/akira-okumura/RHEA.git
 $ cd RHEA
 $ ls
-Makefile  README.md RHEA.tex  fig       src       tex
+Makefile  RHEA.bib  RHEA.tex  misc      tex
+README.md RHEA.bst  fig       src
 $ make
 $ ls
-Makefile  RHEA.aux  RHEA.log  RHEA.pdf  RHEA.toc  src
-README.md RHEA.dvi  RHEA.out  RHEA.tex  fig       tex
+Makefile  RHEA.bbl  RHEA.bst  RHEA.out  RHEA.toc  src
+README.md RHEA.bib  RHEA.dvi  RHEA.pdf  fig       tex
+RHEA.aux  RHEA.blg  RHEA.log  RHEA.tex  misc
+$ open RHEA.pdf # macOS の場合
+$ xdg-open RHEA.pdf # Linux の場合
 \end{lstlisting}
 
 \section*{本書の再配布について}
