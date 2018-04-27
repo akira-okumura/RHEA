@@ -79,6 +79,157 @@ cmake3 version 3.6.3
 CMake suite maintained and supported by Kitware (kitware.com/cmake).
 \end{lstlisting}
 
+\chapter{\LaTeX 環境の構築}
+\label{chap:LaTeX}
+
+\LaTeX とは何かということについては、ここでは詳しく説明しません。大雑把には、テキストファイルで作られた文書をそこそこ綺麗な出力で PDF などに自動で組版（くみはん）してくれるソフトウェアです。この文書も \LaTeX で作られています。
+
+\LaTeX を知らなくても修士論文は書けますが、宇宙や素粒子関連の業界では、ほとんどの人が \LaTeX を使って修士論文を書きます（実際には日本語対応の \pLaTeX）。また同様に投稿論文も \LaTeX で書くことがほとんどですので（実際には PDF の生成が簡単な pdf\LaTeX）、多くの物理学徒が避けては通れない道具です。実際に修士論文を \pLaTeX で書く場合の例としては、手前味噌ですが「修士論文 LaTeX テンプレート｜名古屋大学宇宙地球環境研究所の理学系修士学生用」\footnote{\url{https://github.com/akira-okumura/MasterThesisTemplate}}が参考になると思います。
+
+\LaTeX のインストール方法は様々であり、インターネット上の情報もバラバラです。また古い情報も混在しているため、筆者も何が正しいのか、何がお勧めなのかよく分かりません。しかし、ここで示すやり方が「正しそうに思える」ので、ひとつの例として挙げます。この情報は 2018 年 4 月現在のものです。TeXLive などの 2018 年版が出たら、適宜読み替えてください。
+
+macOS でも CentOS~7 でも、合計で 5~GB くらいのファイルをインストールします。ダウンロードに 1 時間以上かかったり、パソコンの空き領域を食いつぶしたりするので注意してください。
+
+\section{macOS での MacTeX のインストール}
+
+macOS で LaTeX 環境を構築するには、Homebrew で MacTeX というパッケージを追加するのが簡単です。MacTeX は TeXLive という \LaTeX ディストリビューションに Mac 固有のアプリケーションなどを追加したものです。例えば Keynote などに数式を入れたいときに便利な LaTeXiT、文献管理ソフトの BibDesk、TeX 統合環境の TeXShop などが　\texttt{/Applications} にインストールされます\footnote{筆者はこのうち LaTeXiT と BibDesk のみ常用しています。}。
+
+いつも通り単純に次のコマンド一発でいけます。
+\begin{lstlisting}[language=bash]
+$ brew cask install mactex
+\end{lstlisting}
+
+もし次のコマンドを実行すると
+\begin{lstlisting}[language=bash]
+$ sudo tlmgr paper
+\end{lstlisting}
+ページの大きさの設定が次のように letter（21.59~cm~$\times$~27.94~cm）\footnote{アメリカで一般的に使われる印刷用紙の大きさです。}と表示される場合、
+\begin{lstlisting}
+Current context paper size (from /usr/local/texlive/2017/texmf-config/tex/context/user/cont-sys.tex): letter
+Current dvipdfmx paper size (from /usr/local/texlive/2017/texmf-config/dvipdfmx/dvipdfmx.cfg): letter
+Current dvips paper size (from /usr/local/texlive/2017/texmf-config/dvips/config/config.ps): letter
+Current pdftex paper size (from /usr/local/texlive/2017/texmf-config/tex/generic/config/pdftexconfig.tex): letter
+Current psutils paper size (from /usr/local/texlive/2017/texmf-config/psutils/paper.cfg): letter
+Current xdvi paper size (from /usr/local/texlive/2017/texmf-config/xdvi/XDvi): letter
+\end{lstlisting}
+次のコマンドで A4 サイズ（21.0~cm~$\times$~29.7~cm）に設定を変更してください。
+\begin{lstlisting}[language=bash]
+$ sudo tlmgr paper a4
+\end{lstlisting}
+
+\section{CentOS~7 での TeXLive 2017 のインストール}
+
+\url{https://www.tug.org/texlive/quickinstall.html}を参考に、まずはネットワーク越しにインストール\footnote{必要なファイルをインストーラとともに最初に落としてくるのではなく、インストーラを実行した後に必要ファイルをダウンロードしてくる方法。}するためのコマンドをダウンロードし展開します。
+
+\begin{lstlisting}[language=bash]
+$ cd
+$ curl -O -L http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+$ tar zxvf install-tl-unx.tar.gz
+$ cd install-tl-20180303/
+\end{lstlisting}
+
+この展開したディレクトリの中にインストーラがあるので、これを管理者権限で実行します。そうすると次のように色々と表示されるので、i を入力してインストールを進めましょう。もしカスタマイズしたい人は、英語の説明に従ってください。
+
+\begin{lstlisting}[language=bash]
+$ sudo ./install-tl
+Loading http://ftp.yz.yamagata-u.ac.jp/pub/CTAN/systems/texlive/tlnet/tlpkg/texlive.tlpdb
+Installing TeX Live 2017 from: http://ftp.yz.yamagata-u.ac.jp/pub/CTAN/systems/texlive/tlnet (verified)
+Platform: x86_64-linux => 'GNU/Linux on x86_64'
+Distribution: net  (downloading)
+Using URL: http://ftp.yz.yamagata-u.ac.jp/pub/CTAN/systems/texlive/tlnet
+Directory for temporary files: /tmp/LSPqwFTuJD
+
+======================> TeX Live installation procedure <=====================
+
+======>   Letters/digits in <angle brackets> indicate   <=======
+======>   menu items for actions or customizations      <=======
+
+ Detected platform: GNU/Linux on x86_64
+ 
+ <B> set binary platforms: 1 out of 20
+
+ <S> set installation scheme: scheme-full
+
+ <C> set installation collections:
+     40 collections out of 41, disk space required: 5197 MB
+
+ <D> set directories:
+   TEXDIR (the main TeX directory):
+     /usr/local/texlive/2017
+   TEXMFLOCAL (directory for site-wide local files):
+     /usr/local/texlive/texmf-local
+   TEXMFSYSVAR (directory for variable and automatically generated data):
+     /usr/local/texlive/2017/texmf-var
+   TEXMFSYSCONFIG (directory for local config):
+     /usr/local/texlive/2017/texmf-config
+   TEXMFVAR (personal directory for variable and automatically generated data):
+     ~/.texlive2017/texmf-var
+   TEXMFCONFIG (personal directory for local config):
+     ~/.texlive2017/texmf-config
+   TEXMFHOME (directory for user-specific files):
+     ~/texmf
+
+ <O> options:
+   [ ] use letter size instead of A4 by default
+   [X] allow execution of restricted list of programs via \write18
+   [X] create all format files
+   [X] install macro/font doc tree
+   [X] install macro/font source tree
+   [ ] create symlinks to standard directories
+
+ <V> set up for portable installation
+
+Actions:
+ <I> start installation to hard disk
+ <P> save installation profile to 'texlive.profile' and exit
+ <H> help
+ <Q> quit
+
+Enter command: i
+\end{lstlisting}
+
+かなり時間がかかりますが、必要なファイルを全てダウンロードし終えると、最後に環境変数を設定するように指示が出ます。
+
+\begin{lstlisting}
+Installing to: /usr/local/texlive/2017
+Installing [0001/3561, time/total: ??:??/??:??]: 12many [376k]
+Installing [0002/3561, time/total: 00:01/01:53:18]: 2up [66k]
+Installing [0003/3561, time/total: 00:01/01:36:30]: Asana-Math [482k]
+Installing [0004/3561, time/total: 00:02/01:32:10]: ESIEEcv [137k]
+（略）
+Add /usr/local/texlive/2017/texmf-dist/doc/man to MANPATH.
+Add /usr/local/texlive/2017/texmf-dist/doc/info to INFOPATH.
+Most importantly, add /usr/local/texlive/2017/bin/x86_64-linux
+to your PATH for current and future sessions.
+\end{lstlisting}
+
+これに従い、\texttt{~/.bashrc}や\texttt{~/.zshrc}に次の 3 行を追加します\footnote{インストールの年によって \texttt{2017} が \texttt{2018} に変わっていたりする可能性があるので、実際の出力に従ってください。}。
+
+\begin{lstlisting}[language=bash]
+export MANPATH=/usr/local/texlive/2017/texmf-dist/doc/man:$MANPATH
+export INFOPATH=/usr/local/texlive/2017/texmf-dist/doc/info:$INFOPATH
+export PATH=/usr/local/texlive/2017/bin/x86_64-linux:$PATH
+\end{lstlisting}
+
+\section{動作確認}
+
+新しいターミナルのウィンドウを開き、次のコマンドで \texttt{RHEA.pdf}（この文書）が生成できるかを確認しましょう。
+
+\begin{lstlisting}[language=bash]
+$ git clone https://github.com/akira-okumura/RHEA.git
+$ cd RHEA
+$ ls
+Makefile  RHEA.bib  RHEA.tex  misc      tex
+README.md RHEA.bst  fig       src
+$ make
+$ ls
+Makefile  RHEA.bbl  RHEA.bst  RHEA.out  RHEA.toc  src
+README.md RHEA.bib  RHEA.dvi  RHEA.pdf  fig       tex
+RHEA.aux  RHEA.blg  RHEA.log  RHEA.tex  misc
+$ open RHEA.pdf # macOS の場合
+$ xdg-open RHEA.pdf # Linux の場合
+\end{lstlisting}
+
 \chapter{Macでの研究環境の構築}
 ※ここの説明はかなり古い情報になってしまっています。そのうち書き直すので、あまり参考にしないでください。
 
