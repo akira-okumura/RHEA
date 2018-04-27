@@ -48,6 +48,8 @@ $ cd root-6.12.06/cmake_build
 $ sudo cmake ..
 \end{lstlisting}
 
+ここで \texttt{cmake\_build} というサブディレクトリを作るのは、ビルドのやり直しをする際に CMake や Make の作成したファイルを削除するのを簡単にするためというのが主な理由です。また Python~2 と Python~3 用にビルドするディレクトリを分けたいという場合にも、このようにビルド用のサブディレクトリを作っておくと便利です。
+
 CentOS~7の場合、\texttt{cmake3}というコマンドが\texttt{yum}でインストールされるため（付録~\ref{chap:package}参照）、コマンドを\texttt{cmake3}に変更して実行してください。
 
 \begin{lstlisting}[language=bash]
@@ -183,7 +185,7 @@ $ sudo ./configure --enable-minuit2 --enable-gdml
 
 \subsection{最低限の初期設定}
 \label{subsec:settings}
-ソースをコンパイルしたり、バイナリ版をダウンロードしただけではROOTは使えるようになりません。ROOTの実行ファイルやライブラリの場所を設定する必要があります。これは、コンピュータがあなたの設定を自動では理解してくれないからです。\texttt{CMake}を使ってビルドした場合は、次の3行を\texttt{\~{}/.bashrc}に書き足して下さい\footnote{もし\texttt{/usr/local/root-6.12.06}以外の場所にインストールした場合は、ディレクトリを適宜変更してください。}。
+ソースをコンパイルしたり、バイナリ版をダウンロードしただけではROOTは使えるようになりません。ROOTの実行ファイルやライブラリの場所を設定する必要があります。これは、コンピュータがあなたの設定を自動では理解してくれないからです。\texttt{CMake}を使ってビルドした場合は、次の3行を\texttt{\~{}/.bashrc}に書き足して下さい\footnote{もし\texttt{/usr/local/root-6.12.06}以外の場所にインストールした場合は、ディレクトリを適宜変更してください。}\footnote{\texttt{\~{}/.bashrc} ではなく \texttt{\~{}/.bash\_profile} に書き込んでも構いませんが、筆者なら \texttt{\~{}/.bashrc} に書き込みます。違いが知りたい場合は「\texttt{bashrc} \texttt{bash\_profile} 違い」などで検索してください。}。
 \begin{NoFloat}
 \lstinputlisting[language=bash]{src/bashrc_cmake.sh}
 \end{NoFloat}
@@ -375,6 +377,15 @@ root [1] hist->FillRandom("gaus", 10000)
 root [2] hist->Draw()
 \end{lstlisting}
 としてヒストグラムを画面に描画させています。
+
+ROOT プロンプトで入力したコマンドは、\texttt{.q} や \texttt{.x} のような ROOT 固有のコマンドをのぞいて基本的には C++ の文法で記述する必要があります。しかし利便性を高めるためにいくつか C++ とは異なる文法でも動作するようになっています。C や C++ を既に知っている読者の場合、この節で取り上げた例の各行にセミコロン \texttt{;} がないことに気がつくかもしれません。次の例のように、ROOT プロンプトではセミコロンの有無で表示が変わります。スクリプトファイルに書く際は、セミコロンを忘れないようにしてください。
+
+\begin{lstlisting}[language=c++]
+root [0] int a = 1
+(int) 1
+root [1] int b = 2;
+root [2] 
+\end{lstlisting}
 
 \subsection{スクリプトを使った操作}
 今回の例はたったの3行ですので入力は簡単です。しかし、このようなヒストグラムを何百回と繰り返し作成することを想像してみて下さい。実際のデータ解析では、取得した大量のデータに同じ処理をしたい場合があります。そのようなときに、同じコマンドを何度も繰り返し入力するのは非効率的です。そこで、先ほどの3行を1つのファイルにまとめて書いてしまいましょう。コード\ref{code:first_script}の内容を入力したテキストファイルを\texttt{first\_script.C}というファイル名で好きな場所に保存して下さい\footnote{日本語の文章の書き方は個人で色々な癖があるように、プログラミング言語の記述にも人それぞれの流儀があります。本書で採用しているコードの流儀は、かなり著者の好みが反映されています。}。このようなファイルを、ROOTのスクリプトファイル、マクロファイルなどと呼びます。
