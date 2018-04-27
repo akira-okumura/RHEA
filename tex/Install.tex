@@ -431,7 +431,7 @@ Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
 \texttt{.L}コマンドで\texttt{first\_script2.C}をロード（LoadのL）します。そのスクリプトファイルの内容をROOTが呼び出せるようにする作業のことです。\texttt{first\_script2.C}は既にロードされましたので、その中に書かれていた関数\texttt{foo}に引数を与えて直接呼び出すことができます。また、ひとつのスクリプトの中に複数の関数を記述しても問題ありません。ロードした後に、好きな関数を呼び出して下さい。
 \subsection{図を保存する}
 
-図\ref{fig:hsimple}や\ref{fig:first_script}の例は、筆者の使用しているmacOS上でスクリーンショットを撮ったものです。論文用の図を作成する場合は、ウインドウ上のリサイズボックスやタイトルバーは必要ありません。\LaTeX\ 文書で一般的に使われる、PDF形式で出力結果を保存してみましょう\footnote{最近の\LaTeX\ 環境では\texttt{latex}コマンドよりも\texttt{pdflatex}コマンドを使用してPDFファイルを生成するのが一般的になりつつあります。そのため、論文出版社もESP形式ではなくPDF形式で図を受け付けています。またEPSよりもPDFのほうがパソコン上での閲覧も楽なため、特に理由がない場合はPDFで保存しましょう。ただし、本書のような日本語文書では\texttt{platex}コマンドがまだまだ使われています。}\footnote{ROOTの生成する横長のPDFには\texttt{/Rotate 90}というタグが含まれており正常に\texttt{dvipdfmx}コマンドや Apple Keynote などで処理できないため、作成した PDF が90度回転して表示されるという問題があります。これを回避するためには、横長の図の場合に\texttt{can->SaveAs("can.pdf")}などと実行するのではなく、\texttt{can->Print("can.pdf", "pdf Portrait")}と実行しましょう。}。\texttt{first\_script.C}の実行結果が表示されたら、ウインドウ左上にある「File」メニューから「Save As\ldots」を選択し、好きな場所に好きな名前で出力結果を保存しましょう。図\ref{fig:first_script_pdf}は、この手順で図\ref{fig:first_script}をPDF形式で保存し直したものです。このPDF文書を拡大しても、図が綺麗なことが分かります。いくつか保存形式が選べますので、試してみましょう。JPEG形式は図の細部が潰れますので、絶対に使わないでください。ウェブページに掲載する目的などでビットマップ画像が必要な場合は、PNG 形式（.png）にしてください。GIF形式は最大で256色までしか使用できないので、画面で見ている色と変わってしまう可能性があります。
+図\ref{fig:hsimple}や\ref{fig:first_script}の例は、筆者の使用しているmacOS上でスクリーンショットを撮ったものです。論文用の図を作成する場合は、ウインドウ上のリサイズボックスやタイトルバーは必要ありません。\LaTeX\ 文書で一般的に使われる、PDF形式で出力結果を保存してみましょう\footnote{最近の\LaTeX\ 環境では\texttt{latex}コマンドよりも\texttt{pdflatex}コマンドを使用してPDFファイルを生成するのが一般的になりつつあります。そのため、論文出版社もESP形式ではなくPDF形式で図を受け付けています。またEPSよりもPDFのほうがパソコン上での閲覧も楽なため、特に理由がない場合はPDFで保存しましょう。ただし、本書のような日本語文書では\texttt{platex}コマンドがまだまだ使われています。}。\texttt{first\_script.C}の実行結果が表示されたら、ウインドウ左上にある「File」メニューから「Save As\ldots」を選択し、好きな場所に好きな名前で出力結果を保存しましょう。図\ref{fig:first_script_pdf}は、この手順で図\ref{fig:first_script}をPDF形式で保存し直したものです。このPDF文書を拡大しても、図が綺麗なことが分かります。いくつか保存形式が選べますので、試してみましょう。JPEG形式は図の細部が潰れますので、絶対に使わないでください。ウェブページに掲載する目的などでビットマップ画像が必要な場合は、PNG 形式（.png）にしてください。GIF形式は最大で256色までしか使用できないので、画面で見ている色と変わってしまう可能性があります。
 
 \begin{figure}
   \centering
@@ -439,6 +439,21 @@ Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
   \caption{図\ref{fig:first_script}を、PDF形式で保存し直したもの。拡大しても細部まで滑らかなことが分かる。}
   \label{fig:first_script_pdf}
 \end{figure}
+
+メニューからいちいち保存するのは面倒ですので、スクリプトを実行したらキャンバスをプロンプトから PDF で保存してみましょう。
+
+\begin{lstlisting}[language=c++]
+root [0] .x first_script.C
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+root [1] c1->SaveAs("hist1.pdf")
+Info in <TCanvas::Print>: pdf file hist.pdf has been created
+root [2] c1->Print("hist2.pdf")
+Info in <TCanvas::Print>: pdf file hist.pdf has been created
+root [3] c1->Print("hist3.pdf", "pdf Portrait")
+Info in <TCanvas::Print>: pdf Portrait file hist2.pdf has been created
+\end{lstlisting}
+
+多くの解説では \texttt{SaveAs} や \texttt{Print} というメソッドを使って図を PDF で保存するように書かれています。しかし ROOT の生成する横長の PDF には\texttt{/Rotate 90}というタグが含まれており正常に \texttt{dvipdfmx} コマンドや Apple Keynote の古いバージョンなどで処理できないことがあり、そのため作成した PDF が90度回転して表示されるという問題があります。これを回避するためには、横長の図の場合に\texttt{c1->SaveAs("hist.pdf")}などと実行するのではなく、\texttt{c1->Print("hist.pdf", "pdf Portrait")}と実行しましょう。これで日本語 \LaTeX 文書に ROOT の図を貼り付けても問題が起きません。
 
 \subsection{タブ補完を使う}
 ROOTのプロンプトでコマンドを打つ場合、キーボードのタブキーを押すことで、補完することができます。携帯電話の文字入力の予測変換機能のようなものです。例えば、
@@ -464,7 +479,7 @@ GetAsymmetry
 GetAt
 GetAxisColor
 \end{lstlisting}
-これは、インスタンス\texttt{hist}に操作可能な機能のうち、\texttt{Get}で始まるものの一覧です。C++の言葉で言い換えると、クラス\texttt{TH1D}のメンバ関数（member function）のうちゲッター（getter）の一覧です。候補を眺めてみると、\texttt{GetMean}や\texttt{GetStdDev}\footnote{\texttt{GetRMS}というメンバ関数も見つかると思います。ROOTやPAWで「RMS」と言った場合、これは二乗平均ではなく標準偏差を指します。統計学の用語としては不適切なのですが、歴史的理由でRMSという言葉を使い続けているそうです。そのためこの業界ではRMSという用語を間違って覚えている人が沢山いますが、優しく注意してあげて下さい。最近のROOTでは、\texttt{GetRMS}と全く同じ働きをする関数として\texttt{GetStdDev}が用意されています。}というメンバ関数が見つかるはずです。何をする関数か、一目瞭然でしょう。それでは
+これは、インスタンス\texttt{hist}に操作可能な機能のうち、\texttt{Get}で始まるものの一覧です。C++の言葉で言い換えると、クラス\texttt{TH1D}のメンバ関数（member function）のうちゲッター（getter）の一覧です。候補を眺めてみると、\texttt{GetMean}や\texttt{GetStdDev}\footnote{\texttt{GetRMS}というメンバ関数も見つかると思います。ROOTやPAWで「RMS」と言った場合、これは二乗平均ではなく標準偏差を指します。統計学の用語としては不適切なのですが、歴史的理由でRMSという言葉を使い続けていたそうです（PAW で間違って使ってしまった用語との互換性を保つため、ROOT でもわざと間違った用語を使い続けた）。そのためこの業界ではRMSという用語を間違って覚えている人が沢山いますが、優しく注意してあげて下さい。最近のROOTでは、\texttt{GetRMS}と全く同じ働きをする関数として\texttt{GetStdDev}が用意されており、後者が本体です。}というメンバ関数が見つかるはずです。何をする関数か、一目瞭然でしょう。それでは
 \begin{lstlisting}[language=c++]
 root [3] hist->GetMe
 \end{lstlisting}
