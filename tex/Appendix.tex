@@ -94,16 +94,16 @@ macOS でも CentOS~7 でも、合計で 5~GB くらいのファイルをイン�
 
 macOS で LaTeX 環境を構築するには、Homebrew で MacTeX というパッケージを追加するのが簡単です。MacTeX は TeXLive という \LaTeX ディストリビューションに Mac 固有のアプリケーションなどを追加したものです。例えば Keynote などに数式を入れたいときに便利な LaTeXiT、文献管理ソフトの BibDesk、TeX 統合環境の TeXShop などが　\texttt{/Applications} にインストールされます\footnote{筆者はこのうち LaTeXiT と BibDesk のみ常用しています。}。
 
-いつも通り単純に次のコマンド一発でいけます。
+いつも通り単純に次のコマンド一発でいけます。ただし、\texttt{brew install} ではなく \texttt{cask} というのが間に挟まっているのを注意してください。
 \begin{lstlisting}[language=bash]
 $ brew cask install mactex
 \end{lstlisting}
 
-もし次のコマンドを実行すると
+次のコマンドを実行した際に
 \begin{lstlisting}[language=bash]
 $ sudo tlmgr paper
 \end{lstlisting}
-ページの大きさの設定が次のように letter（21.59~cm~$\times$~27.94~cm）\footnote{アメリカで一般的に使われる印刷用紙の大きさです。}と表示される場合、
+もしもページの大きさの設定が次のように letter（21.59~cm~$\times$~27.94~cm）\footnote{アメリカで一般的に使われる印刷用紙の大きさです。}と表示される場合、
 \begin{lstlisting}
 Current context paper size (from /usr/local/texlive/2017/texmf-config/tex/context/user/cont-sys.tex): letter
 Current dvipdfmx paper size (from /usr/local/texlive/2017/texmf-config/dvipdfmx/dvipdfmx.cfg): letter
@@ -116,6 +116,8 @@ Current xdvi paper size (from /usr/local/texlive/2017/texmf-config/xdvi/XDvi): l
 \begin{lstlisting}[language=bash]
 $ sudo tlmgr paper a4
 \end{lstlisting}
+
+macOS で \LaTeX\ を使う場合、初期設定ではおそらく IPA 明朝と IPA ゴシックというフォントが使用されます。しかし macOS に同梱されているヒラギノフォント（ヒラギノ明朝およびヒラギノ角ゴシック）を使うと PDF の仕上がりが良くなります（可読性の高い綺麗なフォントが埋め込まれます）ので、仕上がりにこだわりたい人はヒラギノフォントを埋め込む設定を行なってください。この作業は macOS のバージョンや TeXLive のバージョンによって異なりますので、最新情報を「mac ヒラギノ latex」などの Google 検索結果から得るようにしてください。
 
 \section{CentOS~7 での TeXLive 2017 のインストール}
 
