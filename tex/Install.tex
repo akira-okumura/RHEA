@@ -9,18 +9,20 @@
 
 \subsection{ダウンロード}
 \label{subsec:download}
-ROOTは\url{http://root.cern.ch/}からダウンロードすることができます。既にコンパイルされているバイナリ版と、コンパイルされていないソースコードがあります。前者はコンパイルする必要がないので簡単ですが、本書では教育目的のため、ソースコードをダウンロードして、自分でコンパイルすることにします。
+ROOTは\url{https://root.cern.ch/}からダウンロードすることができます。既にコンパイルされているバイナリ版と、コンパイルされていないソースコードがあります。前者はコンパイルする必要がないので簡単ですが、本書では教育目的のため、ソースコードをダウンロードして、自分でコンパイルすることにします。
 
-2018年4月時点で、ROOT 6 の最新安定バージョン6.12/06です。バージョン5からバージョン6に変わるとき、大きな変更がありました。そのため、研究室によってはバージョン5系列を使っている人もまだまだ多いと思います。ROOT 5 ではバージョン 5.34/36 が最新です\footnote{更新は 2016 年 4 月 5 日であり、今後は開発が継続されません。}。最初の数字はメジャーバージョン、次の数字は大きな機能追加ごとに増えるマイナーバージョン、スラッシュの後ろの数字はバグフィックスを示す番号です。
+2019年4月時点で、ROOT 6 の最新安定バージョン6.16/00です。バージョン5からバージョン6に変わるとき、大きな変更がありました。そのため、研究室によってはバージョン5系列を使っている人もまだまだ多いと思います。ROOT 5 ではバージョン 5.34/36 が最新です\footnote{更新は 2016 年 4 月 5 日であり、今後は開発が継続されません。}。最初の数字はメジャーバージョン、次の数字は大きな機能追加ごとに増えるマイナーバージョン、スラッシュの後ろの数字はバグフィックスを示す番号です。
 
-どのバージョンを選択するかは研究室の計算機環境や実験グループの解析ソフトなどに依存しますが、本書では6.12/06を前提として話を進めます。
+どのバージョンを選択するかは研究室の計算機環境や実験グループの解析ソフトなどに依存しますが、本書では6.16/00を前提として話を進めます。特に研究室でバージョン指定もなく初めてROOTを使用する場合であれば、最新バージョン\url{https://root.cern.ch/downloading-root}で確認し、それを使うようにしてください。
+
+また使用しているOSの公開日よりも古いバージョンのROOTはコンパイルできない場合が多々ありますので、新しいROOTのバージョンを確認するようにしてください。
 
 上記URLを辿ると、ダウンロードのページがあります。リンクをクリックしてダウンロードすることも可能ですが、ここでは直接ターミナルからダウンロードします。
 \begin{lstlisting}[language=bash]
 $ cd ~
-$ curl -O https://root.cern.ch/download/root_v6.12.06.source.tar.gz
+$ curl -O https://root.cern.ch/download/root_v6.16.00.source.tar.gz
 \end{lstlisting}
-などとして、好きなディレクトリにダウンロードして下さい。今の例では、\texttt{root\_v6.12.06.source.tar.gz}がホームディレクトリ（\texttt{\~}）に保存されます\footnote{ホームディレクトリとは、ユーザごとのファイルを置くためのディレクトリのことです。例えば Linux だと、ユーザ\texttt{oxon}の場合は\texttt{/home/oxon}が一般的にホームディレクトリになります。macOSの場合は\texttt{/Users/oxon}になります。これらは省略して\texttt{{\textasciitilde}oxon}、\texttt{\textasciitilde}、\texttt{\$HOME}と書かれることがあります。\texttt{HOME}はホームディレクトリのパス（path）を記録する環境変数であり、\texttt{\$}をつけることによってその値を取り出すことができます。}。
+などとして、好きなディレクトリにダウンロードして下さい。今の例では、\texttt{root\_v6.16.00.source.tar.gz}がホームディレクトリ（\texttt{\~}）に保存されます\footnote{ホームディレクトリとは、ユーザごとのファイルを置くためのディレクトリのことです。例えば Linux だと、ユーザ\texttt{oxon}の場合は\texttt{/home/oxon}が一般的にホームディレクトリになります。macOSの場合は\texttt{/Users/oxon}になります。これらは省略して\texttt{{\textasciitilde}oxon}、\texttt{\textasciitilde}、\texttt{\$HOME}と書かれることがあります。\texttt{HOME}はホームディレクトリのパス（path）を記録する環境変数であり、\texttt{\$}をつけることによってその値を取り出すことができます。}。
 
 \subsection{コンパイルとは}
 コンパイル（compile）とは、C++などのプログラミング言語で書かれたソースコード（source code）をコンピュータが実行できるようにする作業のことです。C++などで書かれたプログラムは人間が理解しやすいような文法で作られているため、これをコンピュータの中のCPU（central processing unit、中央処理装置）が理解できる形態に変換してやる必要があるのです。
@@ -31,45 +33,45 @@ $ curl -O https://root.cern.ch/download/root_v6.12.06.source.tar.gz
 \label{subsec:compile_cmake}
 最近の\texttt{ROOT}（6.08/00以降）では、後述する\texttt{configure}コマンドではなく\texttt{cmake}コマンド\footnote{\url{https://cmake.org/}}を使ってビルドすることが推奨されており、\texttt{configure}は既にサポート対象外です。これは\texttt{Geant4}でも同様で、最近のソフトウェアの流れです。\texttt{CMake}はまだ完全に市民権を得たわけではありませんが、徐々にソフトウェア開発で浸透しつつあります。
 
-\texttt{yum}や\texttt{homebrew}などのパッケージ管理ソフトウェア（付録~\ref{chap:package}参照）のコマンドを使うか、自分で\texttt{CMake}のページからダウンロードし、まずは\texttt{CMake}を導入します。ROOT 6.12/06では\texttt{CMake}がバージョン3.4.3以上である必要があります。2018年4月現在、Homebrewでは CMake 3.11.1が、CentOS~7.4のYumではCMake 3.6.3が入手可能です。
+\texttt{yum}や\texttt{homebrew}などのパッケージ管理ソフトウェア（付録~\ref{chap:package}参照）のコマンドを使うか、自分で\texttt{CMake}のページからダウンロードし、まずは\texttt{CMake}を導入します。ROOT 6.16/00では\texttt{CMake}がバージョン3.6以上である必要があります。2019年4月現在、Homebrewでは CMake 3.13.0が、CentOS~7.4のYumではCMake 3.6.3が入手可能です。
 
 ROOTのコンパイル作業やインストール先は、好きな場所でやって構いません。もしあなたがコンピュータの管理者権限を持っているならば、\texttt{/usr/local}の下にインストールするのが標準的です。次のように、ターミナルから好きなディレクトリに移動し、ソースコードを展開して下さい\footnote{この例のように本書で先頭に\texttt{\$}がついている行は、ターミナルで入力していることを表します。実際にターミナルから入力する内容は、\texttt{\$}とその直後の半角スペースを取り除いた内容ですので、注意して下さい。}\footnote{管理者権限を持っていなかったり、\texttt{sudo}コマンドを使用できない場合、一般ユーザでもインストール可能なディレクトリを選択してください。}。
 
 \begin{lstlisting}[language=bash]
 $ cd /usr/local
-$ sudo tar zxvf ~/root_v6.12.06.source.tar.gz
+$ sudo tar zxvf ~/root_v6.16.00.source.tar.gz
 \end{lstlisting}
 
-\texttt{root-6.12.06}という名前のディレクトリが作成されるので、そこに移動してコンパイルを行います。まずは作業用のディレクトリ\footnote{\texttt{cmake\_build}というディレクトリ名は好きなもので構いません。}を作成して移動し、\texttt{CMake}を実行します。もし管理者権限を持たない一般ユーザとしてホームディレクトリなどで作業する場合、以降\texttt{sudo}はつける必要はありません。
+\texttt{root-6.16.00}という名前のディレクトリが作成されるので、そこに移動してコンパイルを行います。まずは作業用のディレクトリ\footnote{\texttt{obj}というディレクトリ名は好きなもので構いません。}を作成して移動し、\texttt{CMake}を実行します。もし管理者権限を持たない一般ユーザとしてホームディレクトリなどで作業する場合、以降\texttt{sudo}はつける必要はありません。
 
 \begin{lstlisting}[language=bash]
-$ sudo mkdir root-6.12.06/cmake_build
-$ cd root-6.12.06/cmake_build
+$ sudo mkdir root-6.16.00/obj
+$ cd root-6.16.00/obj
 $ sudo cmake ..
 \end{lstlisting}
 
-ここで \texttt{cmake\_build} というサブディレクトリを作るのは、ビルドのやり直しをする際に CMake や Make の作成したファイルを削除するのを簡単にするためというのが主な理由です。また Python~2 と Python~3 用にビルドするディレクトリを分けたいという場合にも、このようにビルド用のサブディレクトリを作っておくと便利です。
+ここで \texttt{obj} というサブディレクトリを作るのは、ビルドのやり直しをする際に CMake や Make の作成したファイルを削除するのを簡単にするためというのが主な理由です。また Python~2 と Python~3 用にビルドするディレクトリを分けたいという場合にも、このようにビルド用のサブディレクトリを作っておくと便利です。
 
 CentOS~7の場合、\texttt{cmake3}というコマンドが\texttt{yum}でインストールされるため（付録~\ref{chap:package}参照）、コマンドを\texttt{cmake3}に変更して実行してください。
 
 \begin{lstlisting}[language=bash]
-$ sudo mkdir root-6.12.06/cmake_build
-$ cd root-6.12.06/cmake_build
+$ sudo mkdir root-6.16.00/obj
+$ cd root-6.16.00/obj
 $ sudo cmake3 ..
 \end{lstlisting}
 
 \texttt{cmake}コマンドは指定したディレクトリ（この場合は上位ディレクトリ\footnote{上位ディレクトリは\texttt{..}で表します。}）に存在する\texttt{CMakeLists.txt}というファイルの中身に従って、ROOTのビルドに必要となるコンパイラやライブラリがインストールされているかを調べたり、その計算機環境に適切なコンパイルオプションを指定したりする作業を行います。問題がなければ、色々とターミナルに出力された最後に次の表示が出るはずです。
 \begin{lstlisting}[language=bash]
--- Enabled support for:  asimage astiff bonjour builtin_afterimage builtin_ftgl builtin_freetype builtin_gl2ps builtin_glew builtin_unuran builtin_llvm cxx11 cling cocoa exceptions explicitlink fitsio fortran gviz genvector krb5 ldap memstat opengl pch python shared sqlite thread tmva vdt xml
+-- Enabled support for:  asimage astiff builtin_afterimage builtin_clang builtin_davix builtin_freetype builtin_ftgl builtin_gl2ps builtin_glew builtin_llvm builtin_lz4 builtin_openssl builtin_tbb builtin_xxhash clad cling cocoa cxx11 davix exceptions explicitlink fitsio gdml http imt libcxx minuit2 opengl pch python roofit shared sqlite ssl thread tmva tmva-cpu tmva-pymva vdt xml
 .
 .
 .
 -- Configuring done
 -- Generating done
--- Build files have been written to: /usr/local/root-6.12.06/cmake_build
+-- Build files have been written to: /usr/local/root-6.16.00/obj
 \end{lstlisting}
 
-これで\texttt{/usr/local/root-6.12.06/cmake\_build/Makefile}が生成されました。このファイルは、ROOTの多数のソースコードファイルをどのような手順でコンパイルし、どのようなライブラリとリンクすれば良いかが記述されています。
+これで\texttt{/usr/local/root-6.16.00/obj/Makefile}が生成されました。このファイルは、ROOTの多数のソースコードファイルをどのような手順でコンパイルし、どのようなライブラリとリンクすれば良いかが記述されています。
 
 次に\texttt{make}コマンドを実行します\footnote{\texttt{make}の使用経験がある人は\texttt{make}の実行後に\texttt{make install}を実行したくなるかもしれませんが、本書の説明通りに作業を進める場合は、別にやる必要はありません。}。\texttt{make}コマンドは\texttt{Makefile}の中に書かれた作業手順を逐次実行するコマンドです。
 \begin{lstlisting}[language=bash]
@@ -105,15 +107,15 @@ $ sudo cmake .. -Dminuit2=ON -Dgdml=ON
 ここまででエラーが出なければ成功です。もし不運にもエラーが出てしまった人は、コンパイル済みのバイナリをダウンロードしましょう。以下は、macOS版をダウンロードした場合の例です。コンパイル済みのものは最新版に更新されていない可能性もあるため、やはり自分でコンパイルするのが確実です。
 \begin{lstlisting}[language=bash]
 $ cd ~
-$ curl -O https://root.cern.ch/download/root_v6.12.06.macosx64-10.12-clang80.tar.gz
+$ curl -O https://root.cern/download/root_v6.16.00.macosx64-10.14-clang100.tar.gz
 $ cd /usr/local
-$ sudo tar zxvf ~/root_v6.12.06.macosx64-10.12-clang80.tar.gz
+$ sudo tar zxvf ~/root_v6.16.00.macosx64-10.14-clang100.tar.gz
 \end{lstlisting}
-コンパイル済みのバイナリは、全ての環境用に配布されているわけではありません。ROOTのダウンロードページ\footnote{\url{https://root.cern.ch/content/release-61206}}から、自分の環境に対応したものをダウンロードしましょう\footnote{2018年4月現在、macOS High Sierra（10.13）、macOS Sierra（10.12）、RHEL7クローン（CentOS Cern 7）などにバイナリ配布があります。}。
+コンパイル済みのバイナリは、全ての環境用に配布されているわけではありません。ROOTのダウンロードページ\footnote{\url{https://root.cern.ch/content/release-61206}}から、自分の環境に対応したものをダウンロードしましょう\footnote{2019年4月現在、macOS Mojave (10.14)、macOS High Sierra（10.13）、RHEL7クローン（CentOS Cern 7）などにバイナリ配布があります。}。
 
 \subsection{Python 2 と Python 3 の違い}
 
-CentOS~7 や macOS では、標準でインストールされている Python のバージョンは 2.7 です。このようなバージョン 2.x のものを Python~2 と呼びます。しかし2018年現在、多くのPythonプロジェクトがPython~3に移行しています。Python~2とPython~3では一部の互換性が失われており、新規にPythonの学習を始める場合はPython~3から学ぶほうが良いでしょう\footnote{ただし、実験プロジェクトによってはPython~2の使用が必須の場合もあるので先輩や教員に相談してください。}。
+CentOS~7 や macOS では、標準でインストールされている Python のバージョンは 2.7 です。このようなバージョン 2.x のものを Python~2 と呼びます。しかし2019年現在、多くのPythonプロジェクトがPython~3に移行しています。Python~2とPython~3では一部の互換性が失われており、新規にPythonの学習を始める場合はPython~3から学ぶほうが良いでしょう\footnote{ただし、実験プロジェクトによってはPython~2の使用が必須の場合もあるので先輩や教員に相談してください。}。
 
 Python~2がインストールされている環境、もしくは\texttt{python}コマンドがPython~2を実行する環境では、ROOTはPython~2を自動的に選択しPython用のライブラリを構築します。そのためPython~3を使用したい場合は、次のように明示的にPython~3をROOTビルド時に指定する必要があります。
 
@@ -123,12 +125,12 @@ $ sudo cmake ../ -DPYTHON_EXECUTABLE=/usr/local/bin/python3
 
 この例では、Python~3の実行コマンドである\texttt{python3}が\texttt{/usr/local/bin/python3}としてインストールされていることを仮定しています。例えば Homebrew を使って macOS に Python~3をインストールした場合がこれに該当します。
 
-このように明示的に\texttt{python3}を指定するのは、ROOT 6.12/06ではPython~2とPython~3の両方に対応したPython用ライブラリを同時にビルドできないからです。そのため、Python~3を指定した場合はPython~2からROOTを呼び出せませんし、その逆もまた然りです。
+このように明示的に\texttt{python3}を指定するのは、ROOT 6.16/00ではPython~2とPython~3の両方に対応したPython用ライブラリを同時にビルドできないからです。そのため、Python~3を指定した場合はPython~2からROOTを呼び出せませんし、その逆もまた然りです。
 
 \subsection{\texttt{configure}を使ったコンパイル（非推奨）}
 \label{subsec:compile_configure}
 
-最近のROOTでは非推奨ですが、\texttt{configure}スクリプトと\texttt{make}コマンドを使ったROOTのビルドは、かつて標準的な手法でした。また同様の手法で多くのオープンソースソフトウェアをビルドすることもできますので、ここでは参考として\texttt{configure}と\texttt{make}を使ったビルド方法を紹介します。詳しくは付録~\ref{chap:configure}を参照してください。
+最近のROOTでは非推奨もしくは全くサポートされていません\footnote{少なくとも6.16/00以降ではサポートされていません。}が、\texttt{configure}スクリプトと\texttt{make}コマンドを使ったROOTのビルドは、かつて標準的な手法でした。また同様の手法で多くのオープンソースソフトウェアをビルドすることもできますので、ここでは参考として\texttt{configure}と\texttt{make}を使ったビルド方法を紹介します。詳しくは付録~\ref{chap:configure}を参照してください。
 
 まずは\texttt{CMake}の時と同様にROOTのソースコードを\texttt{/usr/local}に展開します。
 \begin{lstlisting}[language=bash]
@@ -185,7 +187,7 @@ $ sudo ./configure --enable-minuit2 --enable-gdml
 
 \subsection{最低限の初期設定}
 \label{subsec:settings}
-ソースをコンパイルしたり、バイナリ版をダウンロードしただけではROOTは使えるようになりません。ROOTの実行ファイルやライブラリの場所を設定する必要があります。これは、コンピュータがあなたの設定を自動では理解してくれないからです。\texttt{CMake}を使ってビルドした場合は、次の3行を\texttt{\~{}/.bashrc}に書き足して下さい\footnote{もし\texttt{/usr/local/root-6.12.06}以外の場所にインストールした場合は、ディレクトリを適宜変更してください。}\footnote{\texttt{\~{}/.bashrc} ではなく \texttt{\~{}/.bash\_profile} に書き込んでも構いませんが、筆者なら \texttt{\~{}/.bashrc} に書き込みます。違いが知りたい場合は「\texttt{bashrc} \texttt{bash\_profile} 違い」などで検索してください。}。
+ソースをコンパイルしたり、バイナリ版をダウンロードしただけではROOTは使えるようになりません。ROOTの実行ファイルやライブラリの場所を設定する必要があります。これは、コンピュータがあなたの設定を自動では理解してくれないからです。\texttt{CMake}を使ってビルドした場合は、次の3行を\texttt{\~{}/.bashrc}に書き足して下さい\footnote{もし\texttt{/usr/local/root-6.16.00}以外の場所にインストールした場合は、ディレクトリを適宜変更してください。}\footnote{\texttt{\~{}/.bashrc} ではなく \texttt{\~{}/.bash\_profile} に書き込んでも構いませんが、筆者なら \texttt{\~{}/.bashrc} に書き込みます。違いが知りたい場合は「\texttt{bashrc} \texttt{bash\_profile} 違い」などで検索してください。}。
 \begin{NoFloat}
 \lstinputlisting[language=bash]{src/bashrc_cmake.sh}
 \end{NoFloat}
@@ -211,16 +213,16 @@ $ source ~/.cshrc
 \end{lstlisting}
 とするか、新しいターミナルを開きましょう。\texttt{source}コマンドを実行する必要があるのは、初めて\texttt{.bashrc}や\texttt{.cshrc}の設定をROOT用に変更したときだけです。次にターミナルを開くときには自動的に処理されますので、\texttt{source}コマンドを打つ必要はありません。
 
-以上の設定で、使用しているシェルの環境変数の内容が更新されます。\texttt{ROOTSYS}という変数が追加され（これは\texttt{/usr/local/root-6.12.06/cmake\_build}を指しているはずです）、\texttt{PATH}、\texttt{LD\_LIBRARY\_PATH}、\texttt{PYTHONPATH}などが\texttt{ROOTSYS}以下のディレクトリを含むように変更されています。次のコマンドの出力を確認してみましょう（ROOTをビルドする前から環境変数の設定がされている場合、表示が異なる可能性があります）。
+以上の設定で、使用しているシェルの環境変数の内容が更新されます。\texttt{ROOTSYS}という変数が追加され（これは\texttt{/usr/local/root-6.16.00/obj}を指しているはずです）、\texttt{PATH}、\texttt{LD\_LIBRARY\_PATH}、\texttt{PYTHONPATH}などが\texttt{ROOTSYS}以下のディレクトリを含むように変更されています。次のコマンドの出力を確認してみましょう（ROOTをビルドする前から環境変数の設定がされている場合、表示が異なる可能性があります）。
 \begin{lstlisting}[language=bash]
 $ echo $ROOTSYS
-/usr/local/root-6.12.06/cmake_buiid
+/usr/local/root-6.16.00/obj
 $ echo $PATH
-/usr/local/root-6.12.06/cmake_buiid/bin
+/usr/local/root-6.16.00/obj/bin
 $ echo $PYTHONPATH
-/usr/local/root-6.12.06/cmake_buiid/lib
+/usr/local/root-6.16.00/obj/lib
 $ echo $LD_LIBRARY_PATH
-/usr/local/root-6.12.06/cmake_buiid/lib
+/usr/local/root-6.16.00/obj/lib
 \end{lstlisting}
 
 \subsection{動作確認}
@@ -232,10 +234,10 @@ $ root
 と打ってみて下さい。図\ref{fig:splash}が画面に現れるとともに、ターミナルには次のように出力されます。
 \begin{lstlisting}
    ------------------------------------------------------------
-  | Welcome to ROOT 6.12/06                http://root.cern.ch |
-  |                               (c) 1995-2017, The ROOT Team |
-  | Built for macosx64                                         |
-  | From tag v6-12-06, 9 February 2018                         |
+  | Welcome to ROOT 6.16/00                  https://root.cern |
+  |                               (c) 1995-2018, The ROOT Team |
+  | Built for macosx64 on Apr 03 2019, 14:43:00                |
+  | From tag , 23 January 2019                                 |
   | Try '.help', '.demo', '.license', '.credits', '.quit'/'.q' |
    ------------------------------------------------------------
 
