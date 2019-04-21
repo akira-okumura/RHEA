@@ -15,13 +15,13 @@ macOS や Linux にソフトウェアやライブラリを追加インストー�
 
 2 つ目はパッケージ管理システム（package management system、package manager）を使用する方法です。これは主に、Python などコマンドラインで使用するソフトウェアのインストールや管理に用いられます。パッケージ管理システムは単に必要なソフトウェアやライブラリをインストールするだけでなく、そのソフトウェアに必要となる他のライブラリを自動的に選択してインストールしたり、バージョンの依存関係を解決してくれたりします。またソフトウェアごとに異なるウェブサイトに情報が散逸することなく、同一のレポジトリに情報が集約され、インストール方法も共通化されているという利点があります。
 
-Mac では後述する Homebrew が 2018 年現在では主流であり\footnote{Mac OS X がリリースされた当初は Fink（\url{http://www.finkproject.org}）がもっとも人気があり、その後 MacPort（\url{https://www.macports.org}）に人気が移り、今では Homebrew が主流となりました。}、CentOS~7 では Yum が標準です。また Python に特化したパッケージ管理システムとして pip や conda があるのは第~\ref{chap:Python}~章で説明した通りです。本章では、このHomebrewとYumについて簡単に解説します。
+Mac では後述する Homebrew が 2019 年現在では主流であり\footnote{Mac OS X がリリースされた当初は Fink（\url{http://www.finkproject.org}）がもっとも人気があり、その後 MacPort（\url{https://www.macports.org}）に人気が移り、今では Homebrew が主流となりました。}、CentOS~7 では Yum が標準です。また Python に特化したパッケージ管理システムとして pip や conda があるのは第~\ref{chap:Python}~章で説明した通りです。本章では、このHomebrewとYumについて簡単に解説します。
 
 3 つ目の方法はCMakeやconfigureを使ってソフトウェアのビルドとインストールをする方法です。この解説は付録~\ref{chap:configure}を参照してください。
 
 \section{Homebrew}
 \label{sec:Homebrew}
-Homebrew は 2018 年現在、Mac でもっとも人気のあるパッケージ管理システムです\footnote{\url{https://brew.sh}}\footnote{「home brew」は日本語で自家醸造という意味であり、Homebrew に出てくる用語は cask（大樽）や cellar（貯蔵庫）など、酒関係の英語が多いです。}。\texttt{homebrew}
+Homebrew は 2019 年現在、Mac でもっとも人気のあるパッケージ管理システムです\footnote{\url{https://brew.sh}}\footnote{「home brew」は日本語で自家醸造という意味であり、Homebrew に出てくる用語は cask（大樽）や cellar（貯蔵庫）など、酒関係の英語が多いです。}。\texttt{homebrew}
 
 まず \url{https://brew.sh} に記述のある通り、Homebrew をインストールしてみましょう\footnote{Homebrewの更新に従いこのコマンドは変更になる可能性があるので、必ず本家の記述を参照してください。}。次のコマンドを管理者権限をもつユーザで実行すると
 \begin{lstlisting}[language=bash]
@@ -86,7 +86,7 @@ CMake suite maintained and supported by Kitware (kitware.com/cmake).
 
 \LaTeX を知らなくても修士論文は書けますが、宇宙や素粒子関連の業界では、ほとんどの人が \LaTeX を使って修士論文を書きます（実際には日本語対応の \pLaTeX）。また同様に投稿論文も \LaTeX で書くことがほとんどですので（実際には PDF の生成が簡単な pdf\LaTeX）、多くの物理学徒が避けては通れない道具です。実際に修士論文を \pLaTeX で書く場合の例としては、手前味噌ですが「修士論文 LaTeX テンプレート｜名古屋大学宇宙地球環境研究所の理学系修士学生用」\footnote{\url{https://github.com/akira-okumura/MasterThesisTemplate}}が参考になると思います。
 
-\LaTeX のインストール方法は様々であり、インターネット上の情報もバラバラです。また古い情報も混在しているため、筆者も何が正しいのか、何がお勧めなのかよく分かりません。しかし、ここで示すやり方が「正しそうに思える」ので、ひとつの例として挙げます。この情報は 2018 年 4 月現在のものです。TeXLive などの 2018 年版が出たら、適宜読み替えてください\footnote{2018 年 5 月現在、2018 年版が出ています。特に macOS での日本語フォントに関する情報は\url{http://doratex.hatenablog.jp/entry/20180501/1525144736}などを参考にしてください。}。
+\LaTeX のインストール方法は様々であり、インターネット上の情報もバラバラです。また古い情報も混在しているため、筆者も何が正しいのか、何がお勧めなのかよく分かりません。しかし、ここで示すやり方が「正しそうに思える」ので、ひとつの例として挙げます。この情報は 2019 年 4 月現在のものです。TeXLive などの 2019 年版が出たら、適宜読み替えてください\footnote{2019 年 4 月現在、2018 年版が出ています。}。
 
 macOS でも CentOS~7 でも、合計で 5~GB くらいのファイルをインストールします。ダウンロードに 1 時間以上かかったり、パソコンの空き領域を食いつぶしたりするので注意してください。
 
@@ -105,21 +105,21 @@ $ sudo tlmgr paper
 \end{lstlisting}
 もしもページの大きさの設定が次のように letter（21.59~cm~$\times$~27.94~cm）\footnote{アメリカで一般的に使われる印刷用紙の大きさです。}と表示される場合、
 \begin{lstlisting}
-Current context paper size (from /usr/local/texlive/2017/texmf-config/tex/context/user/cont-sys.tex): letter
-Current dvipdfmx paper size (from /usr/local/texlive/2017/texmf-config/dvipdfmx/dvipdfmx.cfg): letter
-Current dvips paper size (from /usr/local/texlive/2017/texmf-config/dvips/config/config.ps): letter
-Current pdftex paper size (from /usr/local/texlive/2017/texmf-config/tex/generic/config/pdftexconfig.tex): letter
-Current psutils paper size (from /usr/local/texlive/2017/texmf-config/psutils/paper.cfg): letter
-Current xdvi paper size (from /usr/local/texlive/2017/texmf-config/xdvi/XDvi): letter
+Current context paper size (from /usr/local/texlive/2018/texmf-config/tex/context/user/cont-sys.tex): letter
+Current dvipdfmx paper size (from /usr/local/texlive/2018/texmf-config/dvipdfmx/dvipdfmx.cfg): letter
+Current dvips paper size (from /usr/local/texlive/2018/texmf-config/dvips/config/config.ps): letter
+Current pdftex paper size (from /usr/local/texlive/2018/texmf-config/tex/generic/config/pdftexconfig.tex): letter
+Current psutils paper size (from /usr/local/texlive/2018/texmf-config/psutils/paper.cfg): letter
+Current xdvi paper size (from /usr/local/texlive/2018/texmf-config/xdvi/XDvi): letter
 \end{lstlisting}
 次のコマンドで A4 サイズ（21.0~cm~$\times$~29.7~cm）に設定を変更してください。
 \begin{lstlisting}[language=bash]
 $ sudo tlmgr paper a4
 \end{lstlisting}
 
-macOS で \LaTeX\ を使う場合、初期設定ではおそらく IPA 明朝と IPA ゴシックというフォントが使用されます。しかし macOS に同梱されているヒラギノフォント（ヒラギノ明朝およびヒラギノ角ゴシック）を使うと PDF の仕上がりが良くなります（可読性の高い綺麗なフォントが埋め込まれます）ので、仕上がりにこだわりたい人はヒラギノフォントを埋め込む設定を行なってください。この作業は macOS のバージョンや TeXLive のバージョンによって異なりますので、最新情報を「mac ヒラギノ latex」などの Google 検索結果から得るようにしてください。
+macOS で \LaTeX\ を使う場合、初期設定ではおそらく IPA 明朝と IPA ゴシックというフォントが使用されます。しかし macOS に同梱されているヒラギノフォント（ヒラギノ明朝およびヒラギノ角ゴシック）を使うと PDF の仕上がりが良くなります（可読性の高い綺麗なフォントが埋め込まれます）ので、仕上がりにこだわりたい人はヒラギノフォントを埋め込む設定を行なってください。この作業は macOS のバージョンや TeXLive のバージョンによって異なりますので、\url{http://doratex.hatenablog.jp/entry/20190327/1553617143}などを参考にしてください。
 
-\section{CentOS~7 での TeXLive 2017 のインストール}
+\section{CentOS~7 での TeXLive 2018 のインストール}
 
 \url{https://www.tug.org/texlive/quickinstall.html}を参考に、まずはネットワーク越しにインストール\footnote{必要なファイルをインストーラとともに最初に落としてくるのではなく、インストーラを実行した後に必要ファイルをダウンロードしてくる方法。}するためのコマンドをダウンロードし展開します。
 
@@ -127,19 +127,19 @@ macOS で \LaTeX\ を使う場合、初期設定ではおそらく IPA 明朝と
 $ cd
 $ curl -O -L http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
 $ tar zxvf install-tl-unx.tar.gz
-$ cd install-tl-20180303/
+$ cd install-tl-20190227/
 \end{lstlisting}
 
 この展開したディレクトリの中にインストーラがあるので、これを管理者権限で実行します。そうすると次のように色々と表示されるので、i を入力してインストールを進めましょう。もしカスタマイズしたい人は、英語の説明に従ってください。
 
 \begin{lstlisting}[language=bash]
 $ sudo ./install-tl
-Loading http://ftp.yz.yamagata-u.ac.jp/pub/CTAN/systems/texlive/tlnet/tlpkg/texlive.tlpdb
-Installing TeX Live 2017 from: http://ftp.yz.yamagata-u.ac.jp/pub/CTAN/systems/texlive/tlnet (verified)
+Loading ftp://ftp.u-aizu.ac.jp/pub/tex/CTAN/systems/texlive/tlnet/tlpkg/texlive.tlpdb
+Installing TeX Live 2018 from: ftp://ftp.u-aizu.ac.jp/pub/tex/CTAN/systems/texlive/tlnet (verified)
 Platform: x86_64-linux => 'GNU/Linux on x86_64'
 Distribution: net  (downloading)
-Using URL: http://ftp.yz.yamagata-u.ac.jp/pub/CTAN/systems/texlive/tlnet
-Directory for temporary files: /tmp/LSPqwFTuJD
+Using URL: ftp://ftp.u-aizu.ac.jp/pub/tex/CTAN/systems/texlive/tlnet
+Directory for temporary files: /tmp/bDF8hSU8Tp
 
 ======================> TeX Live installation procedure <=====================
 
@@ -148,26 +148,26 @@ Directory for temporary files: /tmp/LSPqwFTuJD
 
  Detected platform: GNU/Linux on x86_64
  
- <B> set binary platforms: 1 out of 20
+ <B> set binary platforms: 1 out of 17
 
  <S> set installation scheme: scheme-full
 
  <C> set installation collections:
-     40 collections out of 41, disk space required: 5197 MB
+     40 collections out of 41, disk space required: 5806 MB
 
  <D> set directories:
    TEXDIR (the main TeX directory):
-     /usr/local/texlive/2017
+     /usr/local/texlive/2018
    TEXMFLOCAL (directory for site-wide local files):
      /usr/local/texlive/texmf-local
    TEXMFSYSVAR (directory for variable and automatically generated data):
-     /usr/local/texlive/2017/texmf-var
+     /usr/local/texlive/2018/texmf-var
    TEXMFSYSCONFIG (directory for local config):
-     /usr/local/texlive/2017/texmf-config
+     /usr/local/texlive/2018/texmf-config
    TEXMFVAR (personal directory for variable and automatically generated data):
-     ~/.texlive2017/texmf-var
+     ~/.texlive2018/texmf-var
    TEXMFCONFIG (personal directory for local config):
-     ~/.texlive2017/texmf-config
+     ~/.texlive2018/texmf-config
    TEXMFHOME (directory for user-specific files):
      ~/texmf
 
@@ -193,24 +193,24 @@ Enter command: i
 かなり時間がかかりますが、必要なファイルを全てダウンロードし終えると、最後に環境変数を設定するように指示が出ます。
 
 \begin{lstlisting}
-Installing to: /usr/local/texlive/2017
-Installing [0001/3561, time/total: ??:??/??:??]: 12many [376k]
-Installing [0002/3561, time/total: 00:01/01:53:18]: 2up [66k]
-Installing [0003/3561, time/total: 00:01/01:36:30]: Asana-Math [482k]
-Installing [0004/3561, time/total: 00:02/01:32:10]: ESIEEcv [137k]
+Installing to: /usr/local/texlive/2018
+Installing [0001/3752, time/total: ??:??/??:??]: 12many [376k]
+Installing [0002/3752, time/total: 00:04/08:25:18]: 2up [66k]
+Installing [0003/3752, time/total: 00:05/08:57:54]: Asana-Math [482k]
+Installing [0004/3752, time/total: 00:07/05:59:39]: ESIEEcv [137k]
 （略）
-Add /usr/local/texlive/2017/texmf-dist/doc/man to MANPATH.
-Add /usr/local/texlive/2017/texmf-dist/doc/info to INFOPATH.
-Most importantly, add /usr/local/texlive/2017/bin/x86_64-linux
+Add /usr/local/texlive/2018/texmf-dist/doc/man to MANPATH.
+Add /usr/local/texlive/2018/texmf-dist/doc/info to INFOPATH.
+Most importantly, add /usr/local/texlive/2018/bin/x86_64-linux
 to your PATH for current and future sessions.
 \end{lstlisting}
 
-これに従い、\texttt{~/.bashrc}や\texttt{~/.zshrc}に次の 3 行を追加します\footnote{インストールの年によって \texttt{2017} が \texttt{2018} に変わっていたりする可能性があるので、実際の出力に従ってください。}。
+これに従い、\texttt{~/.bashrc}や\texttt{~/.zshrc}に次の 3 行を追加します\footnote{インストールの年によって \texttt{2018} が \texttt{2019} に変わっていたりする可能性があるので、実際の出力に従ってください。}。
 
 \begin{lstlisting}[language=bash]
-export MANPATH=/usr/local/texlive/2017/texmf-dist/doc/man:$MANPATH
-export INFOPATH=/usr/local/texlive/2017/texmf-dist/doc/info:$INFOPATH
-export PATH=/usr/local/texlive/2017/bin/x86_64-linux:$PATH
+export MANPATH=/usr/local/texlive/2018/texmf-dist/doc/man:$MANPATH
+export INFOPATH=/usr/local/texlive/2018/texmf-dist/doc/info:$INFOPATH
+export PATH=/usr/local/texlive/2018/bin/x86_64-linux:$PATH
 \end{lstlisting}
 
 \section{動作確認}
@@ -669,6 +669,72 @@ clang: error: no input files
 
 \chapter{configure と Make}
 \label{chap:configure}
+
+\section{\texttt{configure}を使った ROOT のコンパイル（非推奨）}
+\label{sec:compile_configure}
+
+最近のROOTでは非推奨もしくは全くサポートされていません\footnote{少なくとも6.16/00以降ではサポートされていません。}が、\texttt{configure}スクリプトと\texttt{make}コマンドを使ったROOTのビルドは、かつて標準的な手法でした。また同様の手法で多くのオープンソースソフトウェアをビルドすることもできますので、ここでは参考として\texttt{configure}と\texttt{make}を使ったビルド方法を紹介します。
+
+まずは\texttt{CMake}の時と同様にROOTのソースコードを\texttt{/usr/local}に展開します。
+\begin{lstlisting}[language=bash]
+$ cd /usr/local
+$ sudo tar zxvf ~/root_v6.12.06.source.tar.gz
+\end{lstlisting}
+
+次に\texttt{configure}スクリプトを実行します。このスクリプトは\texttt{CMake}や\texttt{CmakeLists.txt}と同様に、ソフトウェアのビルドに必要な情報を集約します。
+
+\begin{lstlisting}[language=bash]
+$ cd root-6.12.06
+$ sudo ./configure
+\end{lstlisting}
+
+色々とターミナルに出力されますが、最後に次のような表示が出れば\texttt{configure}は成功です。もし何かしらのエラーが表示される場合、ROOTのビルドに必要な他のコマンドやライブラリがインストールされていないことが考えられます。表示されたエラーをよく読み、原因が何かを考えて対応しましょう。
+\begin{lstlisting}[language=bash]
+Enabled support for asimage, astiff, bonjour, builtin_afterimage, builtin_ftgl, builtin_freetype, builtin_gl2ps, builtin_glew, builtin_unuran, builtin_lz4, builtin_llvm, libcxx, cocoa, explicitlink, fink, fitsio, gviz, genvector, krb5, ldap, memstat, opengl, python, rpath, search_usrlocal, shared, sqlite, tmva, xml.
+
+To build ROOT type:
+
+   make 
+
+******************************************************************************
+* The classic configure/make method of building ROOT is now DEPRECATED in    *
+* favor of the CMake one.                                                    *
+* Refer to README/INSTALL file for updated instructions or visit the page    *
+* https://root.cern.ch/building-root                                         *
+******************************************************************************
+\end{lstlisting}
+6.12/06では、\texttt{configure}を使ったビルドは「DEPRECATED」（旧式で非推奨）であると表示されます。新しいROOTを使う場合は、節~\ref{subsec:compile_cmake}の\texttt{CMake}を使ったビルドを推奨します。
+
+あとは、\texttt{CMake}のときと同様に\texttt{make}を実行します。
+\begin{lstlisting}[language=bash]
+$ sudo make -j8
+\end{lstlisting}
+うまくコンパイルが全て完了すると、次のような表示が最後に出るはずです。
+\begin{lstlisting}
+root [0] 
+Processing hsimple.C...
+hsimple   : Real Time =   0.07 seconds Cpu Time =   0.05 seconds
+(TFile *) 0x7fb0fae560c0
+ 
+   ============================================================
+   ===                ROOT BUILD SUCCESSFUL.                ===
+   === Run 'source bin/thisroot.[c]sh' before starting ROOT ===
+   ============================================================
+\end{lstlisting}
+
+\texttt{make}実行時に何もオプションを渡さない場合、発展的な機能やマイナーな機能は「Enabled support」の一覧に入りません。\texttt{make}実行時に例えば次のようにオプションをつけることで、オプションもビルドすることができるようになります。
+
+\begin{lstlisting}[language=bash]
+$ sudo ./configure --enable-minuit2 --enable-gdml
+\end{lstlisting}
+
+\texttt{configure}を使った場合は展開したソースファイルのディレクトリ内でコンパイルを行いますので、次のような\texttt{~/.bashrc}の設定になります。
+\begin{NoFloat}
+\lstinputlisting[language=bash]{src/bashrc.sh}
+\end{NoFloat}
+
+\section{configureとMakeの一般的な解説}
+
 macOSやLinux環境でソフトウェアを導入する時、インストールの方法は主に3つあります。1つ目は、\ref{sec:MacPorts}で説明したようなパッケージ管理ソフト\footnote{macOSではMacPorts、Fink、Homebrewなど、LinuxではYumやAPTなど。}を使う方法す。2つ目は、既にコンパイル済みでバイナリ配布されているソフトを導入する方法です。例えば、KeyRemap4MacBookをインストーラを使ってインストールしたのがこれに当たります。また、ROOTを入れる場合でもバイナリ配布されているものを使うことが可能です。3つ目は、ソースコードの配布されているソフトウェアを自分でコンパイル（compile）する\footnote{ビルド（build）するとも言います。}方法です。これは\ref{sec:ROOT_install}でROOTの導入として説明しました。
 
 自分でソフトウェアをソースコードからコンパイルする場合、標準的なやり方が存在します。また、研究で通常使うソフトウェアの多くがこの標準的な方法に則して作成されています。そのためここで説明する方法を覚えておけば、多くのソフトウェアを自分で簡単にインストールできるようになります。

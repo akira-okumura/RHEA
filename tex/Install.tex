@@ -3,7 +3,7 @@
 \section{ROOTのインストールと初期設定}
 \label{sec:ROOT_install}
 \subsection{必要な環境}
-本書を読み進めるためには、当然ながらROOTを実行するためのコンピュータ環境が必要です。ROOTがサポートする（していた）オペレーションシステム（operation system、OS）は多岐にわたりますが、2018年現在、Mac\footnote{Apple社の製造するコンピュータMacintosh（通称 Mac）で使われている OS はバージョン 10.0 以降、永らく Mac OS X（マックオーエステン）と呼ばれてきました。しかしそのバージョンが 10.12 になってからは macOS と名称が変更されています。「Mac OS X」と「macOS」という二つの言葉が世の中では混在していますが、同じものを指すと考えてください。}かLinux\footnote{Redhat Enterprise Linux（RHEL）、Fedora、CentOS、Ubuntu、Scientific Linuxなど、一口にLinuxと言っても様々な種類があります。これはLinuxという言葉がOSの中核部分であるカーネル（kernel）を指すものであり、このLinuxカーネルに様々なソフトウェアやライブラリを追加してひとまとめにした配布形態（distribution）が複数あるためです。例えば「CentOSはLinuxカーネルを使用したLinuxディストリビューションの1つである」のような表現をします。}を使用するのがこの業界では標準です。そのため本書ではMacかLinuxの使用を前提とします\footnote{WindowsやSolarisもROOT~5でサポートされていましたが、現在はおそらくサポートされていません。}。どちらかのOSを使う限り、作業内容はほぼ同じはずです。本書に書かれているROOTでの作業を全て行うためには、自分のコンピュータにコンパイラ（compiler）がインストールされている必要があります\footnote{GCCやClangといったコンパイラについての説明や、そのインストール方法は本書の範囲内ではありません。GCCやClangのインストール方法が分からなければ、「GCC インストール Linux」「Clang インストール Mac」などで検索して下さい。}。
+本書を読み進めるためには、当然ながらROOTを実行するためのコンピュータ環境が必要です。ROOTがサポートする（していた）オペレーションシステム（operation system、OS）は多岐にわたりますが、2019年現在、Mac\footnote{Apple社の製造するコンピュータMacintosh（通称 Mac）で使われている OS はバージョン 10.0 以降、永らく Mac OS X（マックオーエステン）と呼ばれてきました。しかしそのバージョンが 10.12 になってからは macOS と名称が変更されています。「Mac OS X」と「macOS」という二つの言葉が世の中では混在していますが、同じものを指すと考えてください。}かLinux\footnote{Redhat Enterprise Linux（RHEL）、Fedora、CentOS、Ubuntu、Scientific Linuxなど、一口にLinuxと言っても様々な種類があります。これはLinuxという言葉がOSの中核部分であるカーネル（kernel）を指すものであり、このLinuxカーネルに様々なソフトウェアやライブラリを追加してひとまとめにした配布形態（distribution）が複数あるためです。例えば「CentOSはLinuxカーネルを使用したLinuxディストリビューションの1つである」のような表現をします。}を使用するのがこの業界では標準です。そのため本書ではMacかLinuxの使用を前提とします\footnote{WindowsやSolarisもROOT~5でサポートされていましたが、現在はおそらくサポートされていません。}。どちらかのOSを使う限り、作業内容はほぼ同じはずです。本書に書かれているROOTでの作業を全て行うためには、自分のコンピュータにコンパイラ（compiler）がインストールされている必要があります\footnote{GCCやClangといったコンパイラについての説明や、そのインストール方法は本書の範囲内ではありません。GCCやClangのインストール方法が分からなければ、「GCC インストール Linux」「Clang インストール Mac」などで検索して下さい。}。
 
 ある程度のコマンドラインの使用経験を前提としていますので、\texttt{ls}や\texttt{cd}のような単純なコマンド、「スーパーユーザー」、「管理者」、「ディレクトリ」といった用語の説明は省略します。この章の記述は、コマンドライン操作の初心者には不親切かもしれません。しかし、この章を読み進めることができなければ、恐らくROOTを使いこなせるようにもなりません。コンパイルができなかった、ROOTがうまく起動しなかった、この章に書いてあることが分からなかったという場合は、自力でインターネットや書籍、研究室の同僚を頼りに解決して下さい。
 
@@ -11,7 +11,7 @@
 \label{subsec:download}
 ROOTは\url{https://root.cern.ch/}からダウンロードすることができます。既にコンパイルされているバイナリ版と、コンパイルされていないソースコードがあります。前者はコンパイルする必要がないので簡単ですが、本書では教育目的のため、ソースコードをダウンロードして、自分でコンパイルすることにします。
 
-2019年4月時点で、ROOT 6 の最新安定バージョン6.16/00です。バージョン5からバージョン6に変わるとき、大きな変更がありました。そのため、研究室によってはバージョン5系列を使っている人もまだまだ多いと思います。ROOT 5 ではバージョン 5.34/36 が最新です\footnote{更新は 2016 年 4 月 5 日であり、今後は開発が継続されません。}。最初の数字はメジャーバージョン、次の数字は大きな機能追加ごとに増えるマイナーバージョン、スラッシュの後ろの数字はバグフィックスを示す番号です。
+2019年4月時点で、ROOT 6 の最新安定バージョン6.16/00です。バージョン5からバージョン6に変わるとき、大きな変更がありました。そのため、研究室や実験グループによってはバージョン5系列を使っている人もまだまだ多いと思います。ROOT 5 ではバージョン 5.34/36 が最新です\footnote{更新は 2016 年 4 月 5 日であり、今後は開発が継続されません。}。最初の数字はメジャーバージョン、次の数字は大きな機能追加ごとに増えるマイナーバージョン、スラッシュの後ろの数字はバグフィックスを示す番号です。
 
 どのバージョンを選択するかは研究室の計算機環境や実験グループの解析ソフトなどに依存しますが、本書では6.16/00を前提として話を進めます。特に研究室でバージョン指定もなく初めてROOTを使用する場合であれば、最新バージョン\url{https://root.cern.ch/downloading-root}で確認し、それを使うようにしてください。
 
@@ -27,13 +27,13 @@ $ curl -O https://root.cern.ch/download/root_v6.16.00.source.tar.gz
 \subsection{コンパイルとは}
 コンパイル（compile）とは、C++などのプログラミング言語で書かれたソースコード（source code）をコンピュータが実行できるようにする作業のことです。C++などで書かれたプログラムは人間が理解しやすいような文法で作られているため、これをコンピュータの中のCPU（central processing unit、中央処理装置）が理解できる形態に変換してやる必要があるのです。
 
-コンパイルはコンパイラ（compiler）と呼ばれるソフトウェアを使って行います。LinuxではGCC、macOSではClangというコンパイラが多く使われています。しかしROOTのように大きなソフトウェアになると、どのファイルをどの順序でコンパイルすれば良いのかや、どのようなライブラリがROOTのコンパイルに必要なのかをコンピュータごとに調べる必要が出てきます。この作業を自動的に行うのが後述する\texttt{CMake}や\texttt{configure}です。これらのソフトウェアが\texttt{Makefile}を作成し、これにしたがってコンパイル作業が進みます。
+コンパイルはコンパイラ（compiler）と呼ばれるソフトウェアを使って行います。LinuxではGCC、macOSではClangというコンパイラが多く使われています。しかしROOTのように大きなソフトウェアになると、どのファイルをどの順序でコンパイルすれば良いのかや、どのようなライブラリがROOTのコンパイルに必要なのかをコンピュータごとに調べる必要が出てきます。この作業を自動的に行うのが後述する{CMakeや\texttt{configure}です。これらのソフトウェアが\texttt{Makefile}を作成し、これにしたがってコンパイル作業が進みます。
 
-\subsection{\texttt{CMake}を使ったコンパイル（推奨）}
+\subsection{CMakeを使ったコンパイル（推奨）}
 \label{subsec:compile_cmake}
-最近の\texttt{ROOT}（6.08/00以降）では、後述する\texttt{configure}コマンドではなく\texttt{cmake}コマンド\footnote{\url{https://cmake.org/}}を使ってビルドすることが推奨されており、\texttt{configure}は既にサポート対象外です。これは\texttt{Geant4}でも同様で、最近のソフトウェアの流れです。\texttt{CMake}はまだ完全に市民権を得たわけではありませんが、徐々にソフトウェア開発で浸透しつつあります。
+最近のROOT（6.08/00以降）では、付録~\ref{chap:configure}で詳述する\texttt{configure}コマンドではなく\texttt{cmake}コマンド\footnote{\url{https://cmake.org/}}を使ってビルドすることが推奨されており、\texttt{configure}は既にサポート対象外です。これはGeant4でも同様で、最近のソフトウェアの流れです。CMakeはまだ完全に市民権を得たわけではありませんが、徐々にソフトウェア開発で浸透しつつあります。
 
-\texttt{yum}や\texttt{homebrew}などのパッケージ管理ソフトウェア（付録~\ref{chap:package}参照）のコマンドを使うか、自分で\texttt{CMake}のページからダウンロードし、まずは\texttt{CMake}を導入します。ROOT 6.16/00では\texttt{CMake}がバージョン3.6以上である必要があります。2019年4月現在、Homebrewでは CMake 3.13.0が、CentOS~7.4のYumではCMake 3.6.3が入手可能です。
+\texttt{yum}や\texttt{homebrew}などのパッケージ管理ソフトウェア（付録~\ref{chap:package}参照）のコマンドを使うか、自分でCMakeのページからダウンロードし、まずはCMakeを導入します。ROOT 6.16/00ではCMakeがバージョン3.6以上である必要があります。2019年4月現在、Homebrewでは CMake 3.13.0が、CentOS~7.4のYumではCMake 3.6.3が入手可能です。
 
 ROOTのコンパイル作業やインストール先は、好きな場所でやって構いません。もしあなたがコンピュータの管理者権限を持っているならば、\texttt{/usr/local}の下にインストールするのが標準的です。次のように、ターミナルから好きなディレクトリに移動し、ソースコードを展開して下さい\footnote{この例のように本書で先頭に\texttt{\$}がついている行は、ターミナルで入力していることを表します。実際にターミナルから入力する内容は、\texttt{\$}とその直後の半角スペースを取り除いた内容ですので、注意して下さい。}\footnote{管理者権限を持っていなかったり、\texttt{sudo}コマンドを使用できない場合、一般ユーザでもインストール可能なディレクトリを選択してください。}。
 
@@ -42,7 +42,7 @@ $ cd /usr/local
 $ sudo tar zxvf ~/root_v6.16.00.source.tar.gz
 \end{lstlisting}
 
-\texttt{root-6.16.00}という名前のディレクトリが作成されるので、そこに移動してコンパイルを行います。まずは作業用のディレクトリ\footnote{\texttt{obj}というディレクトリ名は好きなもので構いません。}を作成して移動し、\texttt{CMake}を実行します。もし管理者権限を持たない一般ユーザとしてホームディレクトリなどで作業する場合、以降\texttt{sudo}はつける必要はありません。
+\texttt{root-6.16.00}という名前のディレクトリが作成されるので、そこに移動してコンパイルを行います。まずは作業用のディレクトリ\footnote{\texttt{obj}というディレクトリ名は好きなもので構いません。}を作成して移動し、CMakeを実行します。もし管理者権限を持たない一般ユーザとしてホームディレクトリなどで作業する場合、以降\texttt{sudo}はつける必要はありません。
 
 \begin{lstlisting}[language=bash]
 $ sudo mkdir root-6.16.00/obj
@@ -51,6 +51,8 @@ $ sudo cmake ..
 \end{lstlisting}
 
 ここで \texttt{obj} というサブディレクトリを作るのは、ビルドのやり直しをする際に CMake や Make の作成したファイルを削除するのを簡単にするためというのが主な理由です。また Python~2 と Python~3 用にビルドするディレクトリを分けたいという場合にも、このようにビルド用のサブディレクトリを作っておくと便利です。
+
+もしPython~2ではなくPython~3を使用した場合、節~\ref{subsec:python23}で説明する\texttt{cmake}コマンドのオプションをつけてください。
 
 CentOS~7の場合、\texttt{cmake3}というコマンドが\texttt{yum}でインストールされるため（付録~\ref{chap:package}参照）、コマンドを\texttt{cmake3}に変更して実行してください。
 
@@ -114,6 +116,7 @@ $ sudo tar zxvf ~/root_v6.16.00.macosx64-10.14-clang100.tar.gz
 コンパイル済みのバイナリは、全ての環境用に配布されているわけではありません。ROOTのダウンロードページ\footnote{\url{https://root.cern.ch/content/release-61206}}から、自分の環境に対応したものをダウンロードしましょう\footnote{2019年4月現在、macOS Mojave (10.14)、macOS High Sierra（10.13）、RHEL7クローン（CentOS Cern 7）などにバイナリ配布があります。}。
 
 \subsection{Python 2 と Python 3 の違い}
+\label{subsec:python23}
 
 CentOS~7 や macOS では、標準でインストールされている Python のバージョンは 2.7 です。このようなバージョン 2.x のものを Python~2 と呼びます。しかし2019年現在、多くのPythonプロジェクトがPython~3に移行しています。Python~2とPython~3では一部の互換性が失われており、新規にPythonの学習を始める場合はPython~3から学ぶほうが良いでしょう\footnote{ただし、実験プロジェクトによってはPython~2の使用が必須の場合もあるので先輩や教員に相談してください。}。
 
@@ -127,81 +130,19 @@ $ sudo cmake ../ -DPYTHON_EXECUTABLE=/usr/local/bin/python3
 
 このように明示的に\texttt{python3}を指定するのは、ROOT 6.16/00ではPython~2とPython~3の両方に対応したPython用ライブラリを同時にビルドできないからです。そのため、Python~3を指定した場合はPython~2からROOTを呼び出せませんし、その逆もまた然りです。
 
-\subsection{\texttt{configure}を使ったコンパイル（非推奨）}
-\label{subsec:compile_configure}
-
-最近のROOTでは非推奨もしくは全くサポートされていません\footnote{少なくとも6.16/00以降ではサポートされていません。}が、\texttt{configure}スクリプトと\texttt{make}コマンドを使ったROOTのビルドは、かつて標準的な手法でした。また同様の手法で多くのオープンソースソフトウェアをビルドすることもできますので、ここでは参考として\texttt{configure}と\texttt{make}を使ったビルド方法を紹介します。詳しくは付録~\ref{chap:configure}を参照してください。
-
-まずは\texttt{CMake}の時と同様にROOTのソースコードを\texttt{/usr/local}に展開します。
-\begin{lstlisting}[language=bash]
-$ cd /usr/local
-$ sudo tar zxvf ~/root_v6.12.06.source.tar.gz
-\end{lstlisting}
-
-次に\texttt{configure}スクリプトを実行します。このスクリプトは\texttt{CMake}や\texttt{CmakeLists.txt}と同様に、ソフトウェアのビルドに必要な情報を集約します。
-
-\begin{lstlisting}[language=bash]
-$ cd root-6.12.06
-$ sudo ./configure
-\end{lstlisting}
-
-色々とターミナルに出力されますが、最後に次のような表示が出れば\texttt{configure}は成功です。もし何かしらのエラーが表示される場合、ROOTのビルドに必要な他のコマンドやライブラリがインストールされていないことが考えられます。表示されたエラーをよく読み、原因が何かを考えて対応しましょう。
-\begin{lstlisting}[language=bash]
-Enabled support for asimage, astiff, bonjour, builtin_afterimage, builtin_ftgl, builtin_freetype, builtin_gl2ps, builtin_glew, builtin_unuran, builtin_lz4, builtin_llvm, libcxx, cocoa, explicitlink, fink, fitsio, gviz, genvector, krb5, ldap, memstat, opengl, python, rpath, search_usrlocal, shared, sqlite, tmva, xml.
-
-To build ROOT type:
-
-   make 
-
-******************************************************************************
-* The classic configure/make method of building ROOT is now DEPRECATED in    *
-* favor of the CMake one.                                                    *
-* Refer to README/INSTALL file for updated instructions or visit the page    *
-* https://root.cern.ch/building-root                                         *
-******************************************************************************
-\end{lstlisting}
-6.12/06では、\texttt{configure}を使ったビルドは「DEPRECATED」（旧式で非推奨）であると表示されます。新しいROOTを使う場合は、節~\ref{subsec:compile_cmake}の\texttt{CMake}を使ったビルドを推奨します。
-
-あとは、\texttt{CMake}のときと同様に\texttt{make}を実行します。
-\begin{lstlisting}[language=bash]
-$ sudo make -j8
-\end{lstlisting}
-うまくコンパイルが全て完了すると、次のような表示が最後に出るはずです。
-\begin{lstlisting}
-root [0] 
-Processing hsimple.C...
-hsimple   : Real Time =   0.07 seconds Cpu Time =   0.05 seconds
-(TFile *) 0x7fb0fae560c0
- 
-   ============================================================
-   ===                ROOT BUILD SUCCESSFUL.                ===
-   === Run 'source bin/thisroot.[c]sh' before starting ROOT ===
-   ============================================================
-\end{lstlisting}
-
-\texttt{make}実行時に何もオプションを渡さない場合、発展的な機能やマイナーな機能は「Enabled support」の一覧に入りません。\texttt{make}実行時に例えば次のようにオプションをつけることで、オプションもビルドすることができるようになります。
-
-\begin{lstlisting}[language=bash]
-$ sudo ./configure --enable-minuit2 --enable-gdml
-\end{lstlisting}
-
 \subsection{最低限の初期設定}
 \label{subsec:settings}
-ソースをコンパイルしたり、バイナリ版をダウンロードしただけではROOTは使えるようになりません。ROOTの実行ファイルやライブラリの場所を設定する必要があります。これは、コンピュータがあなたの設定を自動では理解してくれないからです。\texttt{CMake}を使ってビルドした場合は、次の3行を\texttt{\~{}/.bashrc}に書き足して下さい\footnote{もし\texttt{/usr/local/root-6.16.00}以外の場所にインストールした場合は、ディレクトリを適宜変更してください。}\footnote{\texttt{\~{}/.bashrc} ではなく \texttt{\~{}/.bash\_profile} に書き込んでも構いませんが、筆者なら \texttt{\~{}/.bashrc} に書き込みます。違いが知りたい場合は「\texttt{bashrc} \texttt{bash\_profile} 違い」などで検索してください。}。
+ソースをコンパイルしたり、バイナリ版をダウンロードしただけではROOTは使えるようになりません。ROOTの実行ファイルやライブラリの場所を設定する必要があります。これは、コンピュータがあなたの設定を自動では理解してくれないからです。\texttt{CMake}を使ってビルドした場合は、次の3行を macOS の場合は\texttt{\~{}/.bash\_profile}に、Linuxの場合は\texttt{\~{}/.bashrc}に書き足して下さい\footnote{もし\texttt{/usr/local/root-6.16.00}以外の場所にインストールした場合は、ディレクトリを適宜変更してください。}\footnote{\texttt{\~{}/.bashrc} は対話的に\texttt{bash}を起動した際に読み込まれる設定ファイルです。一方、\texttt{\~{}/.bash\_profile}はlogin shellとして\texttt{bash}が起動した際に読み込まれます。違いが知りたい場合は「\texttt{bashrc} \texttt{bash\_profile} 違い」などで検索してください。}。
 \begin{NoFloat}
 \lstinputlisting[language=bash]{src/bashrc_cmake.sh}
 \end{NoFloat}
 
-新しくターミナルを開いた場合、\texttt{bash}などのシェルが起動されます。この起動とともに各種設定が読み込まれ、その設定を\texttt{\~{}/.bashrc}に書くことになっています。1行目でROOTをビルドしたディレクトリに移動し、2行目でその下にあるシェルスクリプトを読み込み様々な環境変数を設定します。最後に3行目でもともといたディレクトリ\footnote{\texttt{-}は前にいたディレクトリを指します。}に戻り、そのときに吐かれる余計な標準出力を\texttt{/dev/null}に渡し、ターミナルに何も表示させないようにします。
+新しくターミナルを開いた場合、\texttt{bash}などのシェルが起動されます。この起動とともに各種設定が読み込まれ、その設定を\texttt{\~{}/.bashrc}などに書くことになっています。1行目でROOTをビルドしたディレクトリに移動し、2行目でその下にあるシェルスクリプトを読み込み様々な環境変数を設定します。最後に3行目でもともといたディレクトリ\footnote{\texttt{-}は前にいたディレクトリを指します。}に戻り、そのときに吐かれる余計な標準出力を\texttt{/dev/null}に渡し、ターミナルに何も表示させないようにします。
 
-もし\texttt{configure}を使った場合は次のようになります。
-\begin{NoFloat}
-\lstinputlisting[language=bash]{src/bashrc.sh}
-\end{NoFloat}
-
-これらは、ログインシェルに\texttt{bash}を使っている人の場合です。もしzshを使っている場合は、\texttt{\~{}/.zshrc}に書いて下さい。書き終わったら、
+これらは、ログインシェルに\texttt{bash}を使っている人の場合です。もしzshを使っている場合は、同じ内容を\texttt{\~{}/.zshrc}に書いて下さい。書き終わったら、
 \begin{lstlisting}[language=bash]
-$ source ~/.bashrc
+$ source ~/.bash_profile # macOS の場合
+$ source ~/.bashrc # Linux の場合
 \end{lstlisting}
 とするか、新しいターミナルを開いてください。もし\texttt{csh}や\texttt{tcsh}を使っている場合は、\texttt{\~{}/.cshrc}や\texttt{\~{}/.tcshrc}に次の3行を書き足して下さい。
 \begin{NoFloat}
@@ -433,7 +374,7 @@ Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
 \texttt{.L}コマンドで\texttt{first\_script2.C}をロード（LoadのL）します。そのスクリプトファイルの内容をROOTが呼び出せるようにする作業のことです。\texttt{first\_script2.C}は既にロードされましたので、その中に書かれていた関数\texttt{foo}に引数を与えて直接呼び出すことができます。また、ひとつのスクリプトの中に複数の関数を記述しても問題ありません。ロードした後に、好きな関数を呼び出して下さい。
 \subsection{図を保存する}
 
-図\ref{fig:hsimple}や\ref{fig:first_script}の例は、筆者の使用しているmacOS上でスクリーンショットを撮ったものです。論文用の図を作成する場合は、ウインドウ上のリサイズボックスやタイトルバーは必要ありません。\LaTeX\ 文書で一般的に使われる、PDF形式で出力結果を保存してみましょう\footnote{最近の\LaTeX\ 環境では\texttt{latex}コマンドよりも\texttt{pdflatex}コマンドを使用してPDFファイルを生成するのが一般的になりつつあります。そのため、論文出版社もESP形式ではなくPDF形式で図を受け付けています。またEPSよりもPDFのほうがパソコン上での閲覧も楽なため、特に理由がない場合はPDFで保存しましょう。ただし、本書のような日本語文書では\texttt{platex}コマンドがまだまだ使われています。}。\texttt{first\_script.C}の実行結果が表示されたら、ウインドウ左上にある「File」メニューから「Save As\ldots」を選択し、好きな場所に好きな名前で出力結果を保存しましょう。図\ref{fig:first_script_pdf}は、この手順で図\ref{fig:first_script}をPDF形式で保存し直したものです。このPDF文書を拡大しても、図が綺麗なことが分かります。いくつか保存形式が選べますので、試してみましょう。JPEG形式は図の細部が潰れますので、絶対に使わないでください。ウェブページに掲載する目的などでビットマップ画像が必要な場合は、PNG 形式（.png）にしてください。GIF形式は最大で256色までしか使用できないので、画面で見ている色と変わってしまう可能性があります。
+図\ref{fig:hsimple}や\ref{fig:first_script}の例は、筆者の使用しているmacOS上でスクリーンショットを撮ったものです。論文用の図を作成する場合は、ウインドウ上のリサイズボックスやタイトルバーは必要ありません。\LaTeX\ 文書で一般的に使われる、PDF形式で出力結果を保存してみましょう\footnote{最近の\LaTeX\ 環境では\texttt{latex}コマンドよりも\texttt{pdflatex}コマンドを使用してPDFファイルを生成するのが一般的になりつつあります。そのため、論文出版社もEPS形式ではなくPDF形式で図を受け付けています。またEPSよりもPDFのほうがパソコン上での閲覧も楽なため、特に理由がない場合はPDFで保存しましょう。ただし、本書のような日本語文書では\texttt{platex}コマンドがまだまだ使われています。}。\texttt{first\_script.C}の実行結果が表示されたら、ウインドウ左上にある「File」メニューから「Save As\ldots」を選択し、好きな場所に好きな名前で出力結果を保存しましょう。図\ref{fig:first_script_pdf}は、この手順で図\ref{fig:first_script}をPDF形式で保存し直したものです。このPDF文書を拡大しても、図が綺麗なことが分かります。いくつか保存形式が選べますので、試してみましょう。JPEG形式は図の細部が潰れますので、絶対に使わないでください。ウェブページに掲載する目的などでビットマップ画像が必要な場合は、PNG 形式（.png）にしてください。GIF形式は最大で256色までしか使用できないので、画面で見ている色と変わってしまう可能性があります。
 
 \begin{figure}
   \centering
@@ -447,15 +388,16 @@ Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
 \begin{lstlisting}[language=c++]
 root [0] .x first_script.C
 Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
-root [1] c1->SaveAs("hist1.pdf")
+root [1] c1->SaveAs("his.pdf")
 Info in <TCanvas::Print>: pdf file hist.pdf has been created
-root [2] c1->Print("hist2.pdf")
-Info in <TCanvas::Print>: pdf file hist.pdf has been created
-root [3] c1->Print("hist3.pdf", "pdf Portrait")
-Info in <TCanvas::Print>: pdf Portrait file hist2.pdf has been created
 \end{lstlisting}
 
-多くの解説では \texttt{SaveAs} や \texttt{Print} というメソッドを使って図を PDF で保存するように書かれています。しかし ROOT の生成する横長の PDF には\texttt{/Rotate 90}というタグが含まれており正常に \texttt{dvipdfmx} コマンドや Apple Keynote の古いバージョンなどで処理できないことがあり、そのため作成した PDF が90度回転して表示されるという問題があります。これを回避するためには、横長の図の場合に\texttt{c1->SaveAs("hist.pdf")}などと実行するのではなく、\texttt{c1->Print("hist.pdf", "pdf Portrait")}と実行しましょう。これで日本語 \LaTeX 文書に ROOT の図を貼り付けても問題が起きません。
+ROOT の生成する横長の PDF には\texttt{/Rotate 90}というタグが含まれています。\texttt{dvipdfmx}コマンド\footnote{TeX Live 2018 以降では問題ありません。}や Apple Keynote の古いバージョンなどでこれを正常に処理できないことがあり、そのため作成した PDF が90度回転して表示されるという問題があります（ROOTの問題ではありません）。これを回避するためには、横長の図の場合に\texttt{c1->SaveAs("hist.pdf")}などと実行するのではなく、\texttt{c1->Print("hist.pdf", "pdf Portrait")}と実行しましょう。
+
+\begin{lstlisting}[language=c++]
+root [1] c1->Print("hist.pdf", "pdf Portrait")
+Info in <TCanvas::Print>: pdf file hist.pdf has been created
+\end{lstlisting}
 
 \subsection{タブ補完を使う}
 ROOTのプロンプトでコマンドを打つ場合、キーボードのタブキーを押すことで、補完することができます。携帯電話の文字入力の予測変換機能のようなものです。例えば、
