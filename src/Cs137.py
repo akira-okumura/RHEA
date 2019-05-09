@@ -1,11 +1,5 @@
 import ROOT
 
-h = None
-can = None
-f = None
-pad = None
-res = None
-
 def Cs137(xmin=2400, xmax=3100):
     #xmin, xmax = 2300, 3200 # 1.654e-26
     #xmin, xmax = 2400, 3100 # 9.793e-7
