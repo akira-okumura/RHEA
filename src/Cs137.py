@@ -1,12 +1,15 @@
 import ROOT
 
 def Cs137(xmin=2400, xmax=3100):
-    #xmin, xmax = 2300, 3200 # 1.654e-26
-    #xmin, xmax = 2400, 3100 # 9.793e-7
-    #xmin, xmax = 2500, 3000 # 0.06219
-    #xmin, xmax = 2600, 2900 # 0.1062
+    '''
+    xmin, xmax = 2300, 3200 # 1.654e-26
+    xmin, xmax = 2400, 3100 # 9.793e-7
+    xmin, xmax = 2500, 3000 # 0.06219
+    xmin, xmax = 2600, 2900 # 0.1062
+    '''
     global h, can, f, pad, res
     h = ROOT.TH1I('h', ';ADC Channel;Count', 4096, -0.5, 4095.5)
+    h.SetMarkerColor(h.GetLineColor())
 
     reading_header = True
     for line in open('Cs137.dat').readlines():
@@ -20,7 +23,7 @@ def Cs137(xmin=2400, xmax=3100):
     can = ROOT.TCanvas('can', 'can', 1200, 600)
     can.Divide(2, 1)
     for i in range(2):
-        can.cd(i + 1).SetBottomMargin(0.3)
+        can.cd(i + 1).SetBottomMargin(0.31)
         ROOT.gPad.SetLogy()
         h.SetMinimum(0.2)
         h.SetMaximum(20000)
@@ -41,8 +44,8 @@ def Cs137(xmin=2400, xmax=3100):
     f.SetParameter(4, 100)
     h.Fit(f, 'i', '', xmin, xmax)
 
-    pad = [ROOT.TPad('pad', 'pad', 0., 0., 1., 1.),
-           ROOT.TPad('pad', 'pad', 0., 0., 1., 1.)]
+    pad = [ROOT.TPad('pad1', 'pad1', 0., 0., 1., 1.),
+           ROOT.TPad('pad2', 'pad2', 0., 0., 1., 1.)]
     for i in range(2):
         pad[i].SetTopMargin(0.7)
         pad[i].SetFillColor(0)
@@ -51,6 +54,7 @@ def Cs137(xmin=2400, xmax=3100):
         pad[i].Draw()
 
     res = ROOT.TGraphErrors()
+    res.SetMarkerSize(0)
 
     for i, x in enumerate(range(xmin, xmax)):
         b = h.GetXaxis().FindBin(x)
@@ -65,19 +69,19 @@ def Cs137(xmin=2400, xmax=3100):
     pad[0].cd()
     bmin, bmax = h.GetXaxis().GetXmin(), h.GetXaxis().GetXmax()
     res.GetXaxis().SetLimits(bmin, bmax)
-    res.GetHistogram().SetMaximum(0.1)
-    res.GetHistogram().SetMinimum(-0.1)
-    res.GetYaxis().SetNdivisions(104, 0)
+    res.GetHistogram().SetMaximum(0.3)
+    res.GetHistogram().SetMinimum(-0.3)
+    res.GetYaxis().SetNdivisions(302, 1)
     res.GetYaxis().CenterTitle()
     res.SetTitle(';ADC;Rel. Residual')
     res.Draw('apez')
 
     frame = pad[1].cd().DrawFrame(xmin - 100, res.GetHistogram().GetMinimum(),
                                   xmax + 100, res.GetHistogram().GetMaximum())
-    frame.GetYaxis().SetNdivisions(104, 0)
+    frame.GetYaxis().SetNdivisions(302, 0)
     frame.GetYaxis().CenterTitle()
     frame.SetTitle(';ADC;Rel. Residual')
 
-    res.Draw('pez same')
+    res.Draw('e same')
 
     print('Prob. = %.3e' % ROOT.TMath.Prob(f.GetChisquare(), f.GetNDF()))
