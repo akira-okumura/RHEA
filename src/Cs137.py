@@ -6,7 +6,7 @@ def Cs137(xmin=2400, xmax=3100):
     #xmin, xmax = 2500, 3000 # 0.06219
     #xmin, xmax = 2600, 2900 # 0.1062
     global h, can, f, pad, res
-    h = ROOT.TH1I('h', ';ADC Channel;Counts', 4096, -0.5, 4095.5)
+    h = ROOT.TH1I('h', ';ADC Channel;Count', 4096, -0.5, 4095.5)
 
     reading_header = True
     for line in open('Cs137.dat').readlines():
@@ -14,8 +14,8 @@ def Cs137(xmin=2400, xmax=3100):
             if line == '  chn  ,  data\n':
                 reading_header = False
         else:
-            ch, counts = [int(x) for x in line[:-1].split(',')]
-            h.SetBinContent(h.GetBin(ch), counts)
+            ch, count = [int(x) for x in line[:-1].split(',')]
+            h.SetBinContent(h.GetBin(ch), count)
 
     can = ROOT.TCanvas('can', 'can', 1200, 600)
     can.Divide(2, 1)
