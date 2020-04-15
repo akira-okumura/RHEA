@@ -21,11 +21,11 @@ Mac では後述する Homebrew が 2019 年現在では主流であり\footnote
 
 \section{Homebrew}
 \label{sec:Homebrew}
-Homebrew は 2019 年現在、Mac でもっとも人気のあるパッケージ管理システムです\footnote{\url{https://brew.sh}}\footnote{「home brew」は日本語で自家醸造という意味であり、Homebrew に出てくる用語は cask（大樽）や cellar（貯蔵庫）など、酒関係の英語が多いです。}。\texttt{homebrew}
+Homebrew（ホームブルー）は 2020 年現在、Mac でもっとも人気のあるパッケージ管理システムです\footnote{\url{https://brew.sh}}\footnote{「home brew」は日本語で自家醸造という意味であり、Homebrew に出てくる用語は cask（大樽）や cellar（貯蔵庫）など、酒関係の英語が多いです。}。
 
 まず \url{https://brew.sh} に記述のある通り、Homebrew をインストールしてみましょう\footnote{Homebrewの更新に従いこのコマンドは変更になる可能性があるので、必ず本家の記述を参照してください。}。次のコマンドを管理者権限をもつユーザで実行すると
 \begin{lstlisting}[language=bash]
-$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 \end{lstlisting}
 色々と出てきた後にパスワードを聞かれますので、パスワードを入れて進めてください。
 \begin{lstlisting}[language=bash]
@@ -74,7 +74,7 @@ $ sudo yum install cmake3
 $ which cmake3
 /usr/bin/cmake3
 $ cmake3 --version
-cmake3 version 3.13.4
+cmake3 version 3.14.6
 
 CMake suite maintained and supported by Kitware (kitware.com/cmake).
 \end{lstlisting}
@@ -117,7 +117,7 @@ Current xdvi paper size (from /usr/local/texlive/2018/texmf-config/xdvi/XDvi): l
 $ sudo tlmgr paper a4
 \end{lstlisting}
 
-macOS で \LaTeX\ を使う場合、初期設定ではおそらく IPA 明朝と IPA ゴシックというフォントが使用されます。しかし macOS に同梱されているヒラギノフォント（ヒラギノ明朝およびヒラギノ角ゴシック）を使うと PDF の仕上がりが良くなります（可読性の高い綺麗なフォントが埋め込まれます）ので、仕上がりにこだわりたい人はヒラギノフォントを埋め込む設定を行なってください。この作業は macOS のバージョンや TeXLive のバージョンによって異なりますので、\url{http://doratex.hatenablog.jp/entry/20190327/1553617143}などを参考にしてください。
+macOS で \LaTeX\ を使う場合、初期設定ではおそらく IPA 明朝と IPA ゴシックというフォントが使用されます。しかし macOS に同梱されているヒラギノフォント（ヒラギノ明朝およびヒラギノ角ゴシック）を使うと PDF の仕上がりが良くなります（可読性の高い綺麗なフォントが埋め込まれます）ので、仕上がりにこだわりたい人はヒラギノフォントを埋め込む設定を行なってください。この作業は macOS のバージョンや TeXLive のバージョンによって異なりますので、\url{https://doratex.hatenablog.jp/entry/20190502/1556775026}などを参考にしてください。
 
 \section{CentOS~7 での TeXLive 2018 のインストール}
 
