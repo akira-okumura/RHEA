@@ -2,7 +2,7 @@
 \label{chap:Python}
 
 \section{注意}
-Python に関係する技術の発展は ROOT のそれより目覚ましく、この文書も含め、ウェブ上に転がる情報が簡単に陳腐化します。これはオープンソースコミュニティの活発さや、Python という言語の人気のためです。ここに書かれている情報は 2019 年 4 月現在、筆者の知る限りの範囲で、なるべく新しいものになるように務めていますが、数年で古くなるということを知っておいてください。
+Python に関係する技術の発展は ROOT のそれより目覚ましく、この文書も含め、ウェブ上に転がる情報が簡単に陳腐化します。これはオープンソースコミュニティの活発さや、Python という言語の人気のためです。ここに書かれている情報は 2020 年 4 月現在、筆者の知る限りの範囲で、なるべく新しいものになるように務めていますが、数年で古くなるということを知っておいてください。またPython環境の構築は様々なやり方があり、どれも一長一短で、本書で網羅するのは困難です。そのため、本書では筆者が初心者向けに個人的に推奨する方法のみを解説します。
 
 \section{なぜPythonを使うのか}
 
@@ -36,13 +36,13 @@ Python は ROOT と同様にコマンドラインからインタープリタを�
 \subsection{起動と終了}
 まず Python（ここでは IPython）のインタープリタに 1 行ずつ命令を渡していく操作を試してみましょう。面白い例ではありませんが、\ref{sec:helloworld}~節で解説したC++の \texttt{hello\_world.cxx} を Python に直してみましょう。
 
-まず IPython を起動します。
+まず IPython を起動します。IPythonが入っていない場合、まずは\ref{sec:Python_Install}~節と\ref{sec:IPython}~節を読んでIPythonをインストールしてください。
 
 \begin{lstlisting}[language=bash]
 $ ipython
-Python 3.7.3 (default, Apr 18 2019, 10:17:38) 
+Python 3.7.7 (default, Mar 10 2020, 15:43:33) 
 Type 'copyright', 'credits' or 'license' for more information
-IPython 7.4.0 -- An enhanced Interactive Python. Type '?' for help.
+IPython 7.13.0 -- An enhanced Interactive Python. Type '?' for help.
 
 In [1]: 
 \end{lstlisting}
@@ -81,25 +81,30 @@ macOSやCentOS~7では、標準でPythonがインストールされているは�
 
 macOS で新たにソフトウェアを追加する場合、節~\ref{sec:Homebrew}で説明する通り、Homebrewというパッケージ管理システムを使うのが一般的です。ここではHomebrewがすでに入っているという前提で説明します。
 
-次のコマンドを実行することで、\texttt{python3}と\texttt{pip3}が、
+次のコマンドを実行することで、\texttt{python3}、\texttt{pip3}、\texttt{ipython}などがインストールされます。
 \begin{lstlisting}[language=bash]
-$ brew install python3
+$ brew install ipython
 \end{lstlisting}
-また次のコマンドでPython~3用の\texttt{ipython}がインストールされます。
-\begin{lstlisting}[language=bash]
-$ pip3 install ipython
-\end{lstlisting}
+Homebrewでは\texttt{ipython}は\texttt{python}に依存しているため、macOS標準のPythonとは別のPythonをHomebrewが自動でインストールします。特に指定をしない場合、このPythonはPython~3になります。
 
 問題なく Python~3 が入ったことを確かめるため、\texttt{python3}コマンドを実行してみます。次のように表示されれば成功です。
 \begin{lstlisting}[language=bash]
-$ python3
-Python 3.7.3 (default, Apr 18 2019, 10:17:38) 
-[Clang 10.0.1 (clang-1001.0.46.4)] on darwin
+ult, Mar 10 2020, 15:43:03) 
+[Clang 11.0.0 (clang-1100.0.33.17)] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
 >>> 
 \end{lstlisting}
+IPythonも確認してみましょう。
+\begin{lstlisting}[language=bash]
+$ ipython3
+Python 3.7.7 (default, Mar 10 2020, 15:43:03)
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.13.0 -- An enhanced Interactive Python. Type '?' for help.
 
-HomebrewではPython~3のコマンドを\texttt{python3}や\texttt{python3.7}としてインストールし、\texttt{python}コマンドはデフォルトの\texttt{/usr/bin/python}としてPython~2のまま残ります。ただし、他の環境では\texttt{python2}がPython~2で\texttt{python}がPython~3だったりするので、自分がPython~2を使っているのかPython~3を使っているのか、よく注意してください。
+In [1]:
+\end{lstlisting}
+
+Mojave上のHomebrewではPython~3のコマンドを\texttt{python3}や\texttt{python3.7}としてインストールし、\texttt{python}コマンドはデフォルトの\texttt{/usr/bin/python}としてPython~2のまま残ります。ただし、他の環境では\texttt{python2}がPython~2で\texttt{python}がPython~3だったりするので、自分がPython~2を使っているのかPython~3を使っているのか、よく注意してください。
 
 \begin{lstlisting}[language=bash]
 $ python
@@ -107,6 +112,19 @@ Python 2.7.10 (default, Feb 22 2019, 21:17:52)
 [GCC 4.2.1 Compatible Apple LLVM 10.0.1 (clang-1001.0.37.14)] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
 >>> 
+\end{lstlisting}
+
+\subsection{macOS Catalina の場合}
+macOS Catalinaでは、標準でPython~3が\texttt{/usr/bin/python3}に入っています。しかしIPythonが入っていないので、Mojaveと同様の方法で、HomebrewでIPythonとともにインストールしてください。
+
+この場合HomebrewでインストールするPython~3は\texttt{/usr/local/bin/python3}になります。
+\begin{lstlisting}[language=bash]
+$ which python3
+/usr/local/bin/python3
+$ /usr/local/bin/python3 --version
+Python 3.7.7
+$ /usr/bin/python3 --version 
+Python 3.7.3
 \end{lstlisting}
 
 \subsection{CentOS~7 の場合}
@@ -174,33 +192,15 @@ In [1]:
 
 すでに前節までで見たように、\texttt{pip}もしくは\texttt{pip3}というコマンドを使ってPythonの追加パッケージをインストールする方法を説明しました。この\texttt{pip}（ピップ）というコマンドはPythonのコミュニティで広く使われているパッケージ管理システムのひとつです。Python Package Index（PyPI、パイピーアイ）\footnote{\url{https://pypi.org}}に登録されている様々な追加パッケージを自動でインストールします。通常は \texttt{/usr/local/lib/python/site-package} という場所に新しいパッケージが追加されます。
 
-\texttt{pip} の基本は次のコマンドです。\texttt{search}でその名前のパッケージの情報やすでにインストールされているかを調べ、\texttt{install}でインストールします。
+\texttt{pip} の基本は次のコマンドです。\texttt{search}でその名前のパッケージの情報やすでにインストールされているかを調べ、\texttt{install}でインストールします。Python~3の場合は\texttt{pip3}と読み替えてください。
 \begin{lstlisting}[language=bash]
 $ pip search PACKAGE_NAME
 $ pip install PACKAGE_NAME
 \end{lstlisting}  
 
 \section{IPython}
+\ref{sec:IPython}
 IPython
-
-\section{追加しておきたいモジュール}
-
-Pythonのモジュールの追加方法は簡単です。なぜなら、追加方法が標準的なものに統一されているからです。もしfooというモジュールがあったとします。次のように、ダウンロードしてきたファイルのディレクトリに移動して、含まれる\texttt{setup.py}を引数つきで実行するだけです。
-\begin{lstlisting}[language=bash]
-$ tar zxvf foo-1.2.3.tar.gz
-$ cd foo-1.2.3
-$ sudo python setup.py install
-\end{lstlisting}
-この\texttt{setup.py}は\texttt{configure}スクリプトや\texttt{Makefile}のようなものです。普通のモジュールには、必ず含まれています。
-
-\begin{itemize}
-  \item PyROOT
-  \item NumPy\\\url{http://numpy.scipy.org/}
-  \item PyFITS\\\url{http://www.stsci.edu/resources/software_hardware/pyfits}
-  \item python-sao\\\url{http://code.google.com/p/python-sao/}
-  \item coords\\\url{https://www.stsci.edu/trac/ssb/astrolib/}
-  \item pywcs\\\url{https://www.stsci.edu/trac/ssb/astrolib/}
-\end{itemize}
 
 \section{Pythonの基本}
 
