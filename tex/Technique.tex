@@ -109,16 +109,15 @@ root [0] TCanvas* can = new TCanvas("can", "can", 100, 100)
 
 \begin{figure}
   \centering
-  \subfloat[$96\times72$ピクセル]{
+  \subfigure[]{
     \includegraphics[width=3cm]{fig/100x100.png}
     \label{fig:100x100_png}
-  }
-  \hfil
-  \subfloat[$100\times100$ピクセル]{
+  }%
+  \subfigure[]{%
     \includegraphics[width=3cm]{fig/100x100_v2.png}
     \label{fig:100x100_v2_png}
   }
-  \caption{\texttt{TCanvas}の描画領域の違い}
+  \caption{\texttt{TCanvas}の描画領域の違い。(a) $96\times72$ピクセル。(b) $100\times100$ピクセル。}
 \end{figure}
 
 \begin{NoFloat}

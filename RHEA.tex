@@ -1,4 +1,4 @@
-\documentclass[oneside]{jsbook}
+\documentclass[oneside,uplatex]{jsbook}
 
 \usepackage[deluxe]{otf} % Avoid using Hira-Kaku W6
 \usepackage{enumitem} % Adjust description items
@@ -6,6 +6,7 @@
 \usepackage{times}
 \usepackage{amsmath}
 \usepackage{fancybox}
+% PDF 内で外部リンクや文書内リンクを生成したい場合に使う（好みによる）
 \usepackage[dvipdfmx,
             colorlinks=true,
             urlcolor=blue,
@@ -14,7 +15,9 @@
             bookmarks=true,
             bookmarksnumbered=false,
             bookmarkstype=toc]{hyperref}
-\AtBeginDvi{\special{pdf:tounicode EUC-UCS2}}
+% PDF 内のしおりの文字化けを防ぐ
+\usepackage{pxjahyper}
+% color より新しいらしい
 \usepackage[dvipdfmx]{xcolor}
 \usepackage{listings}
 \newcommand{\conted}{\texttt{cont'ed}} % for ROOT 6 prompt
@@ -57,7 +60,27 @@
 
 \newcounter{appendix}
 
-\usepackage[font=footnotesize,caption=false]{subfig}
+\usepackage[nooneline]{subfigure}
+\subfiguretopcaptrue
+
+% Apple key symbols
+% https://herbs.github.io
+\DeclareRobustCommand{\cmdkey}{\raisebox{-.035em}{\includegraphics[height=.75em]{fig/applekeys/command}}}
+\DeclareRobustCommand{\optkey}{\raisebox{-.005em}{\includegraphics[height=.65em]{fig/applekeys/option}}}
+\DeclareRobustCommand{\shiftkey}{\raisebox{-.04em}{\includegraphics[height=.83em]{fig/applekeys/shift}}}
+\DeclareRobustCommand{\ctlkey}{\raisebox{.27em}{\includegraphics[height=.45em]{fig/applekeys/control}}}
+\DeclareRobustCommand{\delkey}{\raisebox{-0.02em}{\includegraphics[height=.75em]{fig/applekeys/delete}}}
+\DeclareRobustCommand{\applekey}{\raisebox{-0.01em}{\includegraphics[height=.90em]{fig/applekeys/apple}}}
+\DeclareRobustCommand{\openapplekey}{\raisebox{-0.01em}{\includegraphics[height=.90em]{fig/applekeys/apple_outline}}}
+\DeclareRobustCommand{\capslockkey}{\raisebox{-0.02em}{\includegraphics[height=.88em]{fig/applekeys/capslock}}}
+\DeclareRobustCommand{\ejectkey}{\raisebox{0.01em}{\includegraphics[height=.7em]{fig/applekeys/eject}}}
+\DeclareRobustCommand{\pencilkey}{\raisebox{-0.01em}{\includegraphics[height=.8em]{fig/applekeys/pencil}}}
+\DeclareRobustCommand{\esckey}{\raisebox{-0.03em}{\includegraphics[height=.75em]{fig/applekeys/escape}}}
+\DeclareRobustCommand{\tabkey}{\raisebox{-0.02em}{\includegraphics[height=.75em]{fig/applekeys/tab}}}
+\DeclareRobustCommand{\revtabkey}{\raisebox{-0.02em}{\includegraphics[height=.75em]{fig/applekeys/revtab}}}
+\DeclareRobustCommand{\returnkey}{\raisebox{-0.06em}{\includegraphics[height=.65em]{fig/applekeys/return}}}
+\DeclareRobustCommand{\revreturnkey}{\raisebox{-0.06em}{\includegraphics[height=.65em]{fig/applekeys/revreturn}}}
+\DeclareRobustCommand{\powerkey}{\raisebox{-0.04em}{\includegraphics[height=.83em]{fig/applekeys/power}}}
 
 \newcommand{\emphasize}[1]{\textsf{\textbf{#1}}}
 \newcommand{\cmd}{\UTF{2318}}
@@ -278,7 +301,7 @@ PDFでの再配布を禁止します。これは以下の理由のためです�
 多くの間違いや説明の足りない箇所が本書には含まれていると思います。その場合、ぜひ GitHub から issue report\footnote{\url{https://github.com/akira-okumura/RHEA/issues}} を作成するか、同じく GitHub で pull request を出すか、もしくはメールなどでご連絡いただけると助かります。
 
 \begin{flushright}
-$\copyright$ 2009--2019 Akira Okumura All Rights Reserved
+©2009--2020 Akira Okumura All Rights Reserved
 \end{flushright}
 
 \pagebreak
@@ -297,7 +320,7 @@ $\copyright$ 2009--2019 Akira Okumura All Rights Reserved
   \item[\quad2018年]名古屋大学 宇宙地球環境研究所 講師
 \end{description}
 
-2019 年現在、Cherenkov Telescope Array の小口径望遠鏡の開発で、焦点面カメラのデータ収集・カメラ制御ソフトウェア開発責任者などを担当している。専門は宇宙線物理学、ガンマ線天文学、光学系設計。2016年から「宇宙素粒子若手の会」と連携し、「ROOT講習会」を開催している。
+2020 年現在、Cherenkov Telescope Array の小口径望遠鏡の開発で、焦点面カメラのデータ収集・カメラ制御ソフトウェア開発責任者などを担当している。専門は宇宙線物理学、ガンマ線天文学、光学系設計。2016年から「宇宙素粒子若手の会」と連携し、「ROOT講習会」を開催している。
 
 \begin{description}[labelwidth=2.cm]
   \item[\quad 電子メール]\url{oxon@mac.com}

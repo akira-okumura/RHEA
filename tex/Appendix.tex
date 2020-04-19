@@ -15,7 +15,7 @@ macOS や Linux にソフトウェアやライブラリを追加インストー�
 
 2 つ目はパッケージ管理システム（package management system、package manager）を使用する方法です。これは主に、Python などコマンドラインで使用するソフトウェアのインストールや管理に用いられます。パッケージ管理システムは単に必要なソフトウェアやライブラリをインストールするだけでなく、そのソフトウェアに必要となる他のライブラリを自動的に選択してインストールしたり、バージョンの依存関係を解決してくれたりします。またソフトウェアごとに異なるウェブサイトに情報が散逸することなく、同一のレポジトリに情報が集約され、インストール方法も共通化されているという利点があります。
 
-Mac では後述する Homebrew が 2019 年現在では主流であり\footnote{Mac OS X がリリースされた当初は Fink（\url{http://www.finkproject.org}）がもっとも人気があり、その後 MacPort（\url{https://www.macports.org}）に人気が移り、今では Homebrew が主流となりました。}、CentOS~7 では Yum が標準です。また Python に特化したパッケージ管理システムとして pip や conda があるのは第~\ref{chap:Python}~章で説明した通りです。本章では、このHomebrewとYumについて簡単に解説します。
+Mac では後述する Homebrew が 2020 年現在では主流であり\footnote{Mac OS X がリリースされた当初は Fink（\url{http://www.finkproject.org}）がもっとも人気があり、その後 MacPorts（\url{https://www.macports.org}）に人気が移り、今では Homebrew が主流となりました。}、CentOS~7 では Yum が標準です。また Python に特化したパッケージ管理システムとして pip や conda があるのは第~\ref{chap:Python}~章で説明した通りです。本章では、このHomebrewとYumについて簡単に解説します。
 
 3 つ目の方法はCMakeやconfigureを使ってソフトウェアのビルドとインストールをする方法です。この解説は付録~\ref{chap:configure}を参照してください。
 
@@ -29,11 +29,30 @@ $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/
 \end{lstlisting}
 色々と出てきた後にパスワードを聞かれますので、パスワードを入れて進めてください。
 \begin{lstlisting}[language=bash]
+==> The Xcode Command Line Tools will be installed.
+
 Press RETURN to continue or any other key to abort
-==> /usr/bin/sudo /bin/mkdir -p /usr/local/Cellar /usr/local/Homebrew /usr/local/Frameworks /usr/local/bin /usr/local/etc /usr/local/include /usr/local/lib /usr/local/opt /usr/local/sbin /usr/local/share /usr/local/share/zsh /usr/local/share/zsh/site-functions /usr/local/var
-Password:
+（略）
+==> Installing Command Line Tools for Xcode-11.4
+==> /usr/bin/sudo /usr/sbin/softwareupdate -i Command\ Line\ Tools\ for\ Xcode-11.4
+Software Update Tool
+
+
+Downloading Command Line Tools for Xcode
+Downloaded Command Line Tools for Xcode
+Installing Command Line Tools for Xcode
+Done with Command Line Tools for Xcode
+Done.
+==> /usr/bin/sudo /bin/rm -f /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+（略）
+==> Next steps:
+- Run `brew help` to get started
+- Further documentation: 
+    https://docs.brew.sh
 \end{lstlisting}
-そうすると \texttt{/usr/local} が作成され、Homebrew 関係のファイルが（ほぼ）全てそこにインストールされるようになります\footnote{例えば MacTeX を入れた場合などは、\texttt{/Library}以下にファイルが置かれる場合があります}。例えば Python~3 を Homebrew でインストールすると \texttt{/usr/local/bin/python3} という場所に置かれます。
+まず初めに、Command Line Tools for Xcodeと呼ばれるプログラミングに必要となるソフトウェア一式がインストールされます。この中にはコンパイラーなどが含まれ、Appleが配布しているものです。Homebrewとは直接関係ありませんが、Homebrewを動かすのに必要なソフトウェアが入っているため、Homebrewのインストール前にインストールされます。
+
+次にHomebrewを動かすために必要なソフトウェアや設定が順次ダウンロード、インストールされます。\texttt{/usr/local} が作成され、Homebrew 関係のファイルが（ほぼ）全てそこにインストールされるようになります\footnote{例えば MacTeX を入れた場合などは、\texttt{/Library}以下にファイルが置かれる場合があります}。例えば Python~3 を Homebrew でインストールすると \texttt{/usr/local/bin/python3} という場所に置かれます。
 
 Homebrew によって \texttt{/usr/local} 以下に作られるディレクトリは、管理者権限を持つユーザが読み書きできる設定に変更されます。そのため、最初の Homebrew にインストール以降は原則としてパスワードの入力は求められません。
 
@@ -43,10 +62,34 @@ Homebrew によって \texttt{/usr/local} 以下に作られるディレクト�
 $ brew install python3
 \end{lstlisting}
 
-他にまず必要なものは CMake と MacTeX\footnote{Macに\LaTeX をインストールする方法はいくつかありますが、Homebrew で MacTeX をインストールするのが一番簡単だと思います。} だと思います。
+他にまず必要なものはCMake、Emacs、MacTeX\footnote{Macに\LaTeX をインストールする方法はいくつかありますが、Homebrew で MacTeX をインストールするのが一番簡単だと思います。} だと思います。MacTeXはダウンロードに時間がかかるので、必要なときでも構いません。
 \begin{lstlisting}[language=bash]
 $ brew install cmake
+$ brew cask install emacs
 $ brew cask install mactex
+\end{lstlisting}
+
+次のコマンドを実行します。
+\begin{lstlisting}[language=bash]
+$ echo "Emacs(){\n\t[ -f $1 ] || touch $1\n\topen -a Emacs $1\n}" >> ~/.zshrc
+$ source ~/.zshrc
+$ which Emacs
+Emacs () {
+	[ -f ] || touch
+	open -a Emacs
+}
+\end{lstlisting}
+これで、\texttt{Emacs}というコマンド（実際は関数）で\texttt{/Applications/Emacs.app}を起動できるようになりました。
+
+macOS Catalinaの場合、Emacsをまともに動作させるには少し修正を加える必要があります\footnote{2020年4月19日現在の情報のため、不正確な記述になる可能性があります。}。HomebrewでEmacs.appが\texttt{/Applications/Emacs.app}にインストールされた後、\textbf{まずEmacs.appを起動}してください。\cmdkey\,Qで一度終了し、次のコマンドをTerminal.appから実行してください。
+
+\begin{lstlisting}[language=bash]
+$ cd /Applications/Emacs.app/Contents/MacOS 
+$ mv Emacs Emacs-launcher
+$ mv Emacs-x86_64-10_14 Emacs
+$ cd ..
+$ rm -rf _CodeSignature
+$ cd
 \end{lstlisting}
 
 \section{\texttt{yum}}
@@ -205,7 +248,7 @@ Most importantly, add /usr/local/texlive/2018/bin/x86_64-linux
 to your PATH for current and future sessions.
 \end{lstlisting}
 
-これに従い、\texttt{~/.bashrc}や\texttt{~/.zshrc}に次の 3 行を追加します\footnote{インストールの年によって \texttt{2018} が \texttt{2019} に変わっていたりする可能性があるので、実際の出力に従ってください。}。
+これに従い、\texttt{\~{}/.bashrc}や\texttt{\~{}/.zshrc}に次の 3 行を追加します\footnote{インストールの年によって \texttt{2018} が \texttt{2019} に変わっていたりする可能性があるので、実際の出力に従ってください。}。
 
 \begin{lstlisting}[language=bash]
 export MANPATH=/usr/local/texlive/2018/texmf-dist/doc/man:$MANPATH
@@ -233,333 +276,351 @@ $ xdg-open RHEA.pdf # Linux の場合
 \end{lstlisting}
 
 \chapter{Macでの研究環境の構築}
-※ここの説明はかなり古い情報になってしまっています。そのうち書き直すので、あまり参考にしないでください。
+\label{chap:Mac}
 
-ここでは、Macで研究環境を構築する祭に最低限やるべきこと、知っておくべきことを説明します。Macに限らずWindowsやLinuxでも、計算機環境の設定は個々人の好みや研究内容によって大きく変わります。そのため、ここに書くことは参考程度にとどめて下さい。この章での説明は、OS X Lionを前提に書かれており、また使用するスクリーンショットもLion環境のものです。Snow Leopardでは多少異なる可能性があるので注意してください。
+ここでは、Macで研究環境を構築する際に最低限やるべきこと、知っておくべきことを説明します。Macに限らずWindowsやLinuxでも、計算機環境の設定は個々人の好みや研究内容によって大きく変わります。そのため、ここに書くことは参考程度にとどめて下さい。この章での説明は、macOS Catalina（10.15.4）を前提に書かれており、また使用するスクリーンショットも同環境のものです。macOS Mojave（10.14）以前では多少異なる可能性があるので注意してください。
+
+\section{最低限知っている必要のあるアプリケーションと機能}
+
+\subsection{Dock}
+図~\ref{fig:Catalina}は、macOS Catalinaに初めてログインした際に表示される画面です。一番上にあるのがメニューバー（menu bar）、一番下にあるのがDock（ドック）です。Windowsと異なり、メニューバーは常に画面上部に表示され、アプリケーションを起動してもそのウィンドウごとには表示されません。
+
+Dockは頻繁に使うアプリケーションや、起動中のアプリケーションを表示するために使われます。デフォルトの状態では常に表示されて邪魔なため、右の方にある仕切り線を2本指クリックもしくは2本指タップすることで、表示・非表示を切り替えることができます。非表示にした場合、カーソルを近づけたときにだけ現れます。
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.25]{fig/Catalina.png}
+  \caption{macOS Catalinaの初期画面}
+  \label{fig:Catalina}
+\end{figure}
+
+\subsection{Finder}
+\label{subsec:Finder}
+FinderはMacの中にあるファイル、フォルダ、アプリケーションなどを表示するために使用するアプリケーションです。WindowsのFile Explorerに相当します。Macに接続したUSBメモリや、ネットワーク上の共有デバイスなどもFinderから操作します。
+
+DockからFinderを最初にクリックすると、図~\ref{fig:Finder_recents}のように最近使った項目（Recents）が表示されます。最初は何もまだ使っていないので、中身は空っぽです。
+
+\begin{figure}
+  \centering
+  \subfigure[]{
+    \includegraphics[width=.48\textwidth,clip]{fig/Finder_recents.png}%
+    \label{fig:Finder_recents}%
+  }\hfill%
+  \subfigure[]{%
+    \includegraphics[width=.48\textwidth,clip]{fig/Finder_home.png}%
+    \label{fig:Finder_home}%
+  }
+  \subfigure[]{%
+    \includegraphics[width=.48\textwidth,clip]{fig/Finder_column.png}%
+    \label{fig:Finder_column}
+  }\hfill%
+  \subfigure[]{%
+    \includegraphics[width=.48\textwidth,clip]{fig/Finder_applications.png}%
+    \label{fig:Finder_applications}%
+  }
+  \caption{Finderの表示例。(a) Recentsの表示。(b)ホームを表示したところ。(c)ホームをカラム表示にしたもの。(d) Applicationsの表示。}
+\label{fig:Finder}
+\end{figure}
+
+次にシフトキー（Shift）とコマンドキー（\cmdkey\,の記号）とHキーを同時に押すと（\shiftkey\cmdkey\,Hや、Cmd+Shift+Hと表記します）、図~\ref{fig:Finder_home}のようにホーム（Home）に移動します。ホームは個々のユーザが使用できる領域で、実験データや解析プログラムなどは、原則としてホームの下に置きます。アカウント名が例えばoxonの場合、このホームフォルダのパスは\texttt{/Users/oxon}です。
+
+キーボードから複数のキーの組み合わせで、ある特定の動作をさせるものを、キーボードショートカット（keyboard shortcut）と呼びます。Windowsではコントロールキー（Control key）中心ですが、Macの場合はコマンドキー（Command key、\cmdkey）が中心です。例えばコピーやペーストなどのショートカットは、\cmdkey\,Cと\cmdkey\,Vです。
+
+通常、ショートカットはメニューバーから辿ることもできます。既に行ったホームへの移動は、メニューバーの「Go」から「Home」選択すると同じ動作をします。メニューの中にある文字列の右側にショートカットが記載されており、コマンドキー（\cmdkey）、シフトキー（\shiftkey）、オプションキー（\optkey）、コントロールキー（\ctlkey）、デリートキー（\delkey）などと組み合わされたものが表示されています。
+
+さて、Finderの表示がこのままだと移動が不便なので、\cmdkey\,3を押してみましょう。これで表示形式がカラム（column）表示に切り替わります。アイコンが小さくなり情報量が増え、ディレクトリ階層のどこにいるかも分かりやすくなります。
+
+図~\ref{fig:Catalina}のデスクトップ（desktop）\footnote{グラフィカルな画面を持つパーソナルコンピュータが登場した1980年代、その概念を分かりやすくするため机を連想させる用語が導入されました。デスクトップとは机の上であり、そこに様々な書類が置かれたり、また複数の書類をまとめてしまっておくためにフォルダという言葉が使われました。}はデスクトップピクチャ（desktop picture）\footnote{Macでは「壁紙」という言葉ではなくデスクトップピクチャと呼ぶのが正統です。壁紙やwallpaperという言葉は、Windows由来です（窓と壁という連想）。}が表示されているだけで、ファイルは置かれていません。しかしこのデスクトップもフォルダのひとつになっていて、何かしらのファイルをデスクトップに置くと、図~\ref{fig:Finder_column}に表示されているDesktop（\texttt{/Users/oxon/Desktop}）にそのファイルが表示されます。試しに\cmdkey\,\shiftkey\,3を押してみてください。これでスクリーンショット（screenshot）が撮影され、デスクトップにPNG画像として保存されるはずです。
+
+次に、\cmdkey\,\shiftkey\,Aを押してみてください。図~\ref{fig:Finder_applications}に表示が切り替わるはずです。macOSにインストールされるアプリケーションの多くはこのApplicationsフォルダ（\texttt{/Applications}）に配置されます。ただし、Finderのようにシステムに非常に近い動作をするような一部のアプリケーションは、ここには置かれていません。
+
+\subsection{System Preferences}
+System PreferencesはユーザがMacの設定を好みに変更するためのアプリケーションです。日本語環境では「システム環境設定」と呼ばれます。起動すると図~\ref{fig:SystemPreferences}が開き、様々な設定項目を変更することができます。
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.35]{fig/SystemPreferences.png}
+  \caption{System Preferencesの画面}
+  \label{fig:SystemPreferences}
+\end{figure}
+
+\subsection{Safari}
+SafariはmacOS、iOS（iPhone）、iPadOS（iPad）に搭載されている、標準のウェブブラウザ（web browser）です。通常の使用であればSafariでも問題ありませんが、より機能拡張したい、WindowsやLinuxと同じ環境に揃えたいという場合は、Google Chromeなど他社製のブラウザを追加インストールすることもできます。
+
+Safariを使用してROOTなどのファイルをインターネットからダウンロードした場合、図~\ref{fig:Finder_column}に表示されているDownloadsフォルダ（\texttt{/Users/oxon/Downloads}）に保存されます。
+\subsection{Mail}
+MailはmacOS標準の電子メールクライアント（E-mail client）\footnote{クライアントとは、サーバと情報のやり取りをするソフトウェアを指すコンピュータ用語です。}です。WindowsやLinuxと環境を揃えたい場合は、Thunderbirdなど他社製のクライアントを追加インストールすることもできます。電子メールクライアントは比較的枯れた技術ですので、特に強い好みがない場合は、Mailを使っておけば十分だと思います。
+
+Mailは一般名詞であり、会話中でも文章中でも一般名詞との区別が困難なことから、Mail.appやApple Mailと呼ぶことが頻繁にあります。ここで、\texttt{.app}はmacOSでアプリケーションに使われる拡張子です。
+
+\subsection{Spotlight}
+Dockに表示されているアプリケーション以外にも、\ref{subsec:Finder}~節で説明したように\texttt{/Applications}に多くのアプリケーションがあります。このようなアプリケーションをクリックで起動したりするのは面倒です。そこで、macOS標準の検索機能であるSpotlightを使用してみましょう。
+
+\cmdkey\,Spaceを押してみてください\footnote{図~\ref{fig:Catalina}にあるSpotlightのアイコンをクリックするのでも同じように機能します。}。図~\ref{fig:Spotlight}が現れ、そこに例えば「Finder」と入力すると、図~\ref{fig:Spotlight_results}のように検索結果が現れます。ここでリターンキー（\returnkey）を押すと、Finderを開こうとするため、Finderがアクティブの状態（全てのアプリケーションよりも手前に来る状態）になります。また\cmdkey\,\returnkey\,を押すと、その項目をFinder上で表示します。Finder.appの実体が\texttt{/System/Library/CoreServices/}にあることが分かります。
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.35]{fig/Spotlight.png}
+  \caption{Spotlightの画面}
+  \label{fig:Spotlight}
+\end{figure}
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.35]{fig/Spotlight_results.png}
+  \caption{Spotlightの検索結果の例}
+  \label{fig:Spotlight_results}
+\end{figure}
+
+\subsection{App Store}
+macOSに新しくソフトウェアをインストールするには、大別して4つの方法があります。App Storeを利用する方法（Keynoteなど）、インターネット上でApp Store以外の場所からアプリケーション本体やインストーラをダウンロードしてくる方法（Google Chromeなど）、Homebrewなどのパッケージ管理システムを使用する方法（Pythonなど）、ソースコードをダウンロードして自分でビルドする方法（ROOTなど）です。
+
+macOSのApp Storeは、iPhoneやiPadのApp Store、Android端末上でのGoogle Play、WindowsのMicrosoft Storeと同様のものです。無料のものも有料のものも、次節で説明するApple IDを使用することでインストールすることができます。Microsoft Officeに相当するApple製のPages、Keynote、Numbersなども、このApp Storeからインストールします。
+
+\subsection{Apple IDとiCloud}
+
+App Storeでアプリケーションをインストールする場合、有料・無料を問わずApple IDと呼ばれるアカウントを作成する必要があります\footnote{\url{https://support.apple.com/ja-jp/HT204316}を参照。}。有料ソフトウェアを購入する場合は、クレジットカード情報をさらに付与する必要があります。
+
+Apple IDを登録することで、iCloudというAppleの提供するクラウドサービスを使用できるようになります。研究に関係するところでは、例えば複数のMacでのファイルの同期、Apple ID同士を使っての画面共有などが利用できるようになります。
+
+\subsection{Terminal}
+ターミナル（Terminal）はプログラミングやデータ解析などをするときに必要となるアプリケーションです。映画やドラマなどでハッカーやクラッカーが黒い画面に向かってキーボードを連打しているのは、ターミナルで作業をしています。Mailと同じくTerminalは一般名詞であり、macOSに限らずターミナル機能を有する環境は多数あるため、macOSのTerminalアプリケーションを指す場合は、Terminal.appと表記する場合があります。
+
+ターミナルとは「端末」のことです。コンピュータ用語で、ユーザが入出力を行うための装置を指します。現在のようにグラフィカルな操作ができなかった昔のコンピュータでは、ターミナルからコンピュータに指示を出し（入力）、その結果（出力）を受け取るという作業をしていました。プログラミングやデータ解析などでは、今でもターミナルを利用したほうが作業効率が良いため、使われ続けています。
+
+Terminal.appはDockには入っておらず、\texttt{/Applications/Utilities/}にあります。Spotlight（\cmdkey\,Space）を使って起動してみましょう。図~\ref{fig:Terminal}のような画面が現れるはずです。
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.35]{fig/Terminal.png}
+  \caption{Terminalの初期画面}
+  \label{fig:Terminal}
+\end{figure}
+
+\subsection{Time Machine}
+Time MachineはmacOSの自動バックアップの仕組みです。設定することで、外付けハードディスクやTime Capsule（タイムカプセル）\footnote{Appleが販売していた、内蔵ハードディスク付きのWi-Fiルータ。}にバックアップを作成することができます。
+
+\subsection{アプリケーションの切り替え}
+起動しているアプリケーションを切り替えるのは、\cmdkey\,Tabで行います。同一アプリケーション内でウィンドウを切り替えるのは、\cmdkey\,`で行います。
+
 \section{英語環境にする}
 日本の研究室でMacを使う場合、OSの言語環境を日本語にしている人が多いでしょう。しかしMacを研究で使う場合には英語環境に変更することを強くお勧めします。大きく四つの理由があるからです。
 
-まず第一に、インターネット上のMac関係の情報の多くが英語で書かれており、英語で検索した場合に見つかる情報の量と質は日本語の情報を圧倒するからです。使っているMacで何か問題が生じた場合にエラーメッセージが日本語で表示されていると、それを検索語にしても辿り着ける情報には限りがあります\footnote{\LaTeX 関係などの情報だと日本語特有の問題も発生しうるので、そこは臨機応変に対応して下さい。}。Apple社はアメリカの企業でありMacユーザの多くが北米に集中しています。そのためMac関連の情報のやり取りの多くは英語でなされています。これはMacに限らずコンピュータ関係全般に言えます\footnote{恐らく唯一の例外がRubyというプログラミング言語です。これは日本人により開発されたものが世界に広がった希有な例です。}
+まず第一に、インターネット上のMac関係の情報の多くが英語で書かれており、英語で検索した場合に見つかる情報の量と質は日本語の情報を圧倒するからです。使っているMacで何か問題が生じた場合にエラーメッセージが日本語で表示されていると、それを検索語にしても辿り着ける情報には限りがあります\footnote{日本語入力や\LaTeX 関係などの情報だと日本語特有の問題も発生しうるので、そこは臨機応変に対応して下さい。}。Apple社はアメリカの企業でありMacユーザの多くが北米に集中しています。そのためMac関連の情報のやり取りの多くは英語でなされています。これはMacに限らずコンピュータ関係全般に言えます\footnote{恐らく唯一の例外がRubyというプログラミング言語です。これは日本人により開発されたものが世界に広がった希有な例です。}
 
-第二に、あなたは日本人のみと共同研究をするわけではないからです。もしあなたのMacの画面を外国人が見ながら、もしくはあなたが外国人のMacの画面を見ながら作業する時に、OSが英語環境になっていたほうが意志疎通が簡単になることは言うまでもないでしょう。また海外（特にアメリカ）の研究機関などで実験をするときに、現地で使用するMacが英語環境になっているのは当然です。
+第二に、あなたは日本人のみと共同研究をするわけではないからです。もしあなたのMacの画面を外国人が見ながら、もしくはあなたが外国人のMacの画面を見ながら作業する時に、OSが英語環境になっていたほうが意志疎通が簡単になることは言うまでもないでしょう。また海外の研究機関などで実験をするときに、現地の実験室で使用するMacやLinuxは英語環境の設定になっていることがほとんどです。様々な国の外国人が実験に参加しているからです。
 
-第三の理由は、ファイル名やメニューの表示が英語になっているほうが作業効率が上がるからです。Macだとホームディレクトリに「書類」や「デスクトップ」というディレクトリが存在しますが、英語環境ではそれぞれ「Documents」と「Desktop」です。Terminal.appからホームで\texttt{ls}すれば、実体が英語名だということがわかります。Finder.appからディレクトリの移動をしたいときに、英語環境であればホームを開いた状態で「do」と連打すれば「Documents」が選択された状態になります。また「de」と打てば「Desktop」が選択されます。日本語環境の場合だとこうはいきません。またメニューの「編集」は英語環境では「Edit」になっています。メニューで「Edit」を開いた状態で「co」と連打すれば「Copy」のところが選択された状態になるでしょう。
+第三の理由は、ファイル名やメニューの表示が英語になっているほうが作業効率が上がるからです。Macだとホームディレクトリに「書類」や「デスクトップ」というディレクトリが存在しますが、英語環境ではそれぞれ「Documents」と「Desktop」です。Terminal.appからホームで\texttt{ls}すれば、実体が英語名だということがわかります。Finder.appからディレクトリの移動をしたいときに、英語環境であればホームを開いた状態で「do」と連打すれば「Documents」が選択された状態になります。また「de」と打てば「Desktop」が選択されます。例えば図~\ref{fig:Finder_home}の状態で試してみてください。日本語環境の場合だとこうはいきません。またメニューの「編集」は英語環境では「Edit」になっています。メニューで「Edit」を開いた状態で「co」と連打すれば「Copy」のところが選択された状態になるでしょう。
 
-最後の理由は、できる限り英語に慣れ親しんだほうが良いからです。大学院に入りたての頃は、誰しも英語の読み書きと会話に苦労するでしょう。また日本人の多くの研究者はその後何十年も英語で苦労をし続けます。少しでも英語に慣れるため、常用するMacくらい英語環境で使う意志を持ちましょう。
+最後の理由は、できる限り英語に慣れ親しんだほうが良いからです。大学院に入りたての頃は、誰しも英語の読み書きと会話に苦労するでしょう。また日本人の多くの研究者はその後何十年も英語で苦労し続けます。少しでも英語に慣れるため、常用するMacくらい英語環境で使う意志を持ちましょう。
 
-ただし、英語環境にすることで問題が生じる場合があります。例えば英語環境でAdobe Flashを表示すると日本語が文字化けすることがあります。これはFlashが既に廃れつつある技術であり、かつFlashの開発チームが能力不足だからです。他にも英語環境にすると日本語表示がうまくいかないソフトがあるかもしれませんが、そのようなソフトを使うのはやめましょう。日本語表示以外にも色々と問題を抱えている可能性があります。
+ただし、英語環境にすることで問題が生じる場合があります。少し古い話ですが、例えば英語環境でAdobe Flashを表示すると日本語が文字化けすることがありました\footnote{iPhoneやHTML~5の登場によって廃れた技術です。}。他にも英語環境にすると日本語表示がうまくいかないソフトがあるかもしれませんが、そのようなソフトを使うのはやめましょう。日本語表示以外にも色々と問題を抱えている可能性があります。
 
-図\ref{fig:English1_png}から図\ref{fig:English3_png}のように「システム環境設定」から英語環境に変更することができます。この設定後に起動したアプリケーションは、全て英語環境として起動されます。全てのメニューなどが英語で表示されるはずです。図\ref{fig:English3_png}にある「単語区切り」の設定は忘れないようにして下さい。ダブルクリックで日本語文字列を選択する場合に、熟語やカタカナ語が一つの単語として認識されるようになります。
+もし使用しているMacが日本語環境になっている場合、図~\ref{fig:SystemPreferences_language}のように「システム環境設定」から「言語と地域」を開き、「English」を一番上に持ってきてください。これで英語環境に切り替わり、各アプリケーションを起動し直すと英語になります。
 
 \begin{figure}
   \centering
-  \includegraphics[scale=0.35]{fig/English1.png}
-  \caption{「システム環境設定」から「言語とテキスト」を開く}
-  \label{fig:English1_png}
+  \includegraphics[scale=0.35]{fig/SystemPreferences_language.png}
+  \caption{System PreferencesからLanuage \& Region（日本語環境だと「言語と地域」）を開いたところ}
+  \label{fig:SystemPreferences_language}
 \end{figure}
 
+\section{日本語入力}
+
+もし使用しているMacが既に英語環境になっており、日本語入力ができない状態の場合、図~\ref{fig:SystemPreferences_input}のようにSystem PreferencesからKeyboardを開き、「Input Sources」のところに「Japanese」を追加してください。
+
 \begin{figure}
   \centering
-  \includegraphics[scale=0.35]{fig/English2.png}
-  \caption{「日本語」ではなく「English」を先頭に持ってくる（この画面は既に英語環境になっている場合のもの）}
-  \label{fig:English2_png}
+  \includegraphics[scale=0.35]{fig/SystemPreferences_input.png}
+  \caption{System PreferencesからKeyboardを開いたところ}
+  \label{fig:SystemPreferences_input}
 \end{figure}
 
+日本語キーボード（JIS配列）のMacを使用している場合、スペースキーの左側に「英数」、右側に「かな」というキーがあるはずです。「英数」を押すと入力が英数に切り替わり、「かな」を押すと日本語入力（ローマ字入力）に切り替わります。もしUSキーボードを使用している場合、\ref{sec:Karabiner}節を参照し、左右のコマンドキーを「英数」と「かな」に割り当ててください。
+
+日本語入力と英語入力を切り替えて使っていると、日本語入力モードのときに英単語を打ってしまったり、英語入力モードのときに日本語を打ってしまうという失敗をすることがあります。このような場合、入力済みの文字をいちいち消去する必要はありません。もし日本語入力モードで英単語を打ってしまったら、「英数」キーを左手の親指で2回素早く叩いてください。これで入力済みの文字がアルファベットに変換され、英語入力モードに切り替わります。逆に、英語入力モードのときに日本語を間違えて打ちかけた場合は、「かな」きーを右手の親指で2回叩いてください。
+
+日本語入力と英語入力の切り替えは\ctlkey\,Spaceでも可能です。しかし、これは\ref{sec:Emacs}~節で後述するショートカットと競合してしまうため、節~\ref{sec:Keyboard}で設定を無効にします。
+
+\section{Finderの設定}
+まずはFinderの設定をしましょう。macOSのアプリケーションごと固有の設定は、それぞれのアプリケーションで「Preferences…」というメニューを選択することで行えます。Finderの場合、メニューバーのFinderからPreferences…を選びます。ショートカットは多くのアプリケーションで\cmdkey\,,です。
+
 \begin{figure}
   \centering
-  \includegraphics[scale=0.35]{fig/English3.png}
-  \caption{「単語区切り（Word Break）」を「Japanese」にする（この画面は既に英語環境になっている場合のもの）}
-  \label{fig:English3_png}
+  \subfigure[]{
+    \includegraphics[width=.32\textwidth,clip]{fig/FinderPreferences_general.png}%
+    \label{fig:FinderPreferences_general}%
+  }\hfill%
+  \subfigure[]{%
+    \includegraphics[width=.32\textwidth,clip]{fig/FinderPreferences_sidebar.png}%
+    \label{fig:FinderPreferences_sidebar}%
+  }\hfill%
+  \subfigure[]{%
+    \includegraphics[width=.32\textwidth,clip]{fig/FinderPreferences_advanced.png}%
+    \label{fig:FinderPreferences_advanced}
+  }
+  \caption{Finderの設定}
+\label{fig:FinderPreferences}
 \end{figure}
 
+まずデスクトップに内蔵ハードディスク（SSD含む）と接続したサーバを表示するように、図~\ref{fig:FinderPreferences_general}を見て「General」のタブから設定を変更します。また新規にウィンドウを開いたときにホームが表示されるようにします。
 
-\section{拡張子を表示する}
-Macの初期設定では、ファイルの拡張子（extension）が表示されません。図~\ref{fig:Extension_png}のようにFinder.appの「Preferences\ldots」から表示する設定に変更しましょう。この表示をしないと、Terminal.appから操作するファイル名とFinder.appからファイル名が見かけ上一致しない場合があります。
+次にSidebarのタブから図~\ref{fig:FinderPreferences_sidebar}のように表示する項目にホームを追加します。
+
+最後に「Advanced」のタブを開きます。Macの初期設定では、ファイルの拡張子（extension）が表示されませんので、図~\ref{fig:FinderPreferences_general}のように全ての拡張子を表示する設定に変更します。この表示をしないと、Terminal.appから操作するファイル名とFinderから見えるファイル名が一致しない場合があります。
+
+またディレクトリ階層がわかりやすいように、Finderがアクティブな状態で\cmdkey\,/と\cmdkey\,\optkey\,Pをそれぞれ押します。これで図~\ref{fig:Finder_info}のように項目数やパスの表示がされるようになります。
 
 \begin{figure}
   \centering
-  \includegraphics[scale=0.35]{fig/Extension.png}
-  \caption{「Show all filename extensions」にチェックを入れると、全てのファイルで拡張子が表示されるようになる}
-  \label{fig:Extension_png}
+  \includegraphics[width=.48\textwidth,clip]{fig/Finder_info.png}
+  \caption{Finderの表示を変更した例}
+\label{fig:Finder_info}
 \end{figure}
 
 \section{キーボードの設定}
+\label{sec:Keyboard}
 
 \subsection{Caps LockキーをControlキーに変更する}
-もしあなたのMacがUS配列のキーボードならば、Caps LockキーはControlキーとして機能するように設定を変更しましょう。図\ref{fig:Keyboard1_png}のように、System Preferencesから「Keyboard」を開いて「Keyboard」タブの「Modifier keys\ldots」を押し、Caps LockをControlにします。後述するように、macOS環境ではEmacsの操作体系に倣ったキーボードショートカットが使われています。そのため、Controlキーの使用率が他のOSに比べて非常に高くなるのが特徴です。US配列のキーボードを使用している場合にはControlキーが押しにくい位置にあるため、滅多に使わない、かつ最も押しやすい位置にあるCaps LockをControlキーにしてしまうことがよく行われています。
+もしあなたのMacがUS配列のキーボードならば、Caps LockキーはControlキーとして機能するように設定を変更しましょう。図\ref{fig:Keyboard1}のように、System Preferencesから「Keyboard」を開き「Modifier keys…」を押し、Caps LockをControlにします。\ref{sec:Emacs}~節で後述するように、macOS環境ではEmacsの操作体系に倣ったキーボードショートカットが使われています。そのためControlキーの使用率が他のOSに比べて非常に高くなるのが特徴です。US配列のキーボードを使用している場合にはControlキーが押しにくい位置にあるため、滅多に使わない、かつ最も押しやすい位置にあるCaps LockをControlキーにしてしまうことがよく行われています。
 
 \begin{figure}
   \centering
   \includegraphics[scale=0.35]{fig/Keyboard1.png}
   \caption{Caps LockをControlキーに変更する}
-  \label{fig:Keyboard1_png}
+  \label{fig:Keyboard1}
 \end{figure}
 
-\subsection{Tabキーの動作の変更}
-次に、図\ref{fig:Keyboard2_png}のように「Keyboard Shortcuts」のタブに移動し、ボタンなどの選択を全てTabキーで行えるようにします。このようにすることで、様々な画面操作をするときに、いちいちキーボードからトラックパッドやマウスへ手の移動をしなくて済むようになります。
+\ref{sec:Karabiner}~節で説明するKarabiner-Elementsをインストールする場合、ここでのCaps Lockキーの置き換えはする必要はありません。Karabiner-Elementsで同様の設定を行います。
+
+\subsection{入力切り替えの無効化}
+日本語入力と英語入力の切り替えは、デフォルトでは\ctlkey\,Spaceになっています。しかしこれは図\ref{fig:Keyboard2}のように「Shortcuts」タブから無効化します。「英数」キーと「かな」キーから切り替えてください。
 
 \begin{figure}
   \centering
   \includegraphics[scale=0.35]{fig/Keyboard2.png}
-  \caption{全てのボタンなどをtabキーで移動できるようにする}
-  \label{fig:Keyboard2_png}
+  \caption{入力の切り替えを無効化し、また全てのボタンなどをTabキーで移動できるようにする}
+  \label{fig:Keyboard2}
 \end{figure}
 
-例えば、Mac の電源ボタンを軽く一度だけ押すと、図\ref{fig:reboot_png}のような確認ダイアログが出てくるはずです。ここで数回Tabキーを押すと、「Cancel」ボタンが強調表示されるようになります。また「Shut Down」ボタンが明滅しているでしょう。この状態でSpaceキーを押すと、マウスやトラックパッドの操作をしなくても強調表示された「Cancel」ボタンが押されます。またReturnキーを押すと明滅している「Shut Down」ボタンが押されてMacが再起動します。このように、Macではダイアログのボタンをクリックする代わりにSpaceキーとReturnキーで操作することができます。
+\subsection{Tabキーの動作の変更}
+次に同じく「Shortcuts」のタブから、図\ref{fig:Keyboard2}のようにボタンなどの選択を全てTabキーで行えるようにします。このようにすることで、様々な画面操作をするときに、いちいちキーボードからトラックパッドやマウスへ手の移動をしなくて済むようになります。
+
+例えばゴミ箱（Trash）を空にする際、図\ref{fig:Trash_Dialog}のような確認ダイアログが出てくるはずです。ここで数回Tabキーを押すと「Cancel」ボタンの強調表示（青線での縁取り）が「Empty Trash」との間で移動します。縁取られているボタンは、いちいちクリックしなくてもSpaceキーを押すと実行されます。また「Empty Trash」のように青く塗りつぶされているボタンは、リターンキーを押すと実行されます。
 
 \begin{figure}
   \centering
-  \includegraphics[scale=0.35]{fig/reboot.png}
-  \caption{再起動の確認ダイアログ。Tabを数回押すと、「Cancel」が強調表示される。「Shut Down」は明滅している。}
-  \label{fig:reboot_png}
+  \includegraphics[scale=0.35]{fig/Trash_Dialog.png}
+  \caption{ゴミ箱を空にするときのダイアログ}
+  \label{fig:Trash_Dialog}
 \end{figure}
 
-\subsection{Spotlightのショートカットの変更}
-最後に、Spotlightのショートカットを図\ref{fig:Keyboard3_png}のようにControl-Space（画面上の表示は「\verb|^|Space」）の組み合わせからCommand-Space（画面上の表示は「\cmd{}Space」）などの組み合わせに変更しましょう。Control-Spaceは後述するようにEmacsで頻繁に使用するショートカットであるため、Spotlightのショートカットとして使用されてしまうと不便だからです。
-
-Command-SpaceをSpotlightにあてがってしまうと、文字入力の日本語と英語の切り替えはどうするのかと、Macに少し慣れた人なら疑問に思うかもしれません。しかし最近のMacにはJIS配列の場合「かな」と「英数」キーが存在するため、これらのキーを使ったほうが文字入力の切り替えは簡単に行えます。またUS配列のMacを使っている場合には、\ref{sec:KeyRemap4MacBook}にて後述するKeyRemap4MacBookを使うことで「かな」と「英数」をCommandキーに割り当てることが可能になるため、やはりCommand-Spaceのショートカットは不要です。
+\subsection{キーボードの繰り返し入力速度}
+デフォルトでは、キーボードの繰り返し入力速度は非常に遅い設定になっています。例えばTerminal.appでaキーを押しっぱなしにしても、えらいのんびりと入力されます。図~\ref{fig:Keyboard_speed}のように、キーの繰り返し入力の速度を一番速くしてください。また繰り返し入力が開始されるまでの待ち時間も一番短くしてください。トラックパッド（Trackpad）のカーソル移動速度も、同じようにSystem Preferences のTrackpadのところから最速にしましょう。慣れてください。人生は時間が限られています。
 
 \begin{figure}
   \centering
-  \includegraphics[scale=0.35]{fig/Keyboard3.png}
-  \caption{Spotlightのショートカットを「Control-Space」から「Command-Space」に変更した状態}
-  \label{fig:Keyboard3_png}
+  \includegraphics[scale=0.35]{fig/Keyboard_speed.png}
+  \caption{繰り返し入力速度の変更}
+  \label{fig:Keyboard_speed}
 \end{figure}
 
-\section{KeyRemap4MacBook}
-\label{sec:KeyRemap4MacBook}
+ついでに、メニューバーの入力メニューのところから、記号や絵文字を探すパネルを表示できるようにしておくと便利です。
 
-\ref{sec:Emacs}で述べるように、macOSのキーボード操作の多くはEmacsの操作体系に基づいています。しかし、この操作に対応していないアプリケーションも存在するため（Microsoft製品、Adobe製品、Eclipseなど）、KeyRemap4MacBook\footnote{\url{http://pqrs.org/macosx/keyremap4macbook/index.html.ja}}をインストールすることでmacOSの操作を快適にすることができます。
+\section{Karabiner-Elementsによるキーボードの操作性向上}
+\label{sec:Karabiner}
 
-KeyRemap4MacBookをインストール後、「System Preferences」から「KeyRemap4MacBook」の「Change Key」タブを開くと、図\ref{fig:KeyRemap4MacBook1_png}のような画面が現われます。大量の設定項目が存在しますが、そのうち、「Control+D to Forward Delete」、「Control+H to Delete」、「Control-I to Tab」、「Control+M to Return」、「Control+PNBF to Up/Down/Left/Right」、「Control+V to PageDown」などを動作させると良いでしょう。
+\ref{sec:Emacs}で述べるように、macOSのキーボード操作の多くはEmacsの操作体系に基づいています。しかし、この操作に対応していないアプリケーションも存在するため（Microsoft製品やAdobe製品など）、Karabiner-Elements\footnote{\url{https://karabiner-elements.pqrs.org}}をインストールすることでmacOSの操作を快適にすることができます。
+
+他のmacOSアプリケーションのインストールでも同様の手順を踏むことがあるため、ここではKarabiner-Elementsを例として、インストール方法を簡単に説明します。
+
+まずKarabiner-Elementsのウェブサイトから、ディスクイメージをダウンロードします\footnote{ディスクイメージ（disk image）とはmacOSのファイル形式のひとつで、マウント可能なボリューム（例えばUSBメモリなど）のように取り扱えるものです。拡張子は\texttt{.dmg}です。}。図~\ref{fig:Karabiner_download}のように、ダウンロードしたファイルはSafariのDownloadsの一覧に表示され、また\texttt{\~{}/Downloads}の中に保存されることが分かります。
 
 \begin{figure}
   \centering
-  \includegraphics[scale=0.35]{fig/KeyRemap4MacBook1.png}
-  \caption{macOSのほとんどの操作で、Emacsに似た操作体系を実現するための設定の例。USキーボードの使用者は、赤枠内の設定も追加することで日本語入力が楽になる。}
-  \label{fig:KeyRemap4MacBook1_png}
+  \includegraphics[scale=0.35]{fig/Karabiner_download.png}
+  \caption{Karabiner-Elementsのダウンロード}
+  \label{fig:Karabiner_download}
 \end{figure}
 
-また、JIS配列のキーボードではなく、US配列のものを使用している人の場合、「Command\_L to Command\_L」、「Command\_L x2 to EISUU x2」、「Command\_R to Command\_R」、「Command\_R x2 to KANA x2」を動作させておけば、左右のCommandキーを英数キー、かなキーとして使用することが可能になります。もちろん、他のキーと組み合わせた場合にはCommandキーとしても動作します。
-
-次に、「Key Repeat」タブを開くと「[Key Repeat] Wait」という設定項目があります。ここの時間を短くすることで、キーを押下し続けたときに繰り返し入力される時間間隔を短くすることが可能です。あなたがMacやEmacsの操作に熟達する頃には、デフォルトの$80$ミリ秒では遅過ぎると感じるようになっているはずです。
+このディスクイメージを開くと仮想的にマウントされ、デスクトップ上にマウント済みのボリュームが表示されます。この中に、パッケージファイル\footnote{パッケージファイル（package file）とは、macOSで複数のフォルダやファイルから構成されるものを擬似的に単一ファイルのように表示しているものです。拡張子は\texttt{.pkg}です。}が図~\ref{fig:Karabiner_pkg}のように存在します。これがインストーラーです。
 
 \begin{figure}
   \centering
-  \includegraphics[scale=0.35]{fig/KeyRemap4MacBook2.png}
-  \caption{キーボードを押下し続けた場合の繰り返し入力の設定}
-  \label{fig:KeyRemap4MacBook2_png}
+  \includegraphics[scale=0.35]{fig/Karabiner_pkg.png}
+  \caption{Karabiner-Elementsのインストールパッケージ}
+  \label{fig:Karabiner_pkg}
 \end{figure}
 
-\section{zsh}
-
-macOSの標準のshell環境は、Snow LeopardやLionではbashになっています。bashはLinuxやmacOSで広く使われており、ソフトウェアの一部やOSの設定スクリプトなどで見ることができます。cshやtcshを使う人も少なくない数が存在しますが、2012年現在でMacを研究に使うにはbashを選択するのが標準的です。
-
-一方で、bashよりも更に高機能なshellとして最近ではzshの人気が高まっています。zshはbashの文法に非常に似ているものの、独自の拡張機能をたくさん持っているため、bashに慣れている人には「便利なbash」として使うことが可能です。また、初学者の場合はbashとzshの違いは全く気にする必要はないでしょうから、bashではなくzshを使い始めるのが良いでしょう。
-
-図\ref{fig:zsh1_png}と図\ref{fig:zsh2_png}に、shellをzshに変更する方法を説明します。まず図\ref{fig:zsh1_png}のように、「System Preferences」の「Users \& Groups」を表示し、自分のアカウントを右クリック（トラックパッドの場合は二本指クリック）します。「Advanced Options\ldots」が現われるので、これを選択します。ウィンドウ左下の鍵マークがロックされている状態の場合は右クリックが効きませんので、パスワードを入力してこれを解除して下さい。
+インストーラーを起動すると、図~\ref{fig:Karabiner_install}のようにmacOSの標準的なインストール画面が表示されます。表示される手順にしたがってインストールしてください。公式の説明は\url{https://karabiner-elements.pqrs.org/docs/getting-started/installation/}にあります。
 
 \begin{figure}
   \centering
-  \includegraphics[scale=0.35]{fig/zsh1.png}
-  \caption{自分のアカウントを右クリックして「Advanced Options\ldots」を表示する}
-  \label{fig:zsh1_png}
+  \includegraphics[scale=0.35]{fig/Karabiner_install.png}
+  \caption{Karabiner-Elementsのインストール画面}
+  \label{fig:Karabiner_install}
 \end{figure}
 
-図\ref{fig:zsh2_png}が表示されるので、「Login shell」を「/bin/bash」から「/bin/zsh」に書き換えて下さい。ここで、{\bf{\textgt{絶対に打ち間違えをしないように注意してください}}}。これで、次にTerminalを開くときから、ログインshellがzshに変更されます。
+このインストールを進めると、図~\ref{fig:Karabiner_blocked}のような警告が表示されます。これは、App Storeなどの認証を経ていないソフトウェアをインストールしたり起動したりする場合などに表示されます。コンピュータウイルスのように悪意の持ったプログラムを実行するときもこのような警告が出るはずですので、インストールしようとしているにはソフトウェアが怪しいものでないか、よく注意してください。
 
 \begin{figure}
   \centering
-  \includegraphics[scale=0.35]{fig/zsh2.png}
-  \caption{「/bin/bash」を「/bin/zsh」に書き換える}
-  \label{fig:zsh2_png}
+  \includegraphics[scale=0.35]{fig/Karabiner_blocked.png}
+  \caption{Karabiner-Elementsの警告}
+  \label{fig:Karabiner_blocked}
 \end{figure}
 
-bashからzshに変更すると、各種の設定は\texttt{\$HOME/.bashrc}ではなく\texttt{\$HOME/.zshrc}に書くようになります。例えば次の設定を\texttt{\$HOME/.bashrc}に書けと指示があった場合、\texttt{\$HOME/.zshrc}にこれを書いて下さい。
+この警告ではインストールしようとしている機能拡張（System Extension）がブロックされたと書かれています。これを解除するためには、指示に従い、System Preferences の Security \& Privacy を開いてください。
 
-\begin{lstlisting}[language=bash]
-export ROOTSYS=/usr/local/root
-\end{lstlisting}
+そうすると、図~\ref{fig:Karabiner_allow}のような画面になっているはずです。まず左下の鍵アイコンをクリックして管理者権限で解錠します。このように管理者権限が必要となるOSの設定変更は、この鍵アイコンをその都度クリックする必要があります。解錠するとブロックされたソフトウェアを許可するためのAllowボタンが押せるようになります。今回の場合、Karabiner-Elementsとその開発者である Fuihiko Takayama 氏は信頼できますので、Allowを押してください。これで、Karabiner-Elementsのインストール作業は終わりです。
 
-zshの設定や\texttt{\$HOME/.zshrc}の書きかたについては、「漢のzsh\footnote{\url{http://news.mynavi.jp/column/zsh/index.html}}」というコラムの解説が非常に詳しく分かりやすいので、参考にして下さい。
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.35]{fig/Karabiner_allow.png}
+  \caption{Karabiner-Elementsの許可}
+  \label{fig:Karabiner_allow}
+\end{figure}
 
+Karabiner-Elementsをインストール後、SpotlightからKarabiner-Elements.appを起動してください。そうすると、まず最初に図~\ref{fig:Karabiner_keystroke}のように許可を求めるダイアログが出るはずです。このようなダイアログは、一部のアプリケーションの初回起動時に現れることが頻繁にあります。Karabiner-Elementsの場合はキーボード入力を受け取り特殊な処理を行うため、そのような動作に対してユーザの許可が必要となるからです。また例えばZoomでは画面共有をする機能がありますが、これもセキュリティ上の問題が潜在的にあるため、ユーザの許可を必要とし、同様のダイアログが表示されます。
 
-\section{MacPorts}
-\label{sec:MacPorts}
-MacPorts\footnote{\url{http://www.macports.org/}}とは、UNIXやLinuxで広く使われ、また開発の行われてきたソフトウェア資産を、Macでも使えるようにするためのプロジェクトのひとつです。GUIソフトウェアでもそうですが、他の環境で動作するソフトウェアだからと言って、Macでも簡単に動くわけではありません。Mac以外のUNIXに書かれたソフトウェアであっても、Mac用にコンパイルしたり、各種設定を変更してやる必要があります。しかしMacPortsのようにMacに移植するプロジェクトの成果を利用することで、難しい作業を一般ユーザが行う必要がなくなります。
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.35]{fig/Karabiner_keystroke.png}
+  \caption{Karabiner-Elementsのキーボード入力への警告}
+  \label{fig:Karabiner_keystroke}
+\end{figure}
 
-同様のプロジェクトに、Fink\footnote{\url{http://www.finkproject.org/}}やHomebrew\footnote{\url{http://mxcl.github.com/homebrew/}}があります。macOSのリリース初期ではFinkが最も活発でしたが、ROOTと組み合わせた場合に問題が何度か発生したため、筆者はMacPortsに移行しました。最近ではHomebrewが流行っていますが、MacPortsに比べるとまだユーザ数は多くありません。新しもの好きの人はHomebrewを検討してみて下さい。
+このダイアログに従い「Open System Preferences」をクリックすると、図~\ref{fig:Karabiner_privacy}が現れます。ここで再び鍵アイコンを解錠し、Karabiner-Elements関係のファイルがキーボード入力を読み取れるように許可を出します。
 
-\subsection{MacPortsの導入}
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.35]{fig/Karabiner_privacy.png}
+  \caption{Karabiner-Elementsのプライバシー設定}
+  \label{fig:Karabiner_privacy}
+\end{figure}
 
-MacPortsをダウンロードし、Macの他のソフトウェアと同様にインストーラを使ってインストールします。MacPorts本体と、関連するコマンド、ライブラリ、ヘッダーファイルなどは全て\texttt{/opt}にインストールされます。以下の設定を\texttt{\$HOME/.zshrc}に追加して下さい。
-\begin{lstlisting}[language=bash]
-export PATH=/opt/local/bin:$PATH
-export LD_LIBRARY_PATH=/opt/local/lib:$LD_LIBRARY_PATH
-export C_INCLUDE_PATH=/opt/local/inc:$C_INCLUDE_PATH
-export CPLUS_INCLUDE_PATH=/opt/local/inc:$C_INCLUDE_PATH
-\end{lstlisting}
+さて、これでようやくKarabiner-Elementsが使用できます。USキーボードを使用している場合は、まず図~\ref{fig:Karabiner_simple}のように「Simple modifications」のタブでCaps LockキーをControlキーに変更してください。
 
-Terminalから、次のコマンドを実行して\texttt{\$HOME/.zshrc}の設定を反映しましょう。新しいTerminalを開いた場合は、いちいち実行する必要はありません。
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.35]{fig/Karabiner_simple.png}
+  \caption{Karabiner-Elementsの設定画面}
+  \label{fig:Karabiner_simple}
+\end{figure}
 
-\begin{lstlisting}[language=bash]
-$ source ~/.zshrc
-\end{lstlisting}
+次に図~\ref{fig:Karabiner_import}のように「Complex modifications」タブから「Add rule」クリックし、「Import more rules from the Internet」を押してください。様々なキーボード動作の設定がダウンロードできるので、「Emacs key bindings (rev 12)」をダウンロードしましょう。USキーボードの場合は「For Japanese （日本語環境向けの設定） (rev 5)」も追加します。
 
-MacPortsで好きなソフトウェアをインストールするには、いくつかコマンドを実行する必要があります。Emacsの導入事例を\ref{sec:Emacs}で説明します。
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.35]{fig/Karabiner_import.png}
+  \caption{Karabiner-Elementsの設定のインポート}
+  \label{fig:Karabiner_import}
+\end{figure}
 
-\subsection{Emacs}
-
-まず、MacPortsでEmacsをインストールできるかどうか調べてみましょう。次のコマンドで説明文中に「emacs」の含まれるソフトウェア（port）があるか確認します。
-
-\begin{lstlisting}[language=bash]
-$ port search emacs
-\end{lstlisting}
-
-そうすると、たくさんの出力が次のように表示されるはずです。これを細かく見ていくと、「GNU Emacs」という文字列を含んだportがいくつか存在するはずです。
-
-\begin{lstlisting}
-auctex @11.86 (editors, print)
-    A major emacs mode for editing TeX files.
-(snip)
-emacs @23.4 (editors)
-    The GNU Emacs text editor
-
-emacs-app @23.4 (aqua, editors)
-    The GNU Emacs text editor (Cocoa version)
-
-emacs-app-devel @20091101 (aqua, editors)
-    The GNU Emacs text editor, recent CVS development version
-
-emacs-snapshot @20120423 (editors)
-    The GNU Emacs text editor
-
-emacs-w3m @1.4.4 (www)
-    Use the w3m web browser inside emacs.
-
-emacs22 @22.3 (editors)
-    The GNU Emacs text editor
-(snip)
-zile @2.3.23 (editors)
-    Zile Is Lossy Emacs
-
-Found 38 ports.
-\end{lstlisting}
-
-「emacs @23.4 (editors)」というのが、バージョン23.4のEmacsだと検討がつくので、さらに次のコマンドで詳細を見てみましょう。
-
-\begin{lstlisting}[language=bash]
-$ port info emacs
-\end{lstlisting}
-
-次のように、説明が何行も表示されます。
-\begin{lstlisting}
-emacs @23.4, Revision 1 (editors)
-Variants:             dbus, gtk, motif, universal, x11
-
-Description:          GNU Emacs is a self-documenting, customizable, extensible
-                      real-time display editor. Users new to Emacs will be able
-                      to use basic features fairly rapidly by studying the
-                      tutorial and using the self-documentation features. Emacs
-                      also has an extensive interactive manual browser. It is
-                      easily extensible since its editing commands are written
-                      in Lisp.
-Homepage:             http://www.gnu.org/software/emacs/emacs.html
-
-Build Dependencies:   pkgconfig, texinfo
-Library Dependencies: ncurses
-Conflicts with:       xemacs
-Platforms:            darwin, freebsd
-License:              GPL-3+
-Maintainers:          dports@macports.org, openmaintainer@macports.org
-\end{lstlisting}
-
-実は、macOSには最初からEmacsがインストールしてあるため、必ずしもEmacsを自分でインストールする必要はありません。しかし、macOSに含まれるEmacsはX11に対応していないため、Terminalの中でしかEmacsを立ち上げることはできません。一方、MacPortsの場合にはX11に対応したEmacsをインストールすることが可能です。研究をする上では、こちらのほうが便利なのでMacPortsでEmacsを導入しましょう。
-
-ここで、「Variants:」と書かれた説明を見ると、「x11」とあるのが分かります。EmacsをMacPortsでインストールするときに、どのようなオプションが選択可能かを示しており、この場合は「x11」というオプションを指定すればX11に対応したEmacsがインストールされることを示しています。
-
-次のコマンドを実行し、X11に対応したEmacsをインストールしましょう。管理者パスワードを要求されます。
-
-\begin{lstlisting}[language=bash]
-$ sudo port install emacs +x11
-\end{lstlisting}
-
-インストールが開始されると、Emacsを使うために必要な他のportもインストールされます。以下のような出力が表示されれば、Emacsを使えるようになっているはずです。
-
-\begin{lstlisting}
---->  Fetching archive for zlib
---->  Attempting to fetch zlib-1.2.7_0.darwin_11.x86_64.tbz2 from http://packages.macports.org/zlib
---->  Attempting to fetch zlib-1.2.7_0.darwin_11.x86_64.tbz2.rmd160 from http://packages.macports.org/zlib
---->  Installing zlib @1.2.7_0
---->  Cleaning zlib
-(snip)
---->  Computing dependencies for emacs
---->  Fetching archive for emacs
---->  Attempting to fetch emacs-23.4_1.darwin_11.x86_64.tbz2 from http://packages.macports.org/emacs
---->  Attempting to fetch emacs-23.4_1.darwin_11.x86_64.tbz2.rmd160 from http://packages.macports.org/emacs
---->  Installing emacs @23.4_1
---->  Activating emacs @23.4_1
-
-D-Bus support is no longer included in the default Emacs installation. To build
-Emacs with D-Bus support, please install with the +dbus variant.
-
---->  Cleaning emacs
-\end{lstlisting}
-
-LionでXcode 4.3を使っている場合に次のようなエラーが表示されるかもしれません。
-
-\begin{lstlisting}
-Error: 
-Error: No valid Xcode installation is properly selected.
-Error: Please use xcode-select to select an Xcode installation:
-Error:     sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer # version 4.3.2
-Error: 
-Warning: xcodebuild exists but failed to execute
-Warning: Xcode does not appear to be installed; most ports will likely fail to build.
-\end{lstlisting}
-
-そのときは、エラーの指示通りに従い、次のコマンドを実行しましょう。これでMacPortsが動作するようになるはずです。
-\begin{lstlisting}[language=bash]
-$ sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
-\end{lstlisting}
-
-\subsection{\LaTeX}
-
-研究で誰しも必要になるのが\LaTeX{}の環境です。様々なインストール方法があり、インターネット上にも色々な情報が散らばっています。MacPortsから\LaTeX{}を入れる場合でも、ptex、tetex、texliveという三つのportが存在します。
-
-\begin{lstlisting}
-$ port info ptex   
-pTeX @20110314, Revision 1 (tex, print, textproc, japanese)
-Variants:             euc, [+]motif, nextaw, no_hiragino, no_otf, no_x11, sjis,
-                      [+]utf8, xaw, xaw3d
-
-Description:          Japanese TeX (pTeX) processing environment
-Homepage:             http://www.nn.iij4u.or.jp/~tutimura/tex/ptetex.html
-
-Build Dependencies:   ghostscript-fonts-hiragino, nkf
-Library Dependencies: gd2, jpeg, libiconv, libpaper, libpng, ncurses, perl5,
-                      t1lib, zlib, openmotif
-Runtime Dependencies: ghostscript-fonts-hiragino, t1utils, texi2html, texinfo
-Conflicts with:       texlive-common
-Platforms:            darwin
-License:              Restrictive/Distributable
-Maintainers:          takanori@macports.org, openmaintainer@macports.org
-\end{lstlisting}
-
-Macで\LaTeX{}を使う場合、文字コードをUTF-8にするのが標準的です。ptexでは特に指定しない限りはUTF-8に対応したものがインストールされるため、「Variants:」の説明に「[+]utf8」と書いてあります。
-
-次のコマンドでptexを入れましょう。\texttt{platex}、\texttt{pdflatex}、\texttt{dvipdfmx}などのコマンドが一緒にインストールされます。好みに応じて、代わりにtexliveやtetexを導入するのでも良いでしょう\footnote{違いが何なのかは筆者は理解していません。}。
-
-\begin{lstlisting}[language=bash]
-$ sudo port install ptex
-\end{lstlisting}
+最後に「Emacs key bindings [control+keys] (rev 10)」を「Enable」にします。USキーボードの場合は「コマンドキーを単体で押したときに、英数・かなキーを送信する。（左コマンドキーは英数、右コマンドキーはかな） (rev 3)」も追加します。
 
 \section{Emacsの操作体系に慣れる}
 \label{sec:Emacs}
 
-ここでは、macOSでの標準的なエディタ（editor）のひとつであるEmacsの操作について、その初歩の初歩について説明します。エディタは文章を書くためのソフトウェアです。ただし、ワープロのように様々な装飾をするための機能はありません。プログラムを書いたり、\LaTeX{}のソースを書いたりと、装飾ではなく文そのものに意味があるときに使います。そのような作業に特化したワープロにはない様々な機能が搭載されています。
+ここでは、macOSでの標準的なエディタ（editor）のひとつであるEmacsの操作について、その初歩の初歩について説明します\footnote{macOS Mojaveまでは\texttt{/usr/bin/emacs}が最初からインストールされていましたが、Catalinaからはなくなりました。GNUライセンスで配布されているソフトウェアの使用を回避するためと言われています。代わりに\texttt{/usr/bin/mg}というEmacsに似たエディタ（Emacsクローン）がインストールされています。}。エディタは文章を書くためのソフトウェアです。ただし、ワープロのように様々な装飾をするための機能はありません。プログラムを書いたり、\LaTeX{}のソースを書いたりと、装飾ではなく文そのものに意味があるときに使います。そのような作業に特化したワープロにはない様々な機能が搭載されています。
 
-Emacsの特徴のひとつに、文字入力に特殊なキーボードショートカット（Emacs key binding）を使うことが挙げられます。慣れないうちは全く便利に感じないと思いますが、一度慣れてしまうと、もう他のエディタには戻れなくなるのでぜひ覚えて下さい。macOSを使う場合、このショートカットをほとんどのソフトウェアでも利用可能です。例えば、macOSに標準で付属しているメールクライアント「Mail」でメッセージを編集する時にも、このショートカットが使用できます。基本的なキーボードショートカットの一覧を表\ref{tab_emacs}にまとめました。
+Emacsの特徴のひとつに、文字入力に特殊なキーボードショートカット（Emacs key binding）を使うことが挙げられます。慣れないうちは全く便利に感じないと思いますが、一度慣れてしまうと、もう他のエディタには戻れなくなるのでぜひ覚えて下さい。macOSを使う場合、このショートカットをほとんどのソフトウェアでも利用可能です。基本的なキーボードショートカットの一覧を表\ref{tab_emacs}にまとめました。
 
 \begin{table}
   \centering
@@ -594,53 +655,50 @@ M gg & 不明 & 特定の行に移動する\\\hline
   \end{tabular}
 \end{table}
 
-まずはEmacsを次のコマンドで起動してみましょう。MacPortsからEmacsを入れていなかったり、MacPortsで「+x11」をつけずにEmacsをインストールした場合には図\ref{fig:emacs_nox11_png}のような表示が現われるはずです\footnote{X11に対応したEmacsでも、「-nw」という引数をつけてEmacsを起動すれば、同様の表示にすることが可能です。接続速度の遅い（つまり画像を飛ばすのが遅い）SSHの接続先などで作業する場合に使うこともあります。}。
+\ref{sec:Homebrew}章を参考にして、まずはEmacsをインストールしてみてください。\texttt{Emacs}というコマンドを設定し終えたところまでを想定します。
 
+次のコマンドで、Emacsを立ち上げます。図~\ref{fig:Emacs}のような画面が現れるはずです。
 \begin{lstlisting}[language=bash]
-$ emacs
+$ Emacs
 \end{lstlisting}
 
 \begin{figure}
   \centering
-  \includegraphics[scale=0.35]{fig/emacs_nox11.png}
-  \caption{X11対応でないEmacsの起動例}
-  \label{fig:emacs_nox11_png}
+  \subfigure[]{
+    \includegraphics[width=.32\textwidth,clip]{fig/Emacs.png}%
+    \label{fig:Emacs}%
+  }\hfill%
+  \subfigure[]{%
+    \includegraphics[width=.32\textwidth,clip]{fig/Emacs_CxCf.png}%
+    \label{fig:Emacs_CxCf}%
+  }\hfill%
+  \subfigure[]{%
+    \includegraphics[width=.32\textwidth,clip]{fig/Emacs_CxCs.png}%
+    \label{fig:Emacs_CxCs}
+  }
+  \caption{Emacsの起動画面 (a) Emacsを立ち上げたところ。(b) \texttt{C-x C-f}で\texttt{\~{}/.emacs.d/init.el}を新規作成するところ。(c) 編集後に\texttt{C-x C-s}で保存したときの画面。}
 \end{figure}
 
-X11に対応したEmacsを起動した場合は、図\ref{fig:emacs1_png}のようなウィンドウが表示されます。まずは、新しいファイルを作成してみましょう。Controlキーを左手小指で押下し、左手中指でXキーを同時に押します。その後、Controlキーを押した状態のまま左手人さし指でFキーを同時に押します。これを、「C-x C-f」のように表記します\footnote{Control-x、Ctl-x、Cn-xなど、いくつかの表記方法があります。好みの問題です。}。表\ref{tab_emacs}にあるように、これは新規ファイルを作成するためのショートカットです。図\ref{fig:emacs2_png}のように「Find file:」の後に続けて作成したいファイル名を入力しましょう。図\ref{fig:emacs2_png}では\texttt{~/foo.txt}を作成しています。
+まずは、新しいファイルを作成してみましょう。最初に作成するのは、Emacsの設定ファイルです。図~\ref{fig:Emacs}の状態から、Controlキー\footnote{USキーボードでCaps LockキーをControlキーに変更した場合は、そのキー。}を左手小指で押しっぱなしにし、左手中指でXキーを同時に押します。その後Xキーから薬指を離し、Controlキーは押した状態のまま左手人さし指でFキーを同時に押します。これを、「C-x C-f」のように表記します\footnote{Control-x、Ctl-x、Cn-xなど、いくつかの表記方法があります。好みの問題です。}。表\ref{tab_emacs}にあるように、これは新規ファイルを作成するためのショートカットです。図\ref{fig:Emacs_CxCf}のように一番下の「Find file:」の後に続けて作成したいファイル名を入力し、リターンきーを押しましょう。ここでは\texttt{\~{}/.emacs.d/init.el}を作成しています\footnote{これは、ホームディレクトリの中にある不可視ディレクトリ\texttt{.emacs.d}の中にある\texttt{init.el}というファイルの意味です。}。
 
-\begin{figure}
-  \centering
-  \includegraphics[scale=0.35]{fig/emacs1.png}
-  \caption{X11対応のEmacsの起動例}
-  \label{fig:emacs1_png}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[scale=0.35]{fig/emacs2.png}
-  \caption{Emacsで新規ファイルを作成する}
-  \label{fig:emacs2_png}
-\end{figure}
-
-あらたなファイルが作成されたので（保存はされていません）、図\ref{fig:emacs3_png}のように文字を入力しましょう。この後、C-x C-s を入力すると実際にディスク上に保存されます。図\ref{fig:emacs3_png}の下部に「Wrote /Users/oxon/foo.txt」と表示されます。最後に、C-x C-cと入力してEmacsを終了しましょう。
-
-\begin{figure}
-  \centering
-  \includegraphics[scale=0.35]{fig/emacs3.png}
-  \caption{Emacsで文字入力をし、保存する}
-  \label{fig:emacs3_png}
-\end{figure}
+そのファイルが存在しない場合は、新規作成されます。真っ白な画面に切り替わったら、次の内容を入力します。
+\begin{lstlisting}[language=lisp]
+;; Key binding
+(define-key global-map "\C-h" 'delete-backward-char)
+\end{lstlisting}
+そして、\texttt{C-x C-s}で編集内容を保存すると、図~\ref{fig:Emacs_CxCs}のようになるはずです。最後に、\texttt{C-x C-c}でEmacsを終了します。ここで追加した設定は、1行目はただのコメント（なくても動作は変わりません）、2行目は\texttt{C-h}を1文字削除の動作に変更するための設定です。
 
 Emacsの操作に慣れるには、まずこのControlキーを多用した操作に慣れることが重要です。表\ref{tab_emacs}に挙げたショートカットを中心にまずは覚え、どのような操作や機能、設定があるのかを調べていきましょう。多機能過ぎて、うんざりするはずです。
 
 \section{C-Space C-wをmacOSで使う}
 
-表\ref{tab_emacs}に示したショートカットの多くはmacOSのアプリケーションでも使うことができます。また使えないアプリケーションでも、\ref{sec:KeyRemap4MacBook}に書いたようにKeyRemap4MacBookの設定で使用可能になります。
+表\ref{tab_emacs}に示したショートカットの多くはmacOSのアプリケーションでも使うことができます。また使えないアプリケーションでも、\ref{sec:Karabiner}に書いたようにKarabiner-Elementsの設定で使用可能になります。
 
-しかし、デフォルトの状態ではC-Space C-wはmacOSのアプリケーションでは使うことができません。Emacsに慣れてくると、C-Space C-wがEmacs以外で使えないのが不便に感じるでしょう。macOSにはこの操作を実現するための機能が隠されています。
+例えばKarabiner-Elementsで\texttt{C-p}や\texttt{C-f}を有効にしておくと、Finderのカラム表示での移動が非常に早く、楽になります。
 
-コード\ref{code:DefaultKeyBinding}を、\texttt{\~{}/Library/KeyBindings/DefaultKeyBinding.dict}として保存して下さい\footnote{\url{http://akenox.dip.jp/index.php?Translations\%2FMac\%20OS\%20X\%20Key\%20Bindings}に詳しい解説がある。}。「Mail」などを起動して文字入力する際に、C-Space C-wやC-x C-sが有効になっているはずです\footnote{Lionからは「Save As\ldots」が「Duplicate」などに置き換わってしまったため、コード\ref{code:DefaultKeyBinding}の設定をしてもC-x C-wは動作しません。}。
+しかしmacOSのデフォルトの状態では\texttt{C-Space C-w}はmacOSのアプリケーションでは使うことができません。Emacsに慣れてくると、\texttt{C-Space C-w}がEmacs以外で使えないのが不便に感じるでしょう。macOSにはこの操作を実現するための機能が隠されています。
+
+コード\ref{code:DefaultKeyBinding}を、\texttt{\~{}/Library/KeyBindings/DefaultKeyBinding.dict}として保存して下さい\footnote{\url{https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/EventOverview/TextDefaultsBindings/TextDefaultsBindings.html}に詳しい解説がある。}。「Mail」などを起動して文字入力する際に、\texttt{C-Space C-w}や\texttt{C-x C-s}が有効になっているはずです。
 
 %\begin{NoFloat}
 \lstinputlisting[float=tb,caption=\texttt{DefaultKeyBinding.dict},label=code:DefaultKeyBinding,numbers=left]{src/DefaultKeyBinding.dict}
@@ -728,14 +786,14 @@ hsimple   : Real Time =   0.07 seconds Cpu Time =   0.05 seconds
 $ sudo ./configure --enable-minuit2 --enable-gdml
 \end{lstlisting}
 
-\texttt{configure}を使った場合は展開したソースファイルのディレクトリ内でコンパイルを行いますので、次のような\texttt{~/.bashrc}の設定になります。
+\texttt{configure}を使った場合は展開したソースファイルのディレクトリ内でコンパイルを行いますので、次のような\texttt{\~{}/.bashrc}の設定になります。
 \begin{NoFloat}
 \lstinputlisting[language=bash]{src/bashrc.sh}
 \end{NoFloat}
 
 \section{configureとMakeの一般的な解説}
 
-macOSやLinux環境でソフトウェアを導入する時、インストールの方法は主に3つあります。1つ目は、\ref{sec:MacPorts}で説明したようなパッケージ管理ソフト\footnote{macOSではMacPorts、Fink、Homebrewなど、LinuxではYumやAPTなど。}を使う方法す。2つ目は、既にコンパイル済みでバイナリ配布されているソフトを導入する方法です。例えば、KeyRemap4MacBookをインストーラを使ってインストールしたのがこれに当たります。また、ROOTを入れる場合でもバイナリ配布されているものを使うことが可能です。3つ目は、ソースコードの配布されているソフトウェアを自分でコンパイル（compile）する\footnote{ビルド（build）するとも言います。}方法です。これは\ref{sec:ROOT_install}でROOTの導入として説明しました。
+macOSやLinux環境でソフトウェアを導入する時、インストールの方法は主に3つあります。1つ目は、\ref{sec:Homebrew}で説明したようなパッケージ管理ソフト\footnote{macOSではMacPorts、Fink、Homebrewなど、LinuxではYumやAPTなど。}を使う方法す。2つ目は、既にコンパイル済みでバイナリ配布されているソフトを導入する方法です。例えば、KeyRemap4MacBookをインストーラを使ってインストールしたのがこれに当たります。また、ROOTを入れる場合でもバイナリ配布されているものを使うことが可能です。3つ目は、ソースコードの配布されているソフトウェアを自分でコンパイル（compile）する\footnote{ビルド（build）するとも言います。}方法です。これは\ref{sec:ROOT_install}でROOTの導入として説明しました。
 
 自分でソフトウェアをソースコードからコンパイルする場合、標準的なやり方が存在します。また、研究で通常使うソフトウェアの多くがこの標準的な方法に則して作成されています。そのためここで説明する方法を覚えておけば、多くのソフトウェアを自分で簡単にインストールできるようになります。
 

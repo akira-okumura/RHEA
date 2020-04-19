@@ -1,7 +1,6 @@
 {
    "^x" = {
        "^s"  = "save:";                         /* C-x C-s */
-       "^w"  = "saveAs:";                       /* C-x C-w */
    };
 
    "^ " = "setMark:";                           /* C-space */
