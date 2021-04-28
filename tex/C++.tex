@@ -421,22 +421,387 @@ LorentzVector::LorentzVector(double x, double y, double z, double t)
 
 また、\texttt{Print()}や演算子も\texttt{fT}に関する記述を追加する必要があるので、新たに書き直しています。\texttt{Print()}のように、親クラスの持つメンバ関数と外見上全く同じメンバ関数を作成することを、関数のオーバーライド（override）と言います。\texttt{fX}、\texttt{fY}、\texttt{fZ}は\texttt{private}として宣言しました。そのため、\texttt{LorentzVector}からは\texttt{X()}などの関数を使わないとアクセスできなくなっていることに注意してください。
 
+\section{基本型と精度}
+\label{sec:primitive}
+
+ここまでで\texttt{int}や\texttt{double}という型が出てきました。これらを総称して基本型（プリミティブ型、primitive type）と呼び、他にも様々な種類があります。
+
+数学の世界でも数字には様々な種類があります。整数、自然数、少数、超越数、複素数などです。例えば10とか123のような整数を紙に記入するとき、我々はその精度をあまり気にすることなく精確に書くことができます。しかし例えば$1/3=0.333\ldots$のような循環小数を分数を使わずに精確に書けと言われると、いくら桁数を増やしてもいつまでも精確な値にはなりません。またあまりに大きな桁の整数を精確に書くことも困難です。
+
+これと同様に、計算機の持つメモリというのは資源が限られています。そこで基本型といういくつかの型を用意することで、多くの計算はその制限の範囲内で行います。そしてその数値は、計算機の内部で二進数として表現されており、何ビットのメモリを使用するかによって表~\ref{table:primitive}のように型が分けられています。
+
+\begin{landscape}
+\begin{table}
+  \centering
+  \caption{C++で用意されている主要な基本型。複数の型指定子が存在する場合、どれを使っても良い。一般的に使われる表記を太字で示してある。}
+  \label{table:primitive}
+  \footnotesize
+\begin{tabular}{|l|l|l|l|l|l|l|}
+  \hline
+型指定子 & ROOT での表現 & C++標準のビット幅 & 64 bit Windows & 64~bit macOS/Linux & 注意 & 扱える範囲 \\
+\hline
+\textbf{\texttt{short}}             & \multirow{4}{*}{\texttt{Short\_t}}   & \multirow{6}{*}{少なくとも16} & \multirow{6}{*}{16} & \multirow{6}{*}{16} & \multirow{6}{*}{}                                 & \multirow{4}{*}{$-32768$〜$+32767$}                                               \\ \cline{1-1}
+\texttt{short int}                  &                   &                          &                     &                     &                                                   &                                                                                                                             \\ \cline{1-1}
+\texttt{signed short}               &                   &                          &                     &                     &                                                   &                                                                                                                             \\ \cline{1-1}
+\texttt{signed short int}           &                   &                          &                     &                     &                                                   &                                                                                                                             \\ \cline{1-3} \cline{7-7} 
+\textbf{\texttt{unsigned short}}    & \multirow{2}{*}{\texttt{UShort\_t}}  &                          &                     &                     &                                                   & \multirow{2}{*}{$0$〜$65535$}                                                    \\ \cline{1-1}
+\texttt{unsigned short int}         &                   &                          &                     &                     &                                                   &                                                                                                                             \\ \hline
+\textbf{\texttt{int}}               & \multirow{3}{*}{\texttt{Int\_t}}     & \multirow{5}{*}{少なくとも16} & \multirow{5}{*}{32} & \multirow{5}{*}{32} & \multirow{5}{*}{}                                 & \multirow{3}{*}{\begin{tabular}{c}$-2,147,483,648$\\〜$+2,147,483,647$\end{tabular}}                               \\ \cline{1-1}
+\texttt{signed}                     &                   &                          &                     &                     &                                                   &                                                                                                                             \\ \cline{1-1}
+\texttt{signed int}                 &                   &                          &                     &                     &                                                   &                                                                                                                             \\ \cline{1-3} \cline{7-7} 
+\texttt{unsigned}                   & \multirow{2}{*}{\texttt{Uint\_t}}    &                          &                     &                     &                                                   & \multirow{2}{*}{$0$〜$+4,294,967,295$}                                            \\ \cline{1-1}
+\textbf{\texttt{unsigned int}}      &                             &                          &                     &                     &                                                   &                                                                                                                             \\ \hline
+\textbf{\texttt{long}}              & \multirow{4}{*}{\texttt{Long\_t}}    & \multirow{6}{*}{少なくとも32} & \multirow{6}{*}{32} & \multirow{6}{*}{64} & \multirow{6}{*}{環境依存（ROOT でも）}                & \multirow{4}{*}{}                                                                                                           \\ \cline{1-1}
+\texttt{long int}                   &                             &                          &                     &                     &                                                   &                                                                                                                             \\ \cline{1-1}
+\texttt{signed long}                &                             &                          &                     &                     &                                                   &                                                                                                                             \\ \cline{1-1}
+\texttt{signed long int}            &                             &                          &                     &                     &                                                   &                                                                                                                             \\ \cline{1-3} \cline{7-7} 
+\textbf{\texttt{unsigned long}}     & \multirow{2}{*}{\texttt{ULong\_t}}   &                          &                     &                     &                                                   & \multirow{2}{*}{}                                                                                                           \\ \cline{1-1}
+\texttt{unsigned long int}          &                             &                          &                     &                     &                                                   &                                                                                                                             \\ \hline
+\textbf{\texttt{long long}}         & \multirow{4}{*}{\texttt{Long64\_t}}  & \multirow{6}{*}{少なくとも64} & \multirow{6}{*}{64} & \multirow{6}{*}{64} & \multirow{6}{*}{C++11以降}                          & \multirow{4}{*}{\begin{tabular}{c}$-9,223,372,036,854,775,808$\\〜$+9,223,372,036,854,775,807$\end{tabular}} \\ \cline{1-1}
+\texttt{long long int}              &                             &                          &                     &                     &                                                   &                                                                                                                             \\ \cline{1-1}
+\texttt{signed long long}           &                             &                          &                     &                     &                                                   &                                                                                                                             \\ \cline{1-1}
+\texttt{signed long long int}       &                             &                          &                     &                     &                                                   &                                                                                                                             \\ \cline{1-3} \cline{7-7} 
+\textbf{\texttt{unsigned long long}}& \multirow{2}{*}{\texttt{ULong64\_t}} &                          &                     &                     &                                                   & \multirow{2}{*}{$0$〜$18,446,744,073,709,551,615$}                               \\ \cline{1-1}
+\texttt{unsigned long long int}     &                             &                          &                     &                     &                                                   &                                                                                                                             \\ \hline
+\textbf{\texttt{signed char}}       &                             &                        & 8                   & 8                   &                                                   & $-128$〜$127$                                                                    \\ \hline
+\textbf{\texttt{unsigned char}}     & \texttt{UChar\_t}                    &                         & 8                   & 8                   &                                                   & $0$〜$255$                                                                       \\ \hline
+\textbf{\texttt{char}}              & \texttt{Char\_t}                     &                         & 8                   & 8                   & \texttt{signed}かどうかは環境依存 &                                                                                                                             \\ \hline
+\textbf{\texttt{bool}}              & \texttt{Bool\_t}                     &                          &                     &                     & 環境依存                                              & \texttt{false}/\texttt{true}                                                                                                                  \\ \hline
+\textbf{\texttt{float}}             & \texttt{Float\_t}                    & 32                       & 32                  & 32                  &                                                   & $\pm3.402,823,4\times 10^{38}$                                                                                                        \\ \hline
+\textbf{\texttt{double}}            & \texttt{Double\_t}                   & 64                       & 64                  & 64                  &                                                   & $\pm1.797,693,134,862,315,7 \times 10^{308}$                                                                                           \\ \hline
+\textbf{\texttt{long double}}       & \texttt{LongDouble\_t}               &                          & 80                  & 80                  &                                                   &                                                                                                                             \\ \hline
+\end{tabular}
+\normalsize
+\end{table}
+\end{landscape}
+
+ここで注意したいのが、例えば同じ\texttt{int}を使用してコード~\ref{code:triple2}のようにプログラムを作成したとしても、使用している計算機やOSによっては扱える整数の範囲が異なる場合があることです。表~\ref{table:primitive}には64~bitのmacOSやLinuxなどの場合しか掲載していませんが、研究室にある少し古い計算機（例えば2010年頃のもの）は32~bitのOSがインストールされている場合があり、同じ\texttt{int}でも$-32768$〜$+32767$の範囲しか扱えないかもしれません。
+
+どのような環境でも同じ計算結果をえられるようにするため\footnote{可搬性（portability）を高めると言います。}、ROOTではこれらの型に対して\texttt{Int\_t}のような新しい型を定義しています。これは\texttt{\$ROOTSYS/include/RtypesCore.h}で例えば次のように\texttt{typedef}を使用して定義されています\footnote{ROOTのライブラリを使用するとき以外は、これらROOT独自の型は使用できません。}\footnote{ROOTを使わない場合のC++でも型の可搬性を高めるために、C++11では\texttt{<cstdint>}というヘッダを用意しており、これをインクルードすることで\texttt{std::uint16\_t}や\texttt{std::int32\_t}などの型を使用できるようになります。これは環境依存がありません。}。
+\begin{lstlisting}[language=c++]
+#ifdef R__INT16
+typedef long           Int_t;       //Signed integer 4 bytes
+typedef unsigned long  UInt_t;      //Unsigned integer 4 bytes
+#else
+typedef int            Int_t;       //Signed integer 4 bytes (int)
+typedef unsigned int   UInt_t;      //Unsigned integer 4 bytes (unsigned int)
+#endif
+\end{lstlisting}
+
+C++の最初の練習には、整数値の範囲や浮動小数点（\texttt{float}、\texttt{double}、\texttt{long double}）の精度を気にする必要はありません。しかし大きな数を扱ったり、精度の必要な計算をする場合には注意が必要です。例えば次の計算をROOTでやってみると、表現できる値の範囲を超えたときに何が起きるか分かるでしょう。
+\begin{lstlisting}[language=c++]
+root [0] short a = 32766
+(short) 32766
+root [1] a += 1
+(short) 32767
+root [2] a += 1
+(short) -32768
+\end{lstlisting}
+2進数で$32766$は$(0111111111111110)_2$であり、計算機上ではこれをビットの並びとして記録しています。ここに1を足すと$(0111111111111111)_2$となり、さらに1を足すと$(1000000000000000)_2$になります。C++では2進数の最大桁が0か1かによって\texttt{signed}型の正負を決定しており、さらに多くのC++コンパイラでは「2の補数表現」\footnote{詳しくは検索してください。}を使っているため、$(1000000000000000)_2=-1\times(2^{16-1})$と変換されてしまうのです。
+
+浮動小数点の型の場合、この限られたビット数を正負符号（1ビット）、指数部（\texttt{float}の場合8ビット）、仮数部（\texttt{float}の場合23ビット）に使い分けます。そのため、表\ref{table:primitive}にある最大値のおよそ$3.4028234\times10^{38}$（10進法表記）というのは、実際には$(1.11111111111111111111111)_2\times2^{(11111111)_2}$のことです。
+
+多くの場合、浮動小数点の見た目は10進数で書かれることが多いですが、実際にはそれに十分近い2進数の指数部と仮数部で計算機は内部表現していることに気をつけてください。例えば\texttt{float}の引き算を次のように実行した場合、得られる結果は$123.456-123.444=0.012$とは異なるものになります（丸め誤差）。
+
+\begin{lstlisting}[language=c++]
+root [0] float a = 123.456
+(float) 123.456f
+root [1] float b = 123.444
+(float) 123.444f
+root [2] a - b
+(float) 0.0120010f
+root [3] a - b == 0.012
+(bool) false
+\end{lstlisting}
+
 \section{配列}
 \label{sec:arrays}
 \texttt{int}や\texttt{double}という型を使って、整数や有限桁の少数を扱うことができました。メモリの許す限り、好きなだけ変数を用意して計算をすることができます。しかし、変数が数百にもなると、もはや人力で変数を管理するのは困難です。また重複しないように変数名を考えることすらできません。そこで、関連した変数をひと塊にすることができます。それが配列（array）です。
 
-\section{ポインタと参照}
-\label{sec:pointers}
+\texttt{Vector3D}クラスの例では、$(x, y, z)$の組みをメンバ変数\texttt{fX}、\texttt{fY}、\texttt{fZ}を\texttt{double}として持ちました。しかし例えば10次元のベクトルや任意の次元のベクトルを扱いたい場合、Zの後に何を使えば良いか迷ってしまいますし、数が増えるたびに変数名を考えなくてはいけなくなります。また、内積の計算をするときも、いちいち全ての変数を書かなくてはいけなくなります。ここでは一度クラスを忘れて、次のようなベクトル$\vec{a}$と$\vec{b}$の内積を考えてみましょう。
+\begin{lstlisting}[language=c++]
+root [0] double a1 = 1., a2 = 2., a3 = 3., a4 = 4., a5 = 5.;
+root [1] double b1 = 10., b2 = 20., b3 = 30., b4 = 40., b5 = 50.;
+root [2] double ab = a1 * b1 + a2 * b2 + a3 * b3 + a4 * b4 + a5 * b5
+(double) 550.00000
+\end{lstlisting}
+これは明らかに面倒ですし、一般化しにくくなります。そこで次のようにしてみましょう\footnote{ここでは簡単のため、要素数が\texttt{a}も\texttt{b}も確かに5個であるというチェックをしていません。}\footnote{このような配列の初期化の記法はC++11以降のものです。古いC++では、\texttt{double a[] = \{1., 2., 3., 4., 5.\}}と書きました。}。
+\begin{lstlisting}[language=c++]
+root [0] double a[] {1., 2., 3., 4., 5.};
+root [1] double b[] {10., 20., 30., 40., 50.};
+root [2] double ab = 0.;
+root [3] for(int i = 0; i < 5; ++i) ab += a[i] * b[i];
+root [4] ab
+(double) 550.00000
+\end{lstlisting}
+このようにすると、要素数が増えても一般化しやすくなります。
 
-\section{文字列}
+上記の例のように、\texttt{[]}を使うことで配列の作成や初期化ができます。また各要素にアクセスしたい場合も\texttt{[]}を使うことで特定の要素を一つの変数のように扱い、そこの値を読んだり代入したりできるようになります。
+
+注意したいのは、このように要素数が最初に決定された配列を使用する場合、後から要素数を簡単に増やすことはできません\footnote{最初からメモリ資源を考えずに十分大きな配列を確保する、\texttt{malloc}を使用して動的に配列を作成する、可変長の配列を独自に実装する、などの方法はありえます。}\footnote{これはC/C++の言語仕様であるため、どうにもできません。C++のSTLやPythonで簡単に配列を可変にできるのは、うまいことそのような機能をC言語などで実装しているからです。}。そこでC++では、標準テンプレートライブラリ（Standard Template Library、STL）のひとつとして、\texttt{std::vector}を用意しています。ここではSTLや\texttt{std::vector}の詳細には踏み込みませんが、世の中に転がっている同じようなC++の例題でも、配列を使っていたり\texttt{std::vector}を使っていたりと十人十色なことに注意してください。計算速度を重視する場合やOSの低レベルな機能を使用する場合をのぞき、最近では配列の代わりに\texttt{std::vector}を積極的に使用するのが良いと思います。
+
+\begin{lstlisting}[language=c++]
+root [0] std::vector<int> a {1, 2, 3, 4, 5}
+(std::vector<int> &) { 1, 2, 3, 4, 5 }
+root [1] a.push_back(6)
+root [2] a
+(std::vector<int> &) { 1, 2, 3, 4, 5, 6 }
+root [3] a[5]
+(int) 6
+\end{lstlisting}
+
+またこれはROOT固有の話になりますが、ROOTはSTLが登場する前に開発が開始されました。そのため（徐々に変わりつつありますが）ROOTの内部ではSTLが多用されておらず、\texttt{TArray}、\texttt{TObjArray}、\texttt{TList}といった独自の配列用クラスが過去のROOTとの互換性のために今でも使われています。
+
+\section{文字列とメモリ}
+節~\ref{sec:primitive}で見たように、整数型には\texttt{char}と呼ばれる型があります。これは英語のcharacterの頭を取ったものであり、主に文字または文字列を扱うときに使用します。まず文字単体を変数に代入してみましょう。
+\begin{lstlisting}[language=c++]
+root [0] char c = 'a'
+(char) 'a'
+\end{lstlisting}
+このように、a という文字を変数\texttt{c}に代入するときは、その文字をシングルクオートで囲みます。\texttt{char}は文字を記憶することができる変数ですが、その内部表現は単なる整数です。そのため例えばこれを\texttt{int}型の変数に代入すると、a は97という数字に対応していることがわかります。
+\begin{lstlisting}[language=c++]
+root [1] int C = c
+(int) 97
+\end{lstlisting}
+
+数字の97（より正確には2進数の$(01100001)_2$）はあくまで数字です。これをターミナルの画面でアルファベットとして表示するのは、単にターミナルやOSがうまいこと人間に合わせて動作してくれているからです。例えば「ABC」とだけ記入されたテキストファイルがあれば、それはビット列として\texttt{010000010100001001000011}という情報\footnote{実際にこのような順序でメモリ上に並んでいるかは、使っているCPUなどの環境に依存します。}が記録されただけのファイルであり、拡張子が\texttt{.txt}だからというような理由で、ソフトウェアが文字情報としてうまいこと表示してくれているのです。
+
+さて、単一の文字ではなく、文字列を保持したい場合には\texttt{char}型の配列を使用すれば良いことが想像できます。しかし、例えばHelloという言葉を配列を使って次のように初期化するのは面倒です。
+\begin{lstlisting}[language=c++]
+root [0] char str[] {'H', 'e', 'l', 'l', 'o', '\0'}
+(char [6]) "Hello"
+\end{lstlisting}
+これを簡単に初期化するため、C++では次のような記法が許されています。
+\begin{lstlisting}[language=c++]
+root [0] char str[] {"Hello"} // str[] = "Hello" でも可
+(char [6]) "Hello"
+\end{lstlisting}
+
+ここで最初の例では、Helloは5文字しかないのに最終要素に\texttt{\textbackslash{}0}という文字を追加して、6要素を持つ配列を確保しています。この\texttt{\textbackslash{}0}は終端文字（ヌル文字、null character）と呼ばれ、文字列の終わりであることを計算機に知らせる役割を果たしており\footnote{\texttt{\textbackslash{}0}のようにバックスラッシュをつけて入力する文字を特殊文字とかエスケープシーケンス（escape sequence）と呼びます。英数字のみで表せない文字です。他には改行のための文字である\texttt{\textbackslash{}n}や、タブ\texttt{\textbackslash{}t}などがあります。}、数値としてもゼロになっています。そのため、もし4要素目にこの終端文字を代入してしまうと、C++は\texttt{str}の中身を\texttt{Hell\textbackslash{}0o}ではなく\texttt{Hell}だと認識するようになります。
+\begin{lstlisting}[language=c++]
+root [1] str[4] = '\0'
+(char) '0x00'
+root [2] str
+(char [6]) "Hell"
+\end{lstlisting}
+
+なぜこのように\texttt{\textbackslash{}0}を使用する必要があるのか、どうして5文字使うだけなのに余計な1文字を消費するのかと疑問に思うかもしれません。その理由は、CやC++では任意の配列の長さを調べることができない、言い換えると、配列自身は配列長という情報を持っていないという言語仕様のためです\footnote{「任意の」と書いたのは、プログラムの場所によっては\texttt{sizeof(str)}とすることで配列長を取得できる場合があるからです。これはコンパイラ（もしくはROOT）がコンパイル時に\texttt{str}の初期化で使われた文字数を数えてくれるからです。プログラムの全ての場所で\texttt{sizeof}が有効に使えるというわけではありません。}。少し詳しく解説してみます。
+
+上記の例で\texttt{str[]}という配列がメモリ上に確保された場合、その初期化に必要な大きさのメモリ領域がOSによって占有されます。\texttt{char}は1バイト（8ビット）の大きさなので、合計6文字分、つまり6バイトのメモリ領域が連続的に使用されます。あるプログラムがメモリの読み書きをする場合、当然ですがメモリのどの領域を読み書きするのかを知っていなくてはいけず、その情報をOSと共有している必要があります。そのメモリの場所のことをアドレス（address）と呼びます。
+
+メモリのアドレスは、多くの場合16進数で表示します\footnote{16進数は0〜9の10個の数字に加え、a〜f（もしくはA〜F）の6文字を数字の代わりに使用します。$(12)_{10}$は$(\mathrm{c})_{16}$と、$(4095)_{10}$は$(\mathrm{fff})_{16}$と同じになります。16進数をC++などのコード中で表記するときは、$(\mathrm{fff})_{16}$を\texttt{0xfff}や\texttt{0xFFF}のように書きます。2桁で$2^{8}$相当の情報を持つことができるため、これが1バイトに相当します。}。例えば次の例では、\texttt{0x1119c0658}〜\texttt{0x1119c065d}（$(1119\mathrm{c}0658)_{16}$〜$(\mathrm{1119c065d})_{16}$）のアドレス範囲にあるメモリが\texttt{str[]}配列に使用されており、その1バイトずつに\texttt{char}が1文字ずつ数値として記録されています。この例ではアドレスの最小桁が8からdへと1ずつ増えている（1バイトずつ移動している）ことに注意してください。
+
+\begin{lstlisting}[language=,basicstyle={\scriptsize\ttfamily},keywordstyle=,stringstyle=,ndkeywordstyle=,identifierstyle=]
+-------------------------------------------------------------------------------------
+| 0x1119c0658 | 0x1119c0659 | 0x1119c065a | 0x1119c065b | 0x1119c065c | 0x1119c065d | メモリ上のアドレス ...(A)
+-------------------------------------------------------------------------------------
+|   Byte 0    |    Byte 1   |    Byte 2   |    Byte 3   |    Byte 4   |    Byte 5   | バイト列として数えた順番
+-------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------
+|    0x48     |     0x65    |     0x6c    |     0x6c    |     0x6f    |     0x00    | バイト列の値 ...(B)
+-------------------------------------------------------------------------------------
+|     H       |      e      |      l      |      l      |      o      |      \0     | 文字として表示した場合の中身
+-------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------
+|   str       |   str + 1   |   str + 2   |   str + 3   |   str + 4   |   str + 5   | (A) の値を取り出す方法
+-------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------
+|   str[0]    |    str[1]   |    str[2]   |    str[3]   |    str[4]   |    str[5]   | (B) の値を取り出す方法その1
+-------------------------------------------------------------------------------------
+|   *str      |  *(str + 1) |  *(str + 2) |  *(str + 3) |  *(str + 4) |  *(str + 5) | (B) の値を取り出す方法その2
+-------------------------------------------------------------------------------------
+\end{lstlisting}
+
+\texttt{char[] str \{"Hello"\}}でC++が行う作業は、メモリの確保とその初期化です。6バイト分のメモリを確保したのち、そのひとつずつに\texttt{0x48}や\texttt{0x65}という値を書き込んでいきます。つまり、メモリアドレス\texttt{0x1119c065c}には値\texttt{0x6f}が書き込まれているということです。
+
+節~\ref{sec:primitive}では「型」の概念を学びました。それでは、ここで使われている変数\texttt{str}の型はなんでしょうか。\texttt{char}型でしょうか、\texttt{char}型の配列という型でしょうか。C++では配列という表現があるものの、配列という型は存在せず、配列の実体は上述のように単にアドレスの連続したメモリ領域のことです。そのため「\texttt{char}型の配列という型」のようなものは存在しません。実は\texttt{str}は「\texttt{char}のポインタ型」（\texttt{char*}と表記）と呼ばれる型の変数です。
+
+\texttt{char*}型の変数は、その値に\texttt{H}（\texttt{0x48}）などを保持しているわけではなく、アドレスを保持しています。メモリ空間のアドレスを指し示す役割を果たすため、ポインタ（pointer）と呼ばれます。ROOTのプロンプトはユーザの利便性のため「親切に」\texttt{char*}型の変数を文字列として表示するので、次の例で示すやり方で\texttt{str}の値を表示してみましょう。\texttt{0x1119c0658}という値を持っていることが分かります\footnote{\texttt{(void*)}を付加することで、\texttt{str}の型を\texttt{char*}から\texttt{void*}へキャスト（cast、異なる型へ変換すること）しています。違うポインタ型にすることで、「親切に」ROOTが文字列を表示しないようにしています。}。
+
+\begin{lstlisting}[language=c++]
+root [3] str // これだと ROOT がポインタの値を表示してくれない
+(char [6]) "Hello"
+root [4] printf("%p\n", str); // 16 進数を文字列として表示
+0x1119c0658
+root [5] (void*)str // キャストする
+(void *) 0x1119c0658
+\end{lstlisting}
+
+配列では次のようにして配列の要素を取り出すことができました。しかしこれは、\texttt{str}が\texttt{char*}型であることを踏まえると一体何をやっているのでしょうか。
+\begin{lstlisting}[language=c++]
+root [6] str[0]
+(char) 'H'
+\end{lstlisting}
+実はこの操作は、次のよくわからない記法を分かりやすくした全く同一の操作なのです\footnote{このような難しい表現を簡単な表現にして同一の操作を実現する構文を、糖衣構文（シンタックスシュガー、syntax sugar）と言います。}。
+\begin{lstlisting}[language=c++]
+root [7] *str
+(char) 'H'
+\end{lstlisting}
+ポインタ型の変数はメモリ上のアドレスを保持する役割をもちますが、その変数に\texttt{*}をつけると、そのアドレスに書き込まれた値を取り出すことができます。また例えば\texttt{str + 2}は\texttt{str}の指すアドレスの2つ先なので\texttt{0x1119c065a}を指しますが、\texttt{*}をつけるとそのアドレスに書き込まれた値を取り出すことができるので、次のような操作が行ええます。
+\begin{lstlisting}[language=c++]
+root [8] str[2]
+(char) 'l'
+root [9] *(str + 2)
+(char) 'l'
+\end{lstlisting}
+このように考えたとき、計算機側からは\text{char*}型の\texttt{str}を見ただけでは、それが何バイト分だけ文字列として有効かを知る術がありません。例えば次のように「勝手に」6文字を超えてメモリ上の値にアクセスしてみましょう。メモリ上には他の変数が書き込まれていたり、以前に書き込まれていた値が残っていたりします。そのため、確保した覚えのないメモリ領域から何かしらの値が取得できてしまう場合があるのです\footnote{プログラムをクラッシュさせる場合もあります。}。
+
+\begin{lstlisting}[language=c++]
+root [10] *(str + 10)
+(char) '0x7f'
+root [11] *(str + 100)
+(char) '0x86'
+\end{lstlisting}
+
+さて、なぜ\texttt{\textbackslash{}0}が必要なのかという問いにようやく戻ると、どこまでが文字列として使用しているメモリ領域かを計算機に伝える目印が必要だからです。CやC++の文字列では\texttt{\textbackslash{}0}が現れる直前の文字をその文字列の最後尾とみなし、\texttt{\textbackslash{}0}によって文字列の終端を示すのです。
+
+さらに、もう少し複雑なメモリへのアクセスを試すことで、この節での説明を理解できているか確認してみましょう。次の例のように、まず\texttt{str + 1}のアドレスを\texttt{short*}（\texttt{short}のポインタ型）でキャストします。このとき変数\texttt{sp}はアドレス\texttt{0x1119c0659}を指すようになり、またその領域に書き込まれている値は\texttt{short}型であると思い込むようになります。そこで、\texttt{*sp}としてそのアドレスに書き込まれた\texttt{short}の値を取り出すと、16進数で0x6c65（10進数で27749）になります\footnote{この値が\texttt{0x6c65}になるか\texttt{0x656c}になるかは使用している計算機やCPUの種類によります。詳しくは「エンディアン」で検索してみてください。}。
+
+\begin{lstlisting}[language=c++]
+root [12] short* sp = (short*)(str + 1)
+(short *) 0x1119c0659
+root [13] *sp
+(short) 27749
+root [14] 0x6c65
+(int) 27749
+\end{lstlisting}
+
+注意したいのが、2バイト以上のメモリを使用する型のポインタを増減させる場合です。\texttt{sp}は\texttt{short*}型なので\texttt{sp + 1}は\texttt{sp}から1バイトだけ増えるような気がします。しかし\texttt{sp + 1}が示すのは\texttt{0x1119c065a}というアドレスではなく、\texttt{0x1119c065b}です。
+\begin{lstlisting}[language=c++]
+root [15] sp + 1
+(short *) 0x1119c065b
+root [16] *(sp + 1)
+(short) 28524
+\end{lstlisting}
+これは\texttt{short*}型にとって1増えるというのは、\texttt{short}のメモリの大きさの分だけ（2バイト分だけ）アドレスを移動するという意味だからです。
+
+また、同じ1バイトの整数型であっても、\texttt{signed}か\texttt{unsigned}かによって計算に使用される数値としては別物だということにも注意しましょう。次の例の場合、メモリに書き込まれている値はどちらも\texttt{0xff}です。
+\begin{lstlisting}[language=c++]
+root [0] signed char a = 0xff
+(signed char) '0xff'
+root [1] unsigned char b = 0xff
+(unsigned char) '0xff'
+root [2] printf("%d %d\n", a, b)
+-1 255
+(int) 7
+\end{lstlisting}
+
+
+さて、ここまで文字列を例にとって配列とポインタのややこしい関係を説明してきました。しかし、より現代的なC++プログラミングでは文字列にSTLの\texttt{std::string}型を使うことが多くあります。
+\begin{lstlisting}[language=c++]
+root [17] std::string s {"Hello"}
+(std::string &) "Hello"
+\end{lstlisting}
+
+\section{スコープ}
+\label{sec:scope}
+
+ここまで扱ってきたいくつかの型による変数には寿命が存在します。変数を宣言するとその型や配列長に応じてメモリが確保され、そのメモリ領域が不要になった際にユーザもしくはOSがその領域を解放します（他のプログラムが利用できるようになります）。通常の変数はあるブロック内\footnote{\texttt{\{\}}で囲まれた領域。}で宣言されたときに始まり、そのブロックを抜けるときに終了します。これを変数のスコープ（scope）と呼びます。
+\begin{lstlisting}[language=c++]
+{
+  int a = 0;
+}
+a += 1; // a が宣言されたブロックを既に抜けているので無効
+\end{lstlisting}
+
+\begin{lstlisting}[language=c++]
+for (int i = 0; i < 10; ++i) {
+  // 何か処理
+}
+std::cout << i << std::endl; // i が for ブロックを既に抜けているので無効
+\end{lstlisting}
+
+\begin{lstlisting}[language=c++]
+void func() {
+  int a = 0;
+}
+
+int main() {
+  func();
+  std::cout << a << std::endl; // func の中で宣言された変数なので無効
+  return 0;
+}
+\end{lstlisting}
+
+また、既に存在している変数名が新たなブロック内で宣言されると、新たな変数がそのブロック内では有効になります。
+
+\begin{lstlisting}[language=c++]
+int a = 1;
+if (a == 1) {
+  int a = 2; // 新しい変数
+  std::cout << a << std::endl; // 新しい変数の中身 2
+}
+std::cout << a << std::endl; // 最初の変数の中身のまま 1
+\end{lstlisting}
+
+一般的にC++のプログラミングでは、使用する変数のスコープをできる限り小さくするのが鉄則です。例えば変数\texttt{a}と\texttt{b}の値を入れ替えたい場合は一時的な変数を用意する必要がありますが、この変数は後で使い回すわけではないので、スコープを短くしておいたほうがそのプログラムの「読者」（共同研究者かもしれませんし、数週間後のあなた自身かもしれません）が変数の役割を理解しやすくなります。
+\begin{lstlisting}[language=c++]
+int a = 1, b = 2;
+{
+  int tmp = a;
+  a = b;
+  b = tmp;
+}
+\end{lstlisting}
+\texttt{for}文を回すときに変数\texttt{i}を\texttt{for}と同じ行で宣言するのも、\texttt{i}を\texttt{for}文の外では使用しないことを明らかにできます。
+
+\begin{NoFloat}
+\lstinputlisting[language=c++,caption=\texttt{first\_script4.C},label=code:first_script4_C,numbers=left]{src/first_script4.C}
+\end{NoFloat}
+
+この変数の寿命がスコープ内にとどまるというC++の機能は、もう使用しないメモリを解放したり、可読性の高いコードを書くという観点からは大変便利なものです。しかしROOTではこの機能が邪魔になる場合があります。まず最初にコード~\ref{code:first_script4_C}を見てみましょう。これはコード~\ref{code:first_script}を少し改変したもので、\texttt{TH1D}型の変数\texttt{hist}を作り、正規分布で乱数を詰めた後に\texttt{Draw}しています。これを試しに実行してみてください。
+
+\begin{lstlisting}[language=c++]
+root [0] .x first_script4.C
+Info in <TCanvas::MakeDefCanvas>:  created default TCanvas with name c1
+root [1] gDirectory->ls()
+\end{lstlisting}
+
+実行自体は問題なくでき、\texttt{hist}を\texttt{Draw}する際に必要となる\texttt{TCanvas}の自動生成も行われています。しかし画面に現れる\texttt{c1}は真っ白のはずです。また\texttt{myhist}という名前で生成したはずの\texttt{TH1D}も、\texttt{gDirectory->ls()}で表示されません。
+
+これは\texttt{hist}のスコープが関数\texttt{first\textbackslash{}script4}を抜けると同時に終了し、\texttt{hist}がメモリ上から消去されてしまうためです。ROOTの解析では関数を抜けた後に引き続きその変数（classの場合インスタンスもしくはオブジェクトとも呼ぶ）を表示したり追解析したいことが頻繁にあるため、このようにメモリ上から消されてしまっては困ってしまいます。これを回避するのが、コード~\ref{code:first_script}で使われていた\texttt{new}です。
 
 \section{\texttt{new}と\texttt{delete}}
-\label{sec:newとdelete}
+\label{sec:new_delete}
+
+通常の変数では、例えば\texttt{int a = 1;}のようにメモリが確保される場合、このメモリ領域は「静的に」（statical）確保されます。静的に確保されるとは、そのコードのコンパイル時に使用するメモリの量が決定していて、プログラムを実行するとそれに応じてメモリ使用量が変化しないということです。一方、使用するメモリ量がプログラム作成時には決定していないような場合も存在します。例えば陽子・陽子の衝突で生じた複数の中間子の運動量を\texttt{double}の配列に記録したいとします。このとき何個の中間子が出てくるかは衝突事象ごとに異なりますので、必要となるメモリ量を事前に決定することができません。このような場合、メモリを「動的に」（dynamical）に確保する必要があります\footnote{あくまで例なので、実際にはこのようなコードは書かないと思います。}。
+
+新しく変数やオブジェクトを作成する場合に\texttt{new}を使用すると、必要なメモリ領域が動的に確保されます。陽子・陽子衝突の例で$n$個の中間子が生成されたとして、その運動量を記録するために合計$4n$個の\texttt{double}を確保しようとすると、次のようにします。
+\begin{lstlisting}[language=c++]
+root [0] int n = 10
+(int) 10
+root [1] double* p = new double[4 * n]
+(double *) 0x7fc9968e9cc0
+\end{lstlisting}
+\texttt{new}演算子はその右側にある型の必要バイト数に応じて、また配列の場合はその配列長の分だけメモリ領域を動的に確保します。この場合、\texttt{double}は8バイト使用するので、合計$32n$バイトのメモリ領域を確保します。\texttt{new}演算子は確保されたメモリ領域の先頭アドレスを返します。したがって\texttt{char}配列と文字列を学んだときのように、\texttt{[]}を使用してその配列の値を次のように読み書きすることができます。
+\begin{lstlisting}[language=c++]
+root [2] std::cout << p[3] << std::endl;
+2.5526e+151
+root [3] p[3] = 1.2345
+(double) 1.2345000
+root [4] std::cout << p[3] << std::endl;
+1.2345
+\end{lstlisting}
+ここで注意したいのが、\texttt{new}で確保された領域は初期化されず、\texttt{double}の値がデフォルト値であるゼロになりません。この例で初期値が\texttt{2.5526e+151}になっているのは、そのメモリ領域に残っていた以前の情報（ビット列）を\texttt{double}に変換してしまっているためです。
+
+動的に確保されたメモリを解放するのはユーザの責任です。次のように\texttt{delete []}を使って配列を消去します。
+\begin{lstlisting}[language=c++]
+root [5] delete [] p
+root [6] p = 0
+(double *) nullptr
+\end{lstlisting}
+最後に\texttt{0}を代入するのは、ポインタ\texttt{p}が意味のないアドレス（そこに確保した配列が既に存在していないアドレス）を保持し続けるのを回避するためです。
+
+ここまでくると、なぜコード~\ref{code:first_script}だと図が表示され、コード~\ref{code:first_script4_C}だと図が消えてしまうのか理解できたと思います。\texttt{new}で動的に確保された\texttt{TH1D}のメモリは、スコープを外れても自動で消去されません。ただし、\texttt{TH1D*}型の\texttt{hist}という変数自体は消去されてしまいます。これはそのヒストグラムの存在するメモリの先頭アドレスを指すポインタ変数が消えるだけで、メモリ上の情報自体は消去されないということに注意してください。
+
+\section{ポインタと参照}
+\label{sec:pointers}
 
 \section{\texttt{virtual}}
 \label{subsec:virtual}
 
-\section{スコープ}
-\label{sec:スコープ}
 
 \section{プログラムの書き方}

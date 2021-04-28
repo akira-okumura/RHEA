@@ -1,5 +1,8 @@
 \documentclass[oneside,uplatex]{jsbook}
 
+\usepackage{multirow}
+\usepackage[dvipdfmx]{pdflscape}
+
 \usepackage[deluxe]{otf} % Avoid using Hira-Kaku W6
 \usepackage{enumitem} % Adjust description items
 \usepackage[dvipdfmx]{graphicx}
@@ -20,6 +23,9 @@
 % color より新しいらしい
 \usepackage[dvipdfmx]{xcolor}
 \usepackage{listings}
+% enable correct copy & paste for ` from PDF
+% https://tex.stackexchange.com/questions/341004/backward-quote-in-listings
+\usepackage{upquote}
 \newcommand{\conted}{\texttt{cont'ed}} % for ROOT 6 prompt
 \usepackage[T1]{fontenc}
 
@@ -50,7 +56,6 @@
         rulecolor=\color{rulecolor},
         classoffset=1,
         morekeywords={Double_t,Int_t,Char_t,Short_t,Long_t,Float_t,ULong_t,UInt_t,UShort_t,UChar_t},
-        keywordstyle={\small\color{keywordcolor}},
         classoffset=0
         }
 \def\lstlistingname{コード}

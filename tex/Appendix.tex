@@ -71,12 +71,12 @@ $ brew cask install mactex
 
 次のコマンドを実行します。
 \begin{lstlisting}[language=bash]
-$ echo "Emacs(){\n\t[ -f $1 ] || touch $1\n\topen -a Emacs $1\n}" >> ~/.zshrc
+$ echo "Emacs () {\n\t[ -f \$1 ] || touch \$1\n\topen -a Emacs \$1\n}" >> ~/.zshrc
 $ source ~/.zshrc
 $ which Emacs
-Emacs () {
-	[ -f ] || touch
-	open -a Emacs
+Emacs(){
+	[ -f $1 ] || touch $1
+	open -a Emacs $1
 }
 \end{lstlisting}
 これで、\texttt{Emacs}というコマンド（実際は関数）で\texttt{/Applications/Emacs.app}を起動できるようになりました。
@@ -325,7 +325,7 @@ DockからFinderを最初にクリックすると、図~\ref{fig:Finder_recents}
 
 キーボードから複数のキーの組み合わせで、ある特定の動作をさせるものを、キーボードショートカット（keyboard shortcut）と呼びます。Windowsではコントロールキー（Control key）中心ですが、Macの場合はコマンドキー（Command key、\cmdkey）が中心です。例えばコピーやペーストなどのショートカットは、\cmdkey\,Cと\cmdkey\,Vです。
 
-通常、ショートカットはメニューバーから辿ることもできます。既に行ったホームへの移動は、メニューバーの「Go」から「Home」選択すると同じ動作をします。メニューの中にある文字列の右側にショートカットが記載されており、コマンドキー（\cmdkey）、シフトキー（\shiftkey）、オプションキー（\optkey）、コントロールキー（\ctlkey）、デリートキー（\delkey）などと組み合わされたものが表示されています。
+通常、ショートカットはメニューバーから辿ることもできます。既に行ったホームへの移動は、メニューバーの「Go」から「Home」選択すると同じ動作をします。メニューの中にある文字列の右側にショートカットが記載されており、コマンドキー（\cmdkey）、シフトキー（\shiftkey）、オプションキー（\optkey）、コントロールキー（\ctlkey）、デリートキー（\delkey）などと組み合わされたものが表示されています\footnote{これら変な記号はどれがどれに対応するか覚えにくいと思います。このうち、シフトキーは英語の「shift」の「位置を移動する」という意味を思い出し、\shiftkey\,の形状と連想すると覚えやすいでしょう。またオプションキーも、英語の「option」が「複数の選択肢から選ぶこと」という意味を思い出し、\optkey\,が線路の分岐器（方向を切り替える装置）の形状を連想すると覚えられると思います。}。
 
 さて、Finderの表示がこのままだと移動が不便なので、\cmdkey\,3を押してみましょう。これで表示形式がカラム（column）表示に切り替わります。アイコンが小さくなり情報量が増え、ディレクトリ階層のどこにいるかも分かりやすくなります。
 
@@ -397,7 +397,17 @@ Terminal.appはDockには入っておらず、\texttt{/Applications/Utilities/}�
 Time MachineはmacOSの自動バックアップの仕組みです。設定することで、外付けハードディスクやTime Capsule（タイムカプセル）\footnote{Appleが販売していた、内蔵ハードディスク付きのWi-Fiルータ。}にバックアップを作成することができます。
 
 \subsection{アプリケーションの切り替え}
-起動しているアプリケーションを切り替えるのは、\cmdkey\,Tabで行います。同一アプリケーション内でウィンドウを切り替えるのは、\cmdkey\,`で行います。
+起動しているアプリケーションを切り替えるのは、\cmdkey\,Tabで行います。同一アプリケーション内でウィンドウを切り替えるのは、\cmdkey\,\`\,で行います。
+
+\subsection{スクリーンショット}
+macOSで表示されている画面を画像として保存（スクリーンショット、screenshot）したいとき、主に3通りのやり方があります\footnote{詳細は\url{https://support.apple.com/ja-jp/HT201361}を参照。}。1つ目は\cmdkey\,\shiftkey\,3で、画面の全てを保存する方法です。PNG形式（拡張子\texttt{.png}）でデスクトップに画像が保存されます。2つ目は\cmdkey\,\shiftkey\,4を押し、カーソルをドラッグして保存する範囲を選択する方法です。3つ目は\cmdkey\,\shiftkey\,4を押した後、撮影したいウィンドウの上にカーソルを重ねた後にスペースキーを押し、そのウィンドウをクリックする方法です。これだと、そのウィンドウ全体が撮影されます。
+
+3つ目の方法で最後にクリックするとき、オプションキーを押しながらクリックするとウィンドウの影が消えます。無駄に影が入ると画像サイズが大きくなるだけで全く利点のない場合がほとんどなので、多くの場合はオプションキーを押して撮影しましょう。もし毎回オプションキーを押すのが面倒な場合は、Terminal.appから次のコマンドを実行してください\footnote{\texttt{defaults}コマンドは、System Preferencesなどから変更することのできない、macOSの様々な隠し設定を行うためのコマンドです。}。
+
+\begin{lstlisting}[language=bash]
+$ defaults write com.apple.screencapture "disable-shadow" -bool TRUE
+$ killall SystemUIServer 
+\end{lstlisting}
 
 \section{英語環境にする}
 日本の研究室でMacを使う場合、OSの言語環境を日本語にしている人が多いでしょう。しかしMacを研究で使う場合には英語環境に変更することを強くお勧めします。大きく四つの理由があるからです。
@@ -631,14 +641,14 @@ Emacsの特徴のひとつに、文字入力に特殊なキーボードショー
 ショートカット & 英単語 & 機能 \\ \hline\hline
 C-f & {\bf F}orward & 一文字進む（→キーと同等） \\
 C-b & {\bf B}ackward & 一文字戻る（←キーと同等） \\
-C-p & {\bf P}revious line & 次の行へ進む（↓キーと同等） \\
-C-n & {\bf N}ext line & 前の行へ戻る（↑キーと同等） \\
+C-p & {\bf P}revious line & 前の行へ戻る（↑キーと同等） \\
+C-n & {\bf N}ext line & 次の行へ進む（↓キーと同等） \\
 C-a & {\bf A}head & 行頭へ移動 \\
 C-e & {\bf E}nd & 行末へ移動 \\
 C-k & {\bf K}ill & カーソル位置から行末までを全て kill-ring と呼ばれるメモリ領域に移動（カットに類似） \\
 C-y & {\bf Y}ank & kill-ringにあるものをカーソル位置にペースト \\
 C-t & {\bf T}ranspose & カーソルの前後の文字を入れ替える \\
-C-h & 不明 & カーソル前方を一文字削除（MacのDelete、WindowsのBackspaceと同等） \\
+C-h & 不明 & カーソル前方を一文字削除（MacのDelete、WindowsのBackspaceと同等）※ただし、C-hはデフォルトのEmacsでは無駄にヘルプに割り当てられているため、本文に示すやり方で設定変更をするのが一般的。 \\
 C-d & forward {\bf D}elete & カーソル後方を一文字削除（WindowsのDeleteと同等） \\
 C-m & 不明 & 改行（カーソルも次の行へ移動する） \\
 C-o & 不明 & 改行（カーソルは元の位置にとどまる） \\
@@ -679,9 +689,9 @@ $ Emacs
   \caption{Emacsの起動画面 (a) Emacsを立ち上げたところ。(b) \texttt{C-x C-f}で\texttt{\~{}/.emacs.d/init.el}を新規作成するところ。(c) 編集後に\texttt{C-x C-s}で保存したときの画面。}
 \end{figure}
 
-まずは、新しいファイルを作成してみましょう。最初に作成するのは、Emacsの設定ファイルです。図~\ref{fig:Emacs}の状態から、Controlキー\footnote{USキーボードでCaps LockキーをControlキーに変更した場合は、そのキー。}を左手小指で押しっぱなしにし、左手中指でXキーを同時に押します。その後Xキーから薬指を離し、Controlキーは押した状態のまま左手人さし指でFキーを同時に押します。これを、「C-x C-f」のように表記します\footnote{Control-x、Ctl-x、Cn-xなど、いくつかの表記方法があります。好みの問題です。}。表\ref{tab_emacs}にあるように、これは新規ファイルを作成するためのショートカットです。図\ref{fig:Emacs_CxCf}のように一番下の「Find file:」の後に続けて作成したいファイル名を入力し、リターンきーを押しましょう。ここでは\texttt{\~{}/.emacs.d/init.el}を作成しています\footnote{これは、ホームディレクトリの中にある不可視ディレクトリ\texttt{.emacs.d}の中にある\texttt{init.el}というファイルの意味です。}。
+まずは、新しいファイルを作成してみましょう。最初に作成するのは、Emacsの設定ファイルです。図~\ref{fig:Emacs}の状態から、Controlキー\footnote{USキーボードでCaps LockキーをControlキーに変更した場合は、そのキー。}を左手小指で押しっぱなしにし、左手中指でXキーを同時に押します。その後Xキーから薬指を離し、Controlキーは押した状態のまま左手人さし指でFキーを同時に押します。これを、「C-x C-f」のように表記します\footnote{Control-x、Ctl-x、Cn-xなど、いくつかの表記方法があります。好みの問題です。}。表\ref{tab_emacs}にあるように、これは新規ファイルを作成するためのショートカットです。図\ref{fig:Emacs_CxCf}のように一番下の「Find file:」の後に続けて作成したいファイル名を入力し、リターンキーを押しましょう。ここでは\texttt{\~{}/.emacs.d/init.el}を作成しています\footnote{これは、ホームディレクトリの中にある不可視ディレクトリ\texttt{.emacs.d}の中にある\texttt{init.el}というファイルの意味です。}。
 
-そのファイルが存在しない場合は、新規作成されます。真っ白な画面に切り替わったら、次の内容を入力します。
+そのファイルが存在しない場合は、新規作成されます。真っ白な画面に切り替わったら、次の内容を入力します。これは\texttt{C-h}をヘルプの表示ではなく、delete（Mac）もしくはbackspace（Linux、Windows）に変更する設定です。
 \begin{lstlisting}[language=lisp]
 ;; Key binding
 (define-key global-map "\C-h" 'delete-backward-char)
@@ -689,6 +699,12 @@ $ Emacs
 そして、\texttt{C-x C-s}で編集内容を保存すると、図~\ref{fig:Emacs_CxCs}のようになるはずです。最後に、\texttt{C-x C-c}でEmacsを終了します。ここで追加した設定は、1行目はただのコメント（なくても動作は変わりません）、2行目は\texttt{C-h}を1文字削除の動作に変更するための設定です。
 
 Emacsの操作に慣れるには、まずこのControlキーを多用した操作に慣れることが重要です。表\ref{tab_emacs}に挙げたショートカットを中心にまずは覚え、どのような操作や機能、設定があるのかを調べていきましょう。多機能過ぎて、うんざりするはずです。
+
+Macで日本語キーボード（「英数」「かな」キーが存在するもの）を使用している場合、Emacsで\texttt{\textbackslash}を入力しようとしても\texttt{\textyen}が入力されてしまうかもしれません\footnote{キーボードには\texttt{\textyen}が印字されており、それ通りにEmacsに入力されるという言い方が正確かもしれません。}。この場合、さらに次の行を\texttt{\~{}/.emacs.d/init.el}に追加します。
+\begin{lstlisting}[language=lisp,escapeinside={(*@}{@*)}]
+;; Replace (*@\textyen@*) with \ 
+(define-key global-map "(*@\textyen@*)" "\\")
+\end{lstlisting}
 
 \section{C-Space C-wをmacOSで使う}
 
@@ -700,30 +716,32 @@ Emacsの操作に慣れるには、まずこのControlキーを多用した操�
 
 コード\ref{code:DefaultKeyBinding}を、\texttt{\~{}/Library/KeyBindings/DefaultKeyBinding.dict}として保存して下さい\footnote{\url{https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/EventOverview/TextDefaultsBindings/TextDefaultsBindings.html}に詳しい解説がある。}。「Mail」などを起動して文字入力する際に、\texttt{C-Space C-w}や\texttt{C-x C-s}が有効になっているはずです。
 
-%\begin{NoFloat}
 \lstinputlisting[float=tb,caption=\texttt{DefaultKeyBinding.dict},label=code:DefaultKeyBinding,numbers=left]{src/DefaultKeyBinding.dict}
-%\end{NoFloat}
 
-\section{Xcode}
 
-\begin{lstlisting}[language=bash]
-$ clang
-xcode-select: note: no developer tools were found at '/Applications/Xcode.app', requesting install. Choose an option in the dialog to download the command line developer tools.
-\end{lstlisting}
-
-\begin{figure}
-  \centering
-  \includegraphics[scale=0.5]{fig/command-line-developer-tools.png}
-  \caption{Command Line Developer Tools のインストールダイアログ}
-  \label{fig:command-line-developer-tools}
-\end{figure}
-
-\begin{lstlisting}[language=bash]
-$ clang
-clang: error: no input files
-\end{lstlisting}
 
 \section{知っていると便利な macOS 特有のコマンド}
+\subsection{open}
+
+\texttt{open}コマンドは、ファイルやディレクトリを開くためのコマンドです。いくつか例を示します。
+
+\begin{lstlisting}[language=bash]
+$ open ~ # Home が Finder で開かれる
+$ open . # カレントディレクトリが Finder で開かれる
+$ open test.pdf # カレントディレクトリにある test.pdf が（おそらく Preview.app で）開かれる
+$ open -a Safari test.pdf # 開くアプリケーションを指定して test.pdf を開く
+\end{lstlisting}
+
+\subsection{pbcopyとpbpaste}
+
+\texttt{pbcopy}はコマンドラインの標準入力からクリップボードへコピーし、また\texttt{pbpaste}はクリップボードの内容をコマンドラインで標準出力へペーストするコマンドです。例えばあるプログラムの中身をコピーしたりペーストする場合次のようにします。
+\begin{lstlisting}[language=bash]
+$ cat test.cxx | pbcopy # test.cxx の中身をコピー
+$ pbpaste > test2.cxx # test2.cxx へクリップボードの中身を出力する
+\end{lstlisting}
+
+\subsection{defaults}
+\texttt{defaults}はmacOSの様々なデフォルト設定\footnote{ユーザが明示的に自分の好みの設定へ変更する前に選択される設定のこと。例えばTerminal.appのウィンドウの色は、デフォルトで白に設定されている。}をコマンドラインから変更するコマンドです。多くの場合は設定を変更する際に使用するので、\texttt{defaults write}という書き込みのオプションを指定して実行します。例えばGoogleで``defaults write com.apple.finder''というフレーズ検索をすると、Finderの各種設定を変更する情報が見つかるはずです。
 
 \chapter{configure と Make}
 \label{chap:configure}
