@@ -15,17 +15,17 @@ macOS や Linux にソフトウェアやライブラリを追加インストー�
 
 2 つ目はパッケージ管理システム（package management system、package manager）を使用する方法です。これは主に、Python などコマンドラインで使用するソフトウェアのインストールや管理に用いられます。パッケージ管理システムは単に必要なソフトウェアやライブラリをインストールするだけでなく、そのソフトウェアに必要となる他のライブラリを自動的に選択してインストールしたり、バージョンの依存関係を解決してくれたりします。またソフトウェアごとに異なるウェブサイトに情報が散逸することなく、同一のレポジトリに情報が集約され、インストール方法も共通化されているという利点があります。
 
-Mac では後述する Homebrew が 2020 年現在では主流であり\footnote{Mac OS X がリリースされた当初は Fink（\url{http://www.finkproject.org}）がもっとも人気があり、その後 MacPorts（\url{https://www.macports.org}）に人気が移り、今では Homebrew が主流となりました。}、CentOS~7 では Yum が標準です。また Python に特化したパッケージ管理システムとして pip や conda があるのは第~\ref{chap:Python}~章で説明した通りです。本章では、このHomebrewとYumについて簡単に解説します。
+Mac では後述する Homebrew が 2021 年現在では主流であり\footnote{Mac OS X がリリースされた当初は Fink（\url{http://www.finkproject.org}）がもっとも人気があり、その後 MacPorts（\url{https://www.macports.org}）に人気が移り、今では Homebrew が主流となりました。}、CentOS~7 では Yum が標準です。また Python に特化したパッケージ管理システムとして pip や conda があるのは第~\ref{chap:Python}~章で説明した通りです。本章では、このHomebrewとYumについて簡単に解説します。
 
 3 つ目の方法はCMakeやconfigureを使ってソフトウェアのビルドとインストールをする方法です。この解説は付録~\ref{chap:configure}を参照してください。
 
 \section{Homebrew}
 \label{sec:Homebrew}
-Homebrew（ホームブルー）は 2020 年現在、Mac でもっとも人気のあるパッケージ管理システムです\footnote{\url{https://brew.sh}}\footnote{「home brew」は日本語で自家醸造という意味であり、Homebrew に出てくる用語は cask（大樽）や cellar（貯蔵庫）など、酒関係の英語が多いです。}。
+Homebrew（ホームブルー）は 2021 年現在、Mac でもっとも人気のあるパッケージ管理システムです\footnote{\url{https://brew.sh}}\footnote{「home brew」は日本語で自家醸造という意味であり、Homebrew に出てくる用語は cask（大樽）や cellar（貯蔵庫）など、酒関係の英語が多いです。}。
 
 まず \url{https://brew.sh} に記述のある通り、Homebrew をインストールしてみましょう\footnote{Homebrewの更新に従いこのコマンドは変更になる可能性があるので、必ず本家の記述を参照してください。}。次のコマンドを管理者権限をもつユーザで実行すると
 \begin{lstlisting}[language=bash]
-$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 \end{lstlisting}
 色々と出てきた後にパスワードを聞かれますので、パスワードを入れて進めてください。
 \begin{lstlisting}[language=bash]
@@ -62,34 +62,10 @@ Homebrew によって \texttt{/usr/local} 以下に作られるディレクト�
 $ brew install python3
 \end{lstlisting}
 
-他にまず必要なものはCMake、Emacs、MacTeX\footnote{Macに\LaTeX をインストールする方法はいくつかありますが、Homebrew で MacTeX をインストールするのが一番簡単だと思います。} だと思います。MacTeXはダウンロードに時間がかかるので、必要なときでも構いません。
+他にまず必要なものはCMake、MacTeX\footnote{Macに\LaTeX をインストールする方法はいくつかありますが、Homebrew で MacTeX をインストールするのが一番簡単だと思います。} だと思います。MacTeXはダウンロードに時間がかかるので、必要なときでも構いません。
 \begin{lstlisting}[language=bash]
 $ brew install cmake
-$ brew cask install emacs
-$ brew cask install mactex
-\end{lstlisting}
-
-次のコマンドを実行します。
-\begin{lstlisting}[language=bash]
-$ echo "Emacs () {\n\t[ -f \$1 ] || touch \$1\n\topen -a Emacs \$1\n}" >> ~/.zshrc
-$ source ~/.zshrc
-$ which Emacs
-Emacs(){
-	[ -f $1 ] || touch $1
-	open -a Emacs $1
-}
-\end{lstlisting}
-これで、\texttt{Emacs}というコマンド（実際は関数）で\texttt{/Applications/Emacs.app}を起動できるようになりました。
-
-macOS Catalinaの場合、Emacsをまともに動作させるには少し修正を加える必要があります\footnote{2020年4月19日現在の情報のため、不正確な記述になる可能性があります。}。HomebrewでEmacs.appが\texttt{/Applications/Emacs.app}にインストールされた後、\textbf{まずEmacs.appを起動}してください。\cmdkey\,Qで一度終了し、次のコマンドをTerminal.appから実行してください。
-
-\begin{lstlisting}[language=bash]
-$ cd /Applications/Emacs.app/Contents/MacOS 
-$ mv Emacs Emacs-launcher
-$ mv Emacs-x86_64-10_14 Emacs
-$ cd ..
-$ rm -rf _CodeSignature
-$ cd
+$ brew install mactex
 \end{lstlisting}
 
 \section{\texttt{yum}}
@@ -129,7 +105,7 @@ CMake suite maintained and supported by Kitware (kitware.com/cmake).
 
 \LaTeX を知らなくても修士論文は書けますが、宇宙や素粒子関連の業界では、ほとんどの人が \LaTeX を使って修士論文を書きます（実際には日本語対応の \pLaTeX）。また同様に投稿論文も \LaTeX で書くことがほとんどですので（実際には PDF の生成が簡単な pdf\LaTeX）、多くの物理学徒が避けては通れない道具です。実際に修士論文を \pLaTeX で書く場合の例としては、手前味噌ですが「修士論文 LaTeX テンプレート｜名古屋大学宇宙地球環境研究所の理学系修士学生用」\footnote{\url{https://github.com/akira-okumura/MasterThesisTemplate}}が参考になると思います。
 
-\LaTeX のインストール方法は様々であり、インターネット上の情報もバラバラです。また古い情報も混在しているため、筆者も何が正しいのか、何がお勧めなのかよく分かりません。しかし、ここで示すやり方が「正しそうに思える」ので、ひとつの例として挙げます。この情報は 2019 年 4 月現在のものです。TeXLive などの 2019 年版が出たら、適宜読み替えてください\footnote{2019 年 4 月現在、2018 年版が出ています。}。
+\LaTeX のインストール方法は様々であり、インターネット上の情報もバラバラです。また古い情報も混在しているため、筆者も何が正しいのか、何がお勧めなのかよく分かりません。しかし、ここで示すやり方が「正しそうに思える」ので、ひとつの例として挙げます。この情報は 2021 年 4 月現在のものです。TeXLive などの 2022 年版が出たら、適宜読み替えてください\footnote{2021 年 4 月現在、2021 年版が出ています。}。
 
 macOS でも CentOS~7 でも、合計で 5~GB くらいのファイルをインストールします。ダウンロードに 1 時間以上かかったり、パソコンの空き領域を食いつぶしたりするので注意してください。
 
@@ -137,9 +113,9 @@ macOS でも CentOS~7 でも、合計で 5~GB くらいのファイルをイン�
 
 macOS で LaTeX 環境を構築するには、Homebrew で MacTeX というパッケージを追加するのが簡単です。MacTeX は TeXLive という \LaTeX ディストリビューションに Mac 固有のアプリケーションなどを追加したものです。例えば Keynote などに数式を入れたいときに便利な LaTeXiT、文献管理ソフトの BibDesk、TeX 統合環境の TeXShop などが　\texttt{/Applications} にインストールされます\footnote{筆者はこのうち LaTeXiT と BibDesk のみ常用しています。}。
 
-いつも通り単純に次のコマンド一発でいけます。ただし、\texttt{brew install} ではなく \texttt{cask} というのが間に挟まっているのを注意してください。
+いつも通り単純に次のコマンド一発でいけます。
 \begin{lstlisting}[language=bash]
-$ brew cask install mactex
+$ brew install mactex
 \end{lstlisting}
 
 次のコマンドを実行した際に
@@ -148,19 +124,19 @@ $ sudo tlmgr paper
 \end{lstlisting}
 もしもページの大きさの設定が次のように letter（21.59~cm~$\times$~27.94~cm）\footnote{アメリカで一般的に使われる印刷用紙の大きさです。}と表示される場合、
 \begin{lstlisting}
-Current context paper size (from /usr/local/texlive/2018/texmf-config/tex/context/user/cont-sys.tex): letter
-Current dvipdfmx paper size (from /usr/local/texlive/2018/texmf-config/dvipdfmx/dvipdfmx.cfg): letter
-Current dvips paper size (from /usr/local/texlive/2018/texmf-config/dvips/config/config.ps): letter
-Current pdftex paper size (from /usr/local/texlive/2018/texmf-config/tex/generic/config/pdftexconfig.tex): letter
-Current psutils paper size (from /usr/local/texlive/2018/texmf-config/psutils/paper.cfg): letter
-Current xdvi paper size (from /usr/local/texlive/2018/texmf-config/xdvi/XDvi): letter
+Current context paper size (from /usr/local/texlive/2021/texmf-config/tex/context/user/cont-sys.tex): letter
+Current dvipdfmx paper size (from /usr/local/texlive/2021/texmf-config/dvipdfmx/dvipdfmx.cfg): letter
+Current dvips paper size (from /usr/local/texlive/2021/texmf-config/dvips/config/config.ps): letter
+Current pdftex paper size (from /usr/local/texlive/2021/texmf-config/tex/generic/config/pdftexconfig.tex): letter
+Current psutils paper size (from /usr/local/texlive/2021/texmf-config/psutils/paper.cfg): letter
+Current xdvi paper size (from /usr/local/texlive/2021/texmf-config/xdvi/XDvi): letter
 \end{lstlisting}
 次のコマンドで A4 サイズ（21.0~cm~$\times$~29.7~cm）に設定を変更してください。
 \begin{lstlisting}[language=bash]
 $ sudo tlmgr paper a4
 \end{lstlisting}
 
-macOS で \LaTeX\ を使う場合、初期設定ではおそらく IPA 明朝と IPA ゴシックというフォントが使用されます。しかし macOS に同梱されているヒラギノフォント（ヒラギノ明朝およびヒラギノ角ゴシック）を使うと PDF の仕上がりが良くなります（可読性の高い綺麗なフォントが埋め込まれます）ので、仕上がりにこだわりたい人はヒラギノフォントを埋め込む設定を行なってください。この作業は macOS のバージョンや TeXLive のバージョンによって異なりますので、\url{https://doratex.hatenablog.jp/entry/20190502/1556775026}などを参考にしてください。
+macOS で \LaTeX\ を使う場合、初期設定ではおそらく2021年版以降は原ノ味フォントというフォントが使用されます\footnote{2019年版まではIPA 明朝と IPA ゴシックでした。}。しかし macOS に同梱されているヒラギノフォント（ヒラギノ明朝およびヒラギノ角ゴシック）を使うと PDF の仕上がりが良くなります（可読性の高い綺麗なフォントが埋め込まれます）ので、仕上がりにこだわりたい人はヒラギノフォントを埋め込む設定を行なってください。この作業は macOS のバージョンや TeXLive のバージョンによって異なりますので、\url{https://github.com/munepi/bibunsho7-patch/releases}などを参考にしてください。
 
 \section{CentOS~7 での TeXLive 2018 のインストール}
 
@@ -628,9 +604,27 @@ Karabiner-Elementsをインストール後、SpotlightからKarabiner-Elements.a
 \section{Emacsの操作体系に慣れる}
 \label{sec:Emacs}
 
-ここでは、macOSでの標準的なエディタ（editor）のひとつであるEmacsの操作について、その初歩の初歩について説明します\footnote{macOS Mojaveまでは\texttt{/usr/bin/emacs}が最初からインストールされていましたが、Catalinaからはなくなりました。GNUライセンスで配布されているソフトウェアの使用を回避するためと言われています。代わりに\texttt{/usr/bin/mg}というEmacsに似たエディタ（Emacsクローン）がインストールされています。}。エディタは文章を書くためのソフトウェアです。ただし、ワープロのように様々な装飾をするための機能はありません。プログラムを書いたり、\LaTeX{}のソースを書いたりと、装飾ではなく文そのものに意味があるときに使います。そのような作業に特化したワープロにはない様々な機能が搭載されています。
+ここでは、一部の人の間では今も愛好されているなエディタ（editor）であるEmacsの操作について、その初歩の初歩について説明します\footnote{macOS Mojaveまでは\texttt{/usr/bin/emacs}が最初からインストールされていましたが、Catalinaからはなくなりました。GNUライセンスで配布されているソフトウェアの使用を回避するためと言われています。代わりに\texttt{/usr/bin/mg}というEmacsに似たエディタ（Emacsクローン）がインストールされています。}。エディタは文章を書くためのソフトウェアです。ただし、ワープロのように様々な装飾をするための機能はありません。プログラムを書いたり、\LaTeX{}のソースを書いたりと、装飾ではなく文そのものに意味があるときに使います。そのような作業に特化したワープロにはない様々な機能が搭載されています。
 
-Emacsの特徴のひとつに、文字入力に特殊なキーボードショートカット（Emacs key binding）を使うことが挙げられます。慣れないうちは全く便利に感じないと思いますが、一度慣れてしまうと、もう他のエディタには戻れなくなるのでぜひ覚えて下さい。macOSを使う場合、このショートカットをほとんどのソフトウェアでも利用可能です。基本的なキーボードショートカットの一覧を表\ref{tab_emacs}にまとめました。
+macOSにEmacsを入れるのは\url{https://emacsformacosx.com}からダウンロードするのが簡単です。\texttt{/Applications}にEmacs.appを入れてください。
+
+次のコマンドを実行します。
+\begin{lstlisting}[language=bash]
+$ echo "Emacs () {\n\t[ -f \$1 ] || touch \$1\n\topen -a Emacs \$1\n}" >> ~/.zshrc
+$ source ~/.zshrc
+$ which Emacs
+Emacs(){
+	[ -f $1 ] || touch $1
+	open -a Emacs $1
+}
+\end{lstlisting}
+これで、\texttt{Emacs}というコマンド（実際は関数）で\texttt{/Applications/Emacs.app}を起動できるようになりました。例えば
+\begin{lstlisting}[language=bash]
+$ Emacs test.C
+\end{lstlisting}
+のようにすれば、ターミナルからEmacsを立ち上げることができるようになります。
+
+Emacsの特徴のひとつに、文字入力に特殊なキーボードショートカット（Emacs key binding）を使うことが挙げられます。慣れないうちは全く便利に感じないと思いますが、一度慣れてしまうと、もう他のエディタには戻れなくなるのでぜひ覚えて下さい\footnote{Emacs以外に例えばVS~Codeなどを使うにしても、キーボードショートカットをEmacs風にすることもできます。}。macOSを使う場合、このショートカットをほとんどのソフトウェアでも利用可能です。基本的なキーボードショートカットの一覧を表\ref{tab_emacs}にまとめました。
 
 \begin{table}
   \centering

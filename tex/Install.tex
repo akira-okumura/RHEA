@@ -3,7 +3,7 @@
 \section{ROOTのインストールと初期設定}
 \label{sec:ROOT_install}
 \subsection{必要な環境}
-本書を読み進めるためには、当然ながらROOTを実行するためのコンピュータ環境が必要です。ROOTがサポートする（していた）オペレーティングシステム（operating system、OS）は多岐にわたりますが、2020年現在、Mac\footnote{Apple社の製造するコンピュータMacintosh（通称 Mac）で使われている OS はバージョン 10.0 以降、永らく Mac OS X（マックオーエステン）と呼ばれてきました。しかしそのバージョンが 10.12 になってからは macOS と名称が変更されています。「Mac OS X」と「macOS」という二つの言葉が世の中では混在していますが、同じものを指すと考えてください。}かLinux\footnote{Redhat Enterprise Linux（RHEL）、Fedora、CentOS、Ubuntu、Scientific Linuxなど、一口にLinuxと言っても様々な種類があります。これはLinuxという言葉がOSの中核部分であるカーネル（kernel）を指すものであり、このLinuxカーネルに様々なソフトウェアやライブラリを追加してひとまとめにした配布形態（distribution）が複数あるためです。例えば「CentOSはLinuxカーネルを使用したLinuxディストリビューションの1つである」のような表現をします。}を使用するのがこの業界では標準です。そのため本書ではMacかLinuxの使用を前提とします\footnote{WindowsやSolarisもROOT~5でサポートされていましたが、現在はおそらくサポートされていません。ROOT~6 では、Windows でも動作させようとしているようですが、2020年4月の時点では正式サポートまで到達していないようです。}。どちらかのOSを使う限り、作業内容はほぼ同じはずです。本書に書かれているROOTでの作業を全て行うためには、自分のコンピュータにコンパイラ（compiler）がインストールされている必要があります\footnote{GCCやClangといったコンパイラについての説明や、そのインストール方法は本書の範囲内ではありません。GCCやClangのインストール方法が分からなければ、「GCC インストール Linux」「Clang インストール Mac」などで検索して下さい。}。
+本書を読み進めるためには、当然ながらROOTを実行するためのコンピュータ環境が必要です。ROOTがサポートする（していた）オペレーティングシステム（operating system、OS）は多岐にわたりますが、2021年現在、Mac\footnote{Apple社の製造するコンピュータMacintosh（通称 Mac）で使われている OS はバージョン 10.0 以降、永らく Mac OS X（マックオーエステン）と呼ばれてきました。しかしそのバージョンが 10.12 になってからは macOS と名称が変更されています。「Mac OS X」と「macOS」という二つの言葉が世の中では混在していますが、同じものを指すと考えてください。}かLinux\footnote{Redhat Enterprise Linux（RHEL）、Fedora、CentOS、Ubuntu、Scientific Linuxなど、一口にLinuxと言っても様々な種類があります。これはLinuxという言葉がOSの中核部分であるカーネル（kernel）を指すものであり、このLinuxカーネルに様々なソフトウェアやライブラリを追加してひとまとめにした配布形態（distribution）が複数あるためです。例えば「CentOSはLinuxカーネルを使用したLinuxディストリビューションの1つである」のような表現をします。}を使用するのがこの業界では標準です。そのため本書ではMacかLinuxの使用を前提とします\footnote{Solarisなど古いUNIXもROOT~5でサポートされていましたが、現在はおそらくサポートされていません。ROOT 6.24/00 からは、Windows も正式サポートされたようです。}。どちらかのOSを使う限り、作業内容はほぼ同じはずです。本書に書かれているROOTでの作業を全て行うためには、自分のコンピュータにコンパイラ（compiler）がインストールされている必要があります\footnote{GCCやClangといったコンパイラについての説明や、そのインストール方法は本書の範囲内ではありません。GCCやClangのインストール方法が分からなければ、「GCC インストール Linux」「Clang インストール Mac」などで検索して下さい。}。
 
 ある程度のコマンドラインの使用経験を前提としていますので、\texttt{ls}や\texttt{cd}のような単純なコマンド、「スーパーユーザー」、「管理者」、「ディレクトリ」といった用語の説明は省略します。この章の記述は、コマンドライン操作の初心者には不親切かもしれません。しかし、この章を読み進めることができなければ、恐らくROOTを使いこなせるようにもなりません。コンパイルができなかった、ROOTがうまく起動しなかった、この章に書いてあることが分からなかったという場合は、自力でインターネットや書籍、研究室の同僚を頼りに解決して下さい。
 
@@ -11,18 +11,18 @@
 \label{subsec:download}
 ROOTは\url{https://root.cern.ch/}からダウンロードすることができます。既にコンパイルされているバイナリ版と、コンパイルされていないソースコードがあります。前者はコンパイルする必要がないので簡単ですが、本書では教育目的のため、ソースコードをダウンロードして、自分でコンパイルすることにします。
 
-2020年4月時点で、ROOT 6 の最新安定バージョン6.20/04です。バージョン5からバージョン6に変わるとき、大きな変更がありました。そのため、研究室や実験グループによってはバージョン5系列を使っている人もまだまだ多いと思います。ROOT 5 ではバージョン 5.34/38 が最新です\footnote{更新は 2018 年 3 月 12 日であり、今後は開発が継続されません。}。最初の数字はメジャーバージョン、次の数字は大きな機能追加ごとに増えるマイナーバージョン、スラッシュの後ろの数字はバグフィックスを示す番号です。
+2021年4月時点で、ROOT 6 の最新安定バージョン6.24/00です。バージョン5からバージョン6に変わるとき、大きな変更がありました。そのため、研究室や実験グループによってはバージョン5系列を使っている人もまだ少し残っているかもしれません。ROOT 5 ではバージョン 5.34/38 が最新です\footnote{更新は 2018 年 3 月 12 日であり、今後は開発が継続されません。}。最初の数字はメジャーバージョン、次の数字は大きな機能追加ごとに増えるマイナーバージョン、スラッシュの後ろの数字はバグフィックスを示す番号です。
 
-どのバージョンを選択するかは研究室の計算機環境や実験グループの解析ソフトなどに依存しますが、本書では6.20/02を前提として話を進めます\footnote{最新の6.20/04はmacOS Catalinaで問題があるため。}。特に研究室でバージョン指定もなく初めてROOTを使用する場合であれば、最新バージョン\url{https://root.cern.ch/downloading-root}で確認し、それを使うようにしてください。
+どのバージョンを選択するかは研究室の計算機環境や実験グループの解析ソフトなどに依存しますが、本書では6.24/00を前提として話を進めます。特に研究室でバージョン指定もなく初めてROOTを使用する場合であれば、最新バージョン\url{https://root.cern.ch/downloading-root}で確認し、それを使うようにしてください。
 
 また使用しているOSの公開日よりも古いバージョンのROOTはコンパイルできない場合が多々ありますので、新しいROOTのバージョンを確認するようにしてください。
 
 上記URLを辿ると、ダウンロードのページがあります。リンクをクリックしてダウンロードすることも可能ですが、ここでは直接ターミナルからダウンロードします。
 \begin{lstlisting}[language=bash]
 $ cd ~
-$ curl -O https://root.cern/download/root_v6.20.02.source.tar.gz
+$ curl -O https://root.cern/download/root_v6.24.00.source.tar.gz
 \end{lstlisting}
-などとして、好きなディレクトリにダウンロードして下さい\footnote{この例のように本書で先頭に\texttt{\$}がついている行は、ターミナルで入力していることを表します。実際にターミナルから入力する内容は、\texttt{\$}とその直後の半角スペースを取り除いた内容ですので、注意して下さい。}。今の例では、\texttt{root\_v6.20.02.source.tar.gz}がホームディレクトリ（\texttt{\~}）に保存されます\footnote{ホームディレクトリとは、ユーザごとのファイルを置くためのディレクトリのことです。例えば Linux だと、ユーザ\texttt{oxon}の場合は\texttt{/home/oxon}が一般的にホームディレクトリになります。macOSの場合は\texttt{/Users/oxon}になります。これらは省略して\texttt{{\textasciitilde}oxon}、\texttt{\textasciitilde}、\texttt{\$HOME}と書かれることがあります。\texttt{HOME}はホームディレクトリのパス（path）を記録する環境変数であり、\texttt{\$}をつけることによってその値を取り出すことができます。}\footnote{ディレクトリはフォルダと同じようなものだと思ってもらって構いません。}。
+などとして、好きなディレクトリにダウンロードして下さい\footnote{この例のように本書で先頭に\texttt{\$}がついている行は、ターミナルで入力していることを表します。実際にターミナルから入力する内容は、\texttt{\$}とその直後の半角スペースを取り除いた内容ですので、注意して下さい。}。今の例では、\texttt{root\_v6.24.00.source.tar.gz}がホームディレクトリ（\texttt{\~}）に保存されます\footnote{ホームディレクトリとは、ユーザごとのファイルを置くためのディレクトリのことです。例えば Linux だと、ユーザ\texttt{oxon}の場合は\texttt{/home/oxon}が一般的にホームディレクトリになります。macOSの場合は\texttt{/Users/oxon}になります。これらは省略して\texttt{{\textasciitilde}oxon}、\texttt{\textasciitilde}、\texttt{\$HOME}と書かれることがあります。\texttt{HOME}はホームディレクトリのパス（path）を記録する環境変数であり、\texttt{\$}をつけることによってその値を取り出すことができます。}\footnote{ディレクトリはフォルダと同じようなものだと思ってもらって構いません。}。
 
 \subsection{コンパイルとは}
 コンパイル（compile）とは、C++などのプログラミング言語で書かれたソースコード（source code）をコンピュータが実行できるようにする作業のことです。C++などで書かれたプログラムは人間が理解しやすいような文法で作られているため、これをコンピュータの中のCPU（central processing unit、中央処理装置）が理解できる形態に変換してやる必要があるのです。
@@ -33,49 +33,42 @@ $ curl -O https://root.cern/download/root_v6.20.02.source.tar.gz
 \label{subsec:compile_cmake}
 最近のROOT（6.08/00以降）では、付録~\ref{chap:configure}で詳述する\texttt{configure}コマンドではなく\texttt{cmake}コマンド\footnote{\url{https://cmake.org/}}を使ってビルド（build）\footnote{コンパイル（compile）とはプログラミング言語で記述されたファイルをコンピュータが理解する機械語に変換する作業のことを指します。ビルドとは、必要なライブラリなどがOSに存在するかの確認、必要な場所へのファイルの移動、コンパイル作業、リンク作業、実行ファイルやライブラリの作成など、一連の作業をひっくるめたものを指します。}することが推奨されており、\texttt{configure}は既にサポート対象外です。これはGeant4でも同様で、最近のソフトウェアの流れです。CMakeはまだ完全に市民権を得たわけではありませんが、徐々にソフトウェア開発で浸透しつつあります。
 
-\texttt{yum}や\texttt{homebrew}などのパッケージ管理ソフトウェア（付録~\ref{chap:package}参照）のコマンドを使うか、自分でCMakeのページからダウンロードし、まずはCMakeを導入します。ROOT 6.20/02ではCMakeがバージョン3.9以上である必要があります。2020年4月現在、Homebrewでは CMake 3.17.1が、CentOS~7.6のYumではCMake 3.14.6が入手可能です。
+\texttt{yum}や\texttt{homebrew}などのパッケージ管理ソフトウェア（付録~\ref{chap:package}参照）のコマンドを使うか、自分でCMakeのページからダウンロードし、まずはCMakeを導入します。ROOT 6.20/02ではCMakeがバージョン3.9以上である必要があります。2021年4月現在、Homebrewでは CMake 3.20.1が、CentOS~8.3のYumではCMake 3.11.4が入手可能です。
 
 ROOTのビルド作業やインストール先は、好きな場所でやって構いません。もしあなたがコンピュータの管理者権限を持っているならば、\texttt{/usr/local}の下にインストールするのが標準的です。次のように、ターミナルから好きなディレクトリに移動し、ソースコードを展開して下さい\footnote{管理者権限を持っていなかったり、\texttt{sudo}コマンドを使用できない場合、一般ユーザでもインストール可能なディレクトリを選択してください。}。
 
 \begin{lstlisting}[language=bash]
 $ cd /usr/local
-$ sudo tar zxvf ~/root_v6.20.02.source.tar.gz
+$ sudo tar zxvf ~/root_v6.24.00.source.tar.gz
 \end{lstlisting}
 
-\texttt{root-6.20.02}という名前のディレクトリが作成されるので、そこに移動してコンパイルを行います。まずは作業用のディレクトリ\footnote{\texttt{obj}というディレクトリ名は好きなもので構いません。}を作成して移動し、CMakeを実行します。もし管理者権限を持たない一般ユーザとしてホームディレクトリなどで作業する場合、以降\texttt{sudo}はつける必要はありません。
+\texttt{root-6.24.00}という名前のディレクトリが作成されるので、そこに移動してコンパイルを行います。まずは作業用のディレクトリ\footnote{\texttt{obj}というディレクトリ名は好きなもので構いません。}を作成して移動し、CMakeを実行します。もし管理者権限を持たない一般ユーザとしてホームディレクトリなどで作業する場合、以降\texttt{sudo}はつける必要はありません。
 
 \begin{lstlisting}[language=bash]
-$ sudo mkdir root-6.20.02/obj
-$ cd root-6.20.02/obj
+$ sudo mkdir root-6.24.00/obj
+$ cd root-6.24.00/obj
 $ sudo cmake ..
 \end{lstlisting}
 
-ここで \texttt{obj} というサブディレクトリを作るのは、ビルドのやり直しをする際に CMake や Make の作成したファイルを削除するのを簡単にするためというのが主な理由です。また Python~2 と Python~3 用にビルドするディレクトリを分けたいという場合にも、このようにビルド用のサブディレクトリを作っておくと便利です。
-
-ここでは簡単のため、まずは\texttt{cmake}コマンドに何もオプションを渡さない例で説明しました。しかし、もしPython~2ではなくPython~3を使用する場合、節~\ref{subsec:python23}と節~\ref{sec:Python_Install}を最初によく読んで環境を整えてから、そこで説明する\texttt{cmake}コマンドのオプションを次のようにつけてください。macOSもCentOSもPython~2がデフォルトになっていますが、初学者にはPython~3の使用を強く推奨します。
-\begin{lstlisting}[language=bash]
-$ sudo mkdir root-6.20.02/obj
-$ cd root-6.20.02/obj
-$ sudo cmake ../ -DPYTHON_EXECUTABLE=`which python3`
-\end{lstlisting}
+ここで \texttt{obj} というサブディレクトリを作るのは、ビルドのやり直しをする際に CMake や Make の作成したファイルを削除するのを簡単にするためというのが主な理由です。
 
 CentOS~7の場合、CMakeのバージョン3.xは\texttt{cmake3}というコマンドとして\texttt{yum}でインストールされるため（付録~\ref{chap:package}参照）、コマンドを\texttt{cmake3}に変更して実行してください。
 
 \begin{lstlisting}[language=bash]
-$ sudo mkdir root-6.20.02/obj
-$ cd root-6.20.02/obj
+$ sudo mkdir root-6.24.00/obj
+$ cd root-6.24.00/obj
 $ sudo cmake3 ..
 \end{lstlisting}
 
 \texttt{cmake}コマンドは指定したディレクトリ（この場合は上位ディレクトリ\footnote{上位ディレクトリは\texttt{..}で表します。}）に存在する\texttt{CMakeLists.txt}というファイルの中身に従って、ROOTのビルドに必要となるコンパイラやライブラリがインストールされているかを調べたり、その計算機環境に適切なコンパイルオプションを指定したりする作業を行います。問題がなければ、色々とターミナルに出力された最後に次のような表示が出るはずです。使用している計算機の環境によっては、出力が若干異なる場合があります。
 \begin{lstlisting}[language=bash]
--- Enabled support for:  asimage builtin_afterimage builtin_clang builtin_davix builtin_freetype builtin_ftgl builtin_gl2ps builtin_glew builtin_llvm builtin_lz4 builtin_openssl builtin_tbb builtin_vdt builtin_xxhash builtin_zstd clad cocoa dataframe davix exceptions gdml http imt libcxx mlp opengl pyroot roofit shared sqlite ssl tmva tmva-cpu tmva-pymva spectrum vdt xml
+-- Enabled support for:  asimage builtin_afterimage builtin_clang builtin_cling builtin_freetype builtin_ftgl builtin_gl2ps builtin_glew builtin_llvm builtin_lz4 builtin_lzma builtin_nlohmannjson builtin_openssl builtin_openui5 builtin_pcre builtin_tbb builtin_vdt builtin_xrootd builtin_xxhash builtin_zstd clad cocoa dataframe exceptions gdml http imt libcxx mlp opengl pyroot roofit runtime_cxxmodules shared sqlite ssl tmva tmva-cpu spectrum vdt xml xrootd
 -- Configuring done
 -- Generating done
--- Build files have been written to: /usr/local/root-6.20.02/obj
+-- Build files have been written to: /usr/local/root-6.24.00/obj
 \end{lstlisting}
 
-これで\texttt{/usr/local/root-6.20.02/obj/Makefile}が生成されました。このファイルには、ROOTの多数のソースコードファイルをどのような手順でコンパイルし、どのようなライブラリとリンクすれば良いかが記述されています。
+これで\texttt{/usr/local/root-6.24.00/obj/Makefile}が生成されました。このファイルには、ROOTの多数のソースコードファイルをどのような手順でコンパイルし、どのようなライブラリとリンクすれば良いかが記述されています。
 
 次に\texttt{make}コマンドを実行します\footnote{\texttt{make}の使用経験がある人は\texttt{make}の実行後に\texttt{make install}を実行したくなるかもしれませんが、本書の説明通りに作業を進める場合は、別にやる必要はありません。}。\texttt{make}コマンドは\texttt{Makefile}の中に書かれた作業手順を逐次実行するコマンドです。
 \begin{lstlisting}[language=bash]
@@ -87,13 +80,10 @@ $ sudo make -j 8
 \begin{lstlisting}
 [100%] Linking CXX executable ../../bin/hist2workspace
 [100%] Built target hist2workspace
-[100%] Built target onepcm
-Scanning dependencies of target hsimple
-[100%] Generating tutorials/hsimple.root
 
 Processing hsimple.C...
-hsimple   : Real Time =   0.29 seconds Cpu Time =   0.05 seconds
-(TFile *) 0x7fa86b4bc6c0
+hsimple   : Real Time =   0.51 seconds Cpu Time =   0.08 seconds
+(TFile *) 0x7ff517c5c270
 [100%] Built target hsimple
 \end{lstlisting}
 
@@ -110,18 +100,135 @@ $ sudo cmake .. -Dminuit2=ON -Dgdml=ON
 それでも解決しない場合は、コンパイル済みのバイナリをダウンロードしましょう。以下は、macOS版をダウンロードした場合の例です。コンパイル済みのものは最新版に更新されていない可能性もあるため、やはり自分でコンパイルするのが確実です。
 \begin{lstlisting}[language=bash]
 $ cd ~
-$ curl -O https://root.cern/download/root_v6.20.02.macosx64-10.15-clang110.tar.gz
+$ curl -O https://root.cern/download/root_v6.24.00.macos-11.2-x86_64-clang120.tar.gz
 $ cd /usr/local
-$ sudo tar zxvf ~/root_v6.20.02.macosx64-10.15-clang110.tar.gz
+$ sudo tar zxvf ~/root_v6.24.00.macos-11.2-x86_64-clang120.tar.gz
 \end{lstlisting}
-コンパイル済みのバイナリは、全ての環境用に配布されているわけではありません。ROOTのダウンロードページ\footnote{\url{https://root.cern.ch/content/release-61206}}から、自分の環境に対応したものをダウンロードしましょう\footnote{2020年4月現在、macOS Catalina（10.15）、Mojave (10.14)、macOS High Sierra（10.13）、RHEL7クローン（CentOS Cern 7）などにバイナリ配布があります。}。
+コンパイル済みのバイナリは、全ての環境用に配布されているわけではありません。ROOTのダウンロードページ\footnote{\url{https://root.cern/releases/release-62400/}}から、自分の環境に対応したものをダウンロードしましょう\footnote{2021年4月現在、macOS Big Sur（11.2）、Catalina（10.15）、Mojave (10.14)、RHEL7クローン（CentOS Cern 7）などのバイナリ配布があります。}。
 
-\subsection{Python 2 と Python 3 の違い}
+\subsection{Anaconda を使ったインストール}
+Anaconda は Python の環境を構築するためのソフトウェアである Conda のディストリビューション（distribution）の 1 つです。節~\ref{subsec:compile_cmake}では CMake を使いましたが、ROOT だけではなくもっと多くの Python 関係のソフトウェアをインストールしたい場合には、Anaconda を使用するのが便利な場合があります。どちらを使えば良いかは、Python をどれだけ使うかや、自分の研究プロジェクトがどのようなソフトウェア環境を推奨するかに依ります。
+
+Condaの考え方は、さまざまな異なるソフトウェア環境、異なるバージョン環境を1つの計算機上で混在させるということです。例えば、同じ計算機上でフェルミ衛星のデータ解析もしたいし、XENON実験のデータ解析もしたいとします。しかし両者の解析ソフトウェアが指定するPythonのバージョンが異なるとします。そのような場合、2つの環境を混在させずに分けたい場合があります。このような場合にCondaは便利です。
+
+また Conda を使ってソフトウェアをインストールすると、OS にもともと入っているソフトウェア環境を破損もしくは汚染しにくいという利点もあります。何かを間違えてインストールしてしまったり、ソフトウェアが動作しなくなった場合に、特定の Conda 環境を削除するだけで復旧できる場合があります。
+
+まず、Anaconda のインストールをします\footnote{これは macOS 用の 2021 年 4 月現在のインストールの例ですので、最新版やLinux用のダウンロードは\url{https://www.anaconda.com/products/individual\#Downloads}を確認してください。}。
+
+\begin{lstlisting}[language=bash]
+$ cd ~
+$ curl -O https://repo.anaconda.com/archive/Anaconda3-2020.11-MacOSX-x86_64.sh
+$ chmod +x Anaconda3-2020.11-MacOSX-x86_64.sh
+$ ./Anaconda3-2020.11-MacOSX-x86_64.sh 
+
+Welcome to Anaconda3 2020.11
+
+In order to continue the installation process, please review the license
+agreement.
+Please, press ENTER to continue
+>>> 
+（略）
+Do you accept the license terms? [yes|no]
+[no] >>> yes
+
+Anaconda3 will now be installed into this location:
+/Users/oxon/anaconda3
+
+  - Press ENTER to confirm the location
+  - Press CTRL-C to abort the installation
+  - Or specify a different location below
+
+[/Users/oxon/anaconda3] >>> 
+（略）
+by running conda init? [yes|no]
+[yes] >>> 
+\end{lstlisting}
+いくつか質問されると思いますので、基本的にそのまま進めば問題ありません。Python 関連の多数のソフトウェアをインストールするため、ダウンロードに時間がかかります。
+
+macOSの場合、途中でXcodeに関係するソフトウェアの追加インストールを促されるかもしれませんが、その場合はダイアログの指示に従ってインストールしてください。
+
+最後に聞かれた質問に yes で答えると、\texttt{zsh} を使用している場合は \texttt{\~{}/.zshrc}に、他のシェルを使用している場合は該当するファイルに自動で次のような修正が加えられます。これが\texttt{\~{}/.zshrc}で読み込まれることで、Anaconda に関係する設定が自動で行われるようになります。
+
+\begin{lstlisting}[language=bash]
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/oxon/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/oxon/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/oxon/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/oxon/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+\end{lstlisting}
+
+\texttt{\~{}/.zshrc}を再読み込みさせ、Anaconda の設定をしましょう。そうすると、シェルの先頭に\texttt{(base)}という文字列が毎回表示されるようになるはずです。
+\begin{lstlisting}[language=bash]
+$ source ~/.zshrc
+(base) $  
+\end{lstlisting}
+これは、Anacondaの\texttt{base}環境に入ったことを意味します。
+
+まず、\texttt{base}環境を最新の状態にしましょう。
+\begin{lstlisting}[language=bash]
+(base) $ conda update -n base -c defaults conda
+（略）
+Proceed ([y]/n)? y
+\end{lstlisting}
+y と答えて進めてください。いくつかのソフトウェアのアップデートが行われます。
+
+次に、ROOT 環境を構築します。
+\begin{lstlisting}[language=bash]
+(base) $ conda create -n ROOT root -c conda-forge
+（略）
+Proceed ([y]/n)? y
+（略）
+done
+#
+# To activate this environment, use
+#
+#     $ conda activate ROOT
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate
+\end{lstlisting}
+
+\texttt{conda create}の後ろの引数は\texttt{-n ROOT}が\texttt{ROOT}という名前の環境を新たに構築するという意味です。\texttt{root}は、\texttt{root}という名前のパッケージをその環境に一緒にインストールするという意味です。ROOTは\texttt{root}というパッケージ名で管理されています。最後の\texttt{-c conda-forge}は、\texttt{-c conda-forge}は、\texttt{conda-forge}という名前のチャネル（channel）から\texttt{root}パッケージを探せという意味です。Condaのパッケージは膨大な数が存在するため、デフォルトのパッケージ管理の場所だけでは網羅できません。そのため、\texttt{root}パッケージは\texttt{conda-forge}チャネルで管理されています。
+
+それでは\texttt{ROOT}環境に入りROOTを立ち上げてみましょう。
+\begin{lstlisting}[language=bash]
+(base) $ conda activate ROOT
+(ROOT) $ root
+   ------------------------------------------------------------------
+  | Welcome to ROOT 6.24/00                        https://root.cern |
+  | (c) 1995-2021, The ROOT Team; conception: R. Brun, F. Rademakers |
+  | Built for macosx64 on Apr 20 2021, 16:15:00                      |
+  | From tag , 14 April 2021                                         |
+  | With                                                             |
+  | Try '.help', '.demo', '.license', '.credits', '.quit'/'.q'       |
+   ------------------------------------------------------------------
+
+root [0] .q
+(ROOT) $ ipython
+Python 3.9.2 | packaged by conda-forge | (default, Feb 21 2021, 05:02:20) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.22.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: import ROOT
+\end{lstlisting}
+2021年4月現在、最新版の6.24/00が入ります。Python環境はPython 3.9.2、Ipython 7.22.0が入ります。
+
+\subsection{Python 2 と Python 3 の違い（ROOT 6.22/00より前の場合）}
 \label{subsec:python23}
 
-CentOS~7 や macOS では、標準でインストールされている Python のバージョンは 2.7 です。このようなバージョン 2.x のものを Python~2 と呼びます。しかし2020年現在、多くのPythonプロジェクトがPython~3に移行しています。Python~2とPython~3では一部の互換性が失われており、新規にPythonの学習を始める場合はPython~3から学ぶほうが良いでしょう\footnote{ただし、実験プロジェクトによってはPython~2の使用が必須の場合もあるので先輩や教員に相談してください。}。
+CentOS~7 や macOS では、標準でインストールされている Python のバージョンは 2.7 です。このようなバージョン 2.x のものを Python~2 と呼びます。しかし2021年現在、多くのPythonプロジェクトがPython~3に移行しています。Python~2とPython~3では一部の互換性が失われており、新規にPythonの学習を始める場合はPython~3から学ぶほうが良いでしょう\footnote{ただし、実験プロジェクトによってはPython~2の使用が必須の場合もあるので先輩や教員に相談してください。}。
 
-Python~2がインストールされている環境、もしくは\texttt{python}コマンドがPython~2を実行する環境では、ROOTはPython~2を自動的に選択しPython用のライブラリを構築します。
+Python~2がインストールされている環境、もしくは\texttt{python}コマンドがPython~2を実行する環境では、6.22/00より前のROOTはPython~2を自動的に選択しPython用のライブラリを構築します。
 
 まずは、Python~3が自分の計算機にインストールされているか調べましょう。
 \begin{lstlisting}
@@ -142,11 +249,11 @@ Python~3の環境が整ったら、ROOTのCMake実行時に\texttt{PYTHON\_EXECU
 $ sudo cmake ../ -DPYTHON_EXECUTABLE=`which python3`
 \end{lstlisting}
 
-このように明示的に\texttt{python3}を指定するのは、ROOT 6.20/02ではPython~2とPython~3の両方に対応したPython用ライブラリを同時にビルドできないからです。そのため、Python~3を指定した場合はPython~2からROOTを呼び出せませんし、その逆もまた然りです。
+このように明示的に\texttt{python3}を指定するのは、ROOT 6.22/00より前のバージョンではPython~2とPython~3の両方に対応したPython用ライブラリを同時にビルドできないからです。そのため、Python~3を指定した場合はPython~2からROOTを呼び出せませんし、その逆もまた然りです。
 
 \subsection{最低限の初期設定}
 \label{subsec:settings}
-ソースをコンパイルしたり、バイナリ版をダウンロードしただけではROOTは使えるようになりません。ROOTの実行ファイルやライブラリの場所を設定する必要があります。これは、コンピュータがあなたの設定を自動では理解してくれないからです。\texttt{CMake}を使ってビルドした場合は、次の3行をmacOS Mojave（10.14）以前の場合は\texttt{\~{}/.bash\_profile}に、Linuxの場合は\texttt{\~{}/.bashrc}に書き足して下さい\footnote{もし\texttt{/usr/local/root-6.20.02}以外の場所にインストールした場合は、ディレクトリを適宜変更してください。}\footnote{\texttt{\~{}/.bashrc} は対話的に\texttt{bash}を起動した際に読み込まれる設定ファイルです。一方、\texttt{\~{}/.bash\_profile}はlogin shellとして\texttt{bash}が起動した際に読み込まれます。違いが知りたい場合は「\texttt{bashrc} \texttt{bash\_profile} 違い」などで検索してください。}。
+ソースをコンパイルしたり、バイナリ版をダウンロードしただけではROOTは使えるようになりません。ROOTの実行ファイルやライブラリの場所を設定する必要があります。これは、コンピュータがあなたの設定を自動では理解してくれないからです。\texttt{CMake}を使ってビルドした場合は、次の3行をmacOS Mojave（10.14）以前の場合は\texttt{\~{}/.bash\_profile}に、Linuxの場合は\texttt{\~{}/.bashrc}に書き足して下さい\footnote{もし\texttt{/usr/local/root-6.24.00}以外の場所にインストールした場合は、ディレクトリを適宜変更してください。}\footnote{\texttt{\~{}/.bashrc} は対話的に\texttt{bash}を起動した際に読み込まれる設定ファイルです。一方、\texttt{\~{}/.bash\_profile}はlogin shellとして\texttt{bash}が起動した際に読み込まれます。違いが知りたい場合は「\texttt{bashrc} \texttt{bash\_profile} 違い」などで検索してください。}。
 \begin{NoFloat}
 \lstinputlisting[language=bash]{src/bashrc_cmake.sh}
 \end{NoFloat}
@@ -175,16 +282,16 @@ $ echo $SHELL
 zsh
 \end{lstlisting}
 
-以上の設定で、使用しているシェルの環境変数の内容が更新されます。\texttt{ROOTSYS}という変数が追加され（これは\texttt{/usr/local/root-6.20.02/obj}を指しているはずです）、\texttt{PATH}、\texttt{LD\_LIBRARY\_PATH}、\texttt{PYTHONPATH}などが\texttt{ROOTSYS}以下のディレクトリを含むように変更されています。次のコマンドの出力を確認してみましょう（ROOTをビルドする前から環境変数の設定がされている場合、表示が異なる可能性があります）。
+以上の設定で、使用しているシェルの環境変数の内容が更新されます。\texttt{ROOTSYS}という変数が追加され（これは\texttt{/usr/local/root-6.24.00/obj}を指しているはずです）、\texttt{PATH}、\texttt{LD\_LIBRARY\_PATH}、\texttt{PYTHONPATH}などが\texttt{ROOTSYS}以下のディレクトリを含むように変更されています。次のコマンドの出力を確認してみましょう（ROOTをビルドする前から環境変数の設定がされている場合、表示が異なる可能性があります）。
 \begin{lstlisting}[language=bash]
 $ echo $ROOTSYS
-/usr/local/root-6.20.02/obj
+/usr/local/root-6.24.00/obj
 $ echo $PATH
-/usr/local/root-6.20.02/obj/bin
+/usr/local/root-6.24.00/obj/bin
 $ echo $PYTHONPATH
-/usr/local/root-6.20.02/obj/lib
+/usr/local/root-6.24.00/obj/lib
 $ echo $LD_LIBRARY_PATH
-/usr/local/root-6.20.02/obj/lib
+/usr/local/root-6.24.00/obj/lib
 \end{lstlisting}
 
 \subsection{動作確認}
@@ -196,10 +303,11 @@ $ root
 と打ってみて下さい。図\ref{fig:splash}が画面に現れるとともに\footnote{この画面の表示は 6.20/00 からデフォルトでは表示されなくなりました。出したい場合、\texttt{\$ root -a}を実行してください。}、ターミナルには次のように出力されます。
 \begin{lstlisting}
    ------------------------------------------------------------------
-  | Welcome to ROOT 6.20/02                        https://root.cern |
-  | (c) 1995-2020, The ROOT Team; conception: R. Brun, F. Rademakers |
-  | Built for macosx64 on Apr 15 2020, 17:00:00                      |
-  | From tag , 15 March 2020                                         |
+  | Welcome to ROOT 6.24/00                        https://root.cern |
+  | (c) 1995-2021, The ROOT Team; conception: R. Brun, F. Rademakers |
+  | Built for macosx64 on Apr 29 2021, 00:39:00                      |
+  | From tag , 14 April 2021                                         |
+  | With Apple clang version 12.0.5 (clang-1205.0.22.9)              |
   | Try '.help', '.demo', '.license', '.credits', '.quit'/'.q'       |
    ------------------------------------------------------------------
 
